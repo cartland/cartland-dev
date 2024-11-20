@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm --prefix functions run build",
+    "lint": "npm --prefix functions run lint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
