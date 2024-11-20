@@ -9,15 +9,14 @@
 
 import * as express from "express";
 
-import { https } from "firebase-functions/v2";
-const { logger } = require("firebase-functions/v2/logger");
+import {https, logger} from "firebase-functions/v2";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
 export const helloWorld = https.onRequest(
-    (request: https.Request, response: express.Response) => {
-        logger.info("Hello logs!", { structuredData: true });
-        response.send("Hello from Firebase!");
-    }
+  (request: https.Request, response: express.Response) => {
+    logger.info("Hello logs!", {structuredData: true});
+    response.send("Hello from Firebase!");
+  }
 );
