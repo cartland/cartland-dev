@@ -1,3 +1,6 @@
+.sqs-block-image-link img {
+  border-radius: 20px;
+}
 /* Button Block Base Style
 =================================================*/
 .sqs-block-button-container {
