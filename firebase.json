@@ -5,6 +5,9 @@
   },
   "hosting": {
     "public": "public",
+    "include": [
+      ".well-known/**"
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
