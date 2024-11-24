@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>Responsive Paragraph and Image</title> 
+<style>
+.container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%; 
+  justify-content: center; 
+}
+
+.container > div {
+  padding: 16px;
+  margin: 4px; 
+  box-sizing: border-box; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+}
+
+.container img {
+  max-width: 100%; 
+  height: auto; 
+  object-fit: contain; 
+}
+
+.container > div:first-child {
+  text-align: left; 
+  font-size: 24px;
+}
+
+/* Medium and large screens: 50% width, side-by-side */
+@media (min-width: 600px) {
+  .container {
+    flex-direction: row;
+  }
+  .container > div {
+    width: 50%; 
+  }
+  #image-div { 
+    height: 100%; 
+  }
+  .container img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="text-div"> 
+    <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and image are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid white space.</p>
+  </div>
+  <div id="image-div">
+    <img src="https://images.squarespace-cdn.com/content/v1/673e7e32839de7577f96b3f8/9edc29f4-c070-4a6a-ba73-552b2d28d658/c_bridge.jpg?format=2500w" alt="Your Image">
+  </div>
+</div>
+
+<script>
+  function adjustImageDivHeight() {
+    const textDiv = document.getElementById('text-div');
+    const imageDiv = document.getElementById('image-div');
+    // Adjust height in medium/large layouts
+    if (window.innerWidth >= 600) { 
+      imageDiv.style.height = textDiv.offsetHeight + 'px';
+    } else {
+      imageDiv.style.height = 'auto'; 
+    }
+  }
+
+  adjustImageDivHeight();
+  window.addEventListener('resize', adjustImageDivHeight);
+</script>
+
+</body>
+</html>
