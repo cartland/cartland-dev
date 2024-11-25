@@ -4,7 +4,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 <title>Responsive Paragraph and Image</title> 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap'); /* Import Roboto font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --color: #ffffff;
+  --background-color: #263551;
+}
+
+body {
+  background-color: var(--background-color);
+}
 
 .container {
   display: flex;
@@ -13,9 +22,9 @@
   max-width: 1200px;
   margin: 0 auto;
   justify-content: center; 
-  font-family: 'Roboto', sans-serif;  /* Apply Roboto font */
-  font-size: 18px; /* Increased font size */
-  color: #2d2d2d; /* Very dark gray font color */
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color: var(--color);
   padding: 8px;
 }
 
@@ -29,25 +38,25 @@
 .container img {
   max-width: 100%; 
   height: auto; 
-  object-fit: contain; 
+  object-fit: contain;
+  border-radius: 4px;
 }
 
-#text-div { /* Style the paragraph text */
+#text-div {
   text-align: left; 
-  margin-top: 0px; /* Reset top margin */
+  margin-top: 0px;
 }
 
 #text-div p {
-    margin-top: 0px; /* Reset top margin */
-    margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .spacer {
-    height: 16px; /* Add space between text and image */
-    width: 16px;
+  height: 16px;
+  width: 16px;
 }
 
-/* Medium and large screens: 50% width, side-by-side */
 @media (min-width: 600px) {
   .container {
     flex-direction: row;
@@ -57,8 +66,10 @@
   }
   #image-div { 
     height: 100%;
+    padding-inline: 4px;
   }
   #text-div {
+    padding-inline: 4px;
   }
   .container img {
     height: 100%;
@@ -70,7 +81,8 @@
 <body>
 
 <div class="container">
-  <div id="text-div" class="hero"> 
+  <div id="text-div" class="hero">
+    <h1>Responsive Paragraph and Image</h1>
     <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and image are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid white space.</p>
   </div>
   <div class="spacer"></div>
@@ -83,7 +95,6 @@
   function adjustImageDivHeight() {
     const textDiv = document.getElementById('text-div');
     const imageDiv = document.getElementById('image-div');
-    // Adjust height in medium/large layouts
     if (window.innerWidth >= 600) { 
       imageDiv.style.height = textDiv.offsetHeight + 'px';
     } else {
