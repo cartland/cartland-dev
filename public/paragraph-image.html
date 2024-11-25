@@ -10,14 +10,16 @@
   display: flex;
   flex-direction: column; 
   align-items: center; 
-  width: 100%; 
+  max-width: 1200px;
+  margin: 0 auto;
   justify-content: center; 
   font-family: 'Roboto', sans-serif;  /* Apply Roboto font */
   font-size: 18px; /* Increased font size */
   color: #2d2d2d; /* Very dark gray font color */
+  padding: 8px;
 }
 
-.container > div {
+.hero {
   box-sizing: border-box; 
   display: flex; 
   flex-direction: column; 
@@ -30,9 +32,19 @@
   object-fit: contain; 
 }
 
-.container > div:first-child { /* Style the paragraph text */
+#text-div { /* Style the paragraph text */
   text-align: left; 
   margin-top: 0px; /* Reset top margin */
+}
+
+#text-div p {
+    margin-top: 0px; /* Reset top margin */
+    margin-bottom: 0px;
+}
+
+.spacer {
+    height: 16px; /* Add space between text and image */
+    width: 16px;
 }
 
 /* Medium and large screens: 50% width, side-by-side */
@@ -40,15 +52,13 @@
   .container {
     flex-direction: row;
   }
-  .container > div {
+  .hero {
     width: 50%;
   }
   #image-div { 
     height: 100%;
-    padding-inline: 4px;
   }
   #text-div {
-    padding-inline: 4px;
   }
   .container img {
     height: 100%;
@@ -60,10 +70,11 @@
 <body>
 
 <div class="container">
-  <div id="text-div"> 
+  <div id="text-div" class="hero"> 
     <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and image are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid white space.</p>
   </div>
-  <div id="image-div">
+  <div class="spacer"></div>
+  <div id="image-div" class="hero">
     <img src="https://images.squarespace-cdn.com/content/v1/673e7e32839de7577f96b3f8/9edc29f4-c070-4a6a-ba73-552b2d28d658/c_bridge.jpg?format=2500w" alt="Your Image">
   </div>
 </div>
