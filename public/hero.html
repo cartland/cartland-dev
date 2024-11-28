@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Layout Examples</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
     :root {
       --color: #ffffff;
@@ -23,14 +23,31 @@
       margin: 0;
     }
 
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-content: center;
+      padding: 32px;
+    }
+
     .header {
+      width: 100%;
+      padding-bottom: 32px;
       background-color: var(--background-color);
       color: var(--color);
-      padding: 0px 24px 0px 16px;
-      min-height: 80px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    h1 {
+      font-weight: normal;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      font-size: 3em;
     }
 
     .header h1 {
@@ -59,16 +76,6 @@
       cursor: pointer;
     }
 
-    @media (max-width: 600px) {
-      .nav-links {
-        display: none;
-      }
-
-      .menu-icon {
-        display: block;
-      }
-    }
-
     .overlay {
       display: none;
       position: fixed;
@@ -87,7 +94,7 @@
       min-width: 50%;
       text-align: center;
       background-color: white;
-      padding: 20px;
+      padding: 8px;
       border-radius: 4px;
     }
 
@@ -102,13 +109,11 @@
     }
 
     .hero-container {
+      width: 100%;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      max-width: 1024px;
-      margin: 0 auto;
       justify-content: center;
-      padding: 8px;
     }
 
     .hero {
@@ -116,13 +121,17 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 50%;
+    }
+    
+    #hero-img {
+      height: 50%;
     }
 
     .hero-container img {
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
       border-radius: 4px;
+      height: 100%;
+      object-fit: cover;
     }
 
     #hero-text {
@@ -131,9 +140,6 @@
     }
 
     #hero-text h1 {
-      margin-top: 8px;
-      margin-bottom: 32px;
-      font-size: 3em;
     }
 
     #hero-text p {
@@ -142,34 +148,16 @@
       min-height: 148px;
     }
 
-    .hero-spacer {
+    .spacer {
       height: 16px;
       width: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .hero-container {
-        flex-direction: row;
-      }
-
-      .hero {
-        width: 50%;
-      }
-
-      .hero-container img {
-        height: 100%;
-        object-fit: cover;
-      }
     }
 
     .project-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       justify-content: center;
-      max-width: 1024px;
-      margin: 0 auto;
-      gap: 10px;
-      padding: 8px;
+      gap: 8px;
     }
 
     .project-container .section-header {
@@ -225,7 +213,38 @@
       text-transform: uppercase;
     }
 
-    @media (max-width: 640px) {
+    /* Small Window */
+    @media (max-width: 600px) {
+      .nav-links {
+        display: none;
+      }
+
+      .menu-icon {
+        display: block;
+      }
+
+      .hero-container {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .hero {
+        width: 100%;
+      }
+
+      #hero-text {
+        width: 100%;
+      }
+
+      #hero-img {
+        width: 100%;
+      }
+
+      .hero-container img {
+        height: auto;
+        object-fit: contain;
+      }
+
       .project-container {
         grid-template-columns: 1fr;
       }
@@ -234,81 +253,95 @@
 </head>
 
 <body>
-  <div class="header">
-    <h1>
-      <a href="">My Website</a>
-    </h1>
-    <div class="nav-links">
-      <a href="#">About</a>
-      <a href="#">Projects</a>
-    </div>
-    <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
-  </div>
-  <div class="overlay" id="overlay">
-    <div class="overlay-content">
+  <div class="container">
+    <div class="header">
+      <h1>
+        <a href="">My Website</a>
+      </h1>
       <div class="nav-links">
-        <a href="#" onclick="toggleMenu()">About</a>
-        <a href="#" onclick="toggleMenu()">Projects</a>
+        <a href="#">About</a>
+        <a href="#">Projects</a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+    <div class="overlay" id="overlay">
+      <div class="overlay-content">
+        <div class="nav-links">
+          <a href="#" onclick="toggleMenu()">About</a>
+          <a href="#" onclick="toggleMenu()">Projects</a>
+        </div>
       </div>
     </div>
-  </div>
-  <script>
-    function toggleMenu() { var overlay = document.getElementById("overlay"); overlay.style.display = overlay.style.display === "block" ? "none" : "block"; } 1
-    window.addEventListener('click', function (event) { var overlay = document.getElementById("overlay"); if (event.target == overlay) { overlay.style.display = "none"; } });
-  </script>
-  <div class="hero-container">
-    <div id="hero-text" class="hero">
-      <h1>Responsive Paragraph and Image</h1>
-      <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the
-        content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and image
-        are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid white
-        space.</p>
+    <script>
+      function toggleMenu() { var overlay = document.getElementById("overlay"); overlay.style.display = overlay.style.display === "block" ? "none" : "block"; } 1
+      window.addEventListener('click', function (event) { var overlay = document.getElementById("overlay"); if (event.target == overlay) { overlay.style.display = "none"; } });
+    </script>
+    <div class="hero-container">
+      <div id="hero-text" class="hero">
+        <h1>Responsive Paragraph and Image</h1>
+        <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the
+          content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and
+          image
+          are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid
+          white
+          space.</p>
+      </div>
+      <div class="spacer"></div>
+      <div id="hero-img" class="hero"><img src="c_bridge.jpg" alt="Your Image"></div>
     </div>
-    <div class="hero-spacer"></div>
-    <div id="hero-img" class="hero"><img src="c_bridge.jpg" alt="Your Image"></div>
-  </div>
-  <script>
-    function adjustImageDivHeight() { const textDiv = document.getElementById('hero-text'); const imageDiv = document.getElementById('hero-img'); if (window.innerWidth >= 600) { imageDiv.style.height = textDiv.offsetHeight + 'px'; } else { imageDiv.style.height = 'auto'; } }
-    adjustImageDivHeight(); window.addEventListener('resize', adjustImageDivHeight);
-  </script>
-  <div class="project-container">
-    <div class="section-header">
-      <h2>Projects</h2>
-      <div class="hero-spacer"></div>
-      <p>This is a section header. It spans the full row. This contains a paragraph of text that might
-        span multiple lines.</p>
-    </div>
-    <div class="card"><img src="a_bridge.jpg" alt="Image 1">
-      <h2>Card Title 1</h2>
-      <p>Short text.</p><a href="#" target="_blank">Blog Post</a>
-    </div>
-    <div class="card"><img src="b_bridge.jpg" alt="Image 2">
-      <h2>Card Title 2</h2>
-      <p>This is a paragraph with a bit more text. It might wrap to a second line within the card.</p><a href="#"
-        target="_blank">GitHub</a>
-    </div>
-    <div class="card"><img src="c_bridge.jpg" alt="Image 3">
-      <h2>Card Title 3</h2>
-      <p>This is a longer paragraph of text. It will definitely wrap to multiple lines within the card. It might even
-        fill up the entire height of the card, depending on the card's size and the font size.</p><a href="#"
-        target="_blank">Podcast</a>
-    </div>
-    <div class="card"><img src="a_bridge.jpg" alt="Image 4">
-      <h2>Card Title 4</h2>
-      <p>A sentence with a few words.</p><a href="#" target="_blank">Documentation</a>
-    </div>
-    <div class="card"><img src="b_bridge.jpg" alt="Image 5">
-      <h2>Card Title 5</h2>
-      <p>This text has medium length. It might wrap, it might not.</p><a href="#" target="_blank">Case Study</a>
-    </div>
-    <div class="card"><img src="c_bridge.jpg" alt="Image 6">
-      <h2>Card Title 6</h2>
-      <p>This is another long paragraph. It should wrap to several lines, demonstrating how the card's height adjusts to
-        accommodate the content.</p><a href="#" target="_blank">Register</a>
-    </div>
-    <div class="card"><img src="a_bridge.jpg" alt="Image 7">
-      <h2>Card Title 7</h2>
-      <p>Just a tiny bit of text here.</p><a href="#" target="_blank">Download</a>
+    <script>
+      function adjustHeroImgHeight() { 
+        const textDiv = document.getElementById('hero-text');
+        const imageDiv = document.getElementById('hero-img');
+        if (window.innerWidth >= 600) { 
+          imageDiv.style.height = textDiv.offsetHeight + 'px';
+        } else {
+          imageDiv.style.height = 'auto';
+        }
+      }
+      window.addEventListener('load', adjustHeroImgHeight);
+      window.addEventListener('resize', adjustHeroImgHeight);
+    </script>
+    <div class="project-container">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <div class="spacer"></div>
+        <p>This is a section header. It spans the full row. This contains a paragraph of text that might
+          span multiple lines.</p>
+      </div>
+      <div class="card"><img src="a_bridge.jpg" alt="Image 1">
+        <h2>Card Title 1</h2>
+        <p>Short text.</p><a href="#" target="_blank">Blog Post</a>
+      </div>
+      <div class="card"><img src="b_bridge.jpg" alt="Image 2">
+        <h2>Card Title 2</h2>
+        <p>This is a paragraph with a bit more text. It might wrap to a second line within the card.</p><a href="#"
+          target="_blank">GitHub</a>
+      </div>
+      <div class="card"><img src="c_bridge.jpg" alt="Image 3">
+        <h2>Card Title 3</h2>
+        <p>This is a longer paragraph of text. It will definitely wrap to multiple lines within the card. It might even
+          fill up the entire height of the card, depending on the card's size and the font size.</p><a href="#"
+          target="_blank">Podcast</a>
+      </div>
+      <div class="card"><img src="a_bridge.jpg" alt="Image 4">
+        <h2>Card Title 4</h2>
+        <p>A sentence with a few words.</p><a href="#" target="_blank">Documentation</a>
+      </div>
+      <div class="card"><img src="b_bridge.jpg" alt="Image 5">
+        <h2>Card Title 5</h2>
+        <p>This text has medium length. It might wrap, it might not.</p><a href="#" target="_blank">Case Study</a>
+      </div>
+      <div class="card"><img src="c_bridge.jpg" alt="Image 6">
+        <h2>Card Title 6</h2>
+        <p>This is another long paragraph. It should wrap to several lines, demonstrating how the card's height adjusts
+          to
+          accommodate the content.</p><a href="#" target="_blank">Register</a>
+      </div>
+      <div class="card"><img src="a_bridge.jpg" alt="Image 7">
+        <h2>Card Title 7</h2>
+        <p>Just a tiny bit of text here.</p><a href="#" target="_blank">Download</a>
+      </div>
     </div>
   </div>
 </body>
