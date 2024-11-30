@@ -1,0 +1,8 @@
+{
+  "name": "Christopher Cartland - Maker", 
+  "short_name": "Chris Cartland - Maker",  
+  "icons": [], 
+  "start_url": "/", 
+  "display": "standalone", 
+  "background_color": "#263551" 
+}
