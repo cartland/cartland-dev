@@ -38,15 +38,6 @@
       padding-bottom: 32px;
       position: relative;
       background-color: var(--background-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-content {
-      transition: color 0.3s ease;
-      color: var(--color);
-      z-index: 2;
     }
 
     h1 {
@@ -66,6 +57,16 @@
       color: inherit;
     }
 
+    .header-content {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.3s ease;
+      color: var(--color);
+      z-index: 2;
+    }
+
     .nav-links {
       display: flex;
       gap: 24px;
@@ -74,6 +75,10 @@
     .nav-links a {
       text-decoration: none;
       color: inherit;
+    }
+
+    .nav-links a.active {
+      text-decoration: underline;
     }
 
     .menu-icon {
@@ -110,7 +115,6 @@
       text-align: center;
       background-color: white;
       padding-top: 88px;
-      border-radius: 4px;
       z-index: 1;
     }
 
@@ -181,7 +185,7 @@
     }
 
     .hero-container img {
-      border-radius: 4px;
+      border-radius: 64px;
       height: 100%;
       object-fit: cover;
     }
@@ -235,7 +239,7 @@
     .card img {
       width: 100%;
       aspect-ratio: 1;
-      border-radius: 8px;
+      border-radius: 16px;
       object-fit: cover;
       display: block;
       margin: 0 auto 0px auto;
@@ -305,20 +309,20 @@
   <div class="container">
     <div class="header">
       <div class="header-content">
-        <h1 id="header-title"><a href="">My Website</a></h1>
-      </div>
-      <div class="nav-links header-content">
-        <a href="#">
-          <h2><u>About</u></h2>
-        </a>
-        <a href="#">
-          <h2>Projects</h2>
-        </a>
-      </div>
-      <div class="menu-icon header-content" onclick="toggleMenu()">
-        <div class="menu-button-container">
-          <div class="line hamburger-top"></div>
-          <div class="line hamburger-bottom"></div>
+        <h1><a href="">My Website</a></h1>
+        <div class="nav-links">
+          <a href="hero.html">
+            <h2>About</h2>
+          </a>
+          <a href="#">
+            <h2>Projects</h2>
+          </a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+          <div class="menu-button-container">
+            <div class="line hamburger-top"></div>
+            <div class="line hamburger-bottom"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -326,8 +330,8 @@
     <div class="overlay" id="overlay" onclick="toggleMenu()">
       <div class="overlay-content">
         <div class="nav-links">
-          <a href="#" onclick="toggleMenu()">
-            <h1><u>About</u></h1>
+          <a href="hero.html" onclick="toggleMenu()">
+            <h1>About</h1>
           </a>
           <a href="#" onclick="toggleMenu()">
             <h1>Projects</h1>
@@ -367,6 +371,24 @@
           overlay.style.display = "none";
         }
       });
+
+      function underlineActiveLink() {
+        const pathname = window.location.pathname.split('/');
+        const windowPathAfterSlash = pathname[pathname.length - 1];
+        console.log(windowPathAfterSlash);
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        navLinks.forEach(link => {
+          // Construct the expected path based on the link's href
+          const linkPath = `${link.getAttribute('href')}`;
+          if (windowPathAfterSlash === linkPath) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+      window.addEventListener('load', underlineActiveLink);
     </script>
     <div class="hero-container">
       <div id="hero-text" class="hero">
