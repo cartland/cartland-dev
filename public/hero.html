@@ -39,7 +39,7 @@
       width: 100%;
       padding-bottom: 32px;
       position: relative;
-      background-color: var(--background-color);
+      z-index: 2;
     }
 
     h1 {
@@ -50,7 +50,7 @@
     }
 
     .header h1 {
-      margin: 0;
+      margin: 0px;
       font-size: 24px;
     }
 
@@ -66,7 +66,7 @@
       align-items: center;
       transition: color 0.3s ease;
       color: var(--color);
-      z-index: 2;
+      z-index: inherit;
     }
 
     .nav-links {
@@ -81,6 +81,10 @@
 
     .nav-links a.active {
       text-decoration: underline;
+    }
+
+    .nav-links h2 {
+      margin: 0;
     }
 
     .menu-icon {
@@ -104,8 +108,8 @@
     .overlay.show {
       display: block;
       opacity: 1;
-      transition: opacity 1s ease;
-      transition: block 1s ease;
+      transition: opacity 0.3s ease;
+      transition: block 0.3s ease;
     }
 
     .overlay-content {
@@ -333,10 +337,10 @@
       <div class="overlay-content">
         <div class="nav-links">
           <a href="hero.html" onclick="toggleMenu()">
-            <h1>About</h1>
+            <h2>About</h2>
           </a>
           <a href="#" onclick="toggleMenu()">
-            <h1>Projects</h1>
+            <h2>Projects</h2>
           </a>
         </div>
       </div>
