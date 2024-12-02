@@ -457,6 +457,9 @@
       function adjustHeroImgHeight() {
         const textDiv = document.getElementById('hero-text');
         const imageDiv = document.getElementById('hero-img');
+        if (!textDiv || !imageDiv) {
+          return;
+        }
         if (window.innerWidth >= 600) {
           imageDiv.style.height = textDiv.offsetHeight + 'px';
         } else {
@@ -464,7 +467,7 @@
         }
       }
       window.addEventListener('load', adjustHeroImgHeight);
-      window.FaddEventListener('resize', adjustHeroImgHeight);
+      window.addEventListener('resize', adjustHeroImgHeight);
     </script>
     <div class="social-container">
       <div class="social-header">
