@@ -272,6 +272,39 @@
       text-transform: uppercase;
     }
 
+    .social-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .social-header {
+      width: 100%;
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .social-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+
+    .social-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    /* Small Window */
+    @media (max-width: 600px) {
+      .social-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     /* Small Window */
     @media (max-width: 600px) {
       .nav-links {
@@ -462,6 +495,15 @@
         <h2>Card Title 7</h2>
         <p>Just a tiny bit of text here.</p><a href="#" target="_blank">Download</a>
       </div>
+    </div>
+    <div class="social-container">
+      <div class="social-header">
+        <h1>Find me on the Internet</h1>
+      </div>
+      <div class="social-item"><img src="a_bridge.jpg" alt="Social Media 1"></div>
+      <div class="social-item"><img src="b_bridge.jpg" alt="Social Media 2"></div>
+      <div class="social-item"><img src="c_bridge.jpg" alt="Social Media 3"></div>
+      <div class="social-item"><img src="a_bridge.jpg" alt="Social Media 4"></div>
     </div>
   </div>
 </body>
