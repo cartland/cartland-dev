@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Christopher Cartland</title>
-  <link rel="canonical" href="https://chriscart.land/projects.html">
+  <link rel="canonical" href="https://chriscart.land/projects">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
@@ -356,7 +356,7 @@
           <a href="/">
             <h2>About</h2>
           </a>
-          <a href="projects.html">
+          <a href="projects">
             <h2>Projects</h2>
           </a>
         </div>
@@ -375,7 +375,7 @@
           <a href="/" onclick="toggleMenu()">
             <h2>About</h2>
           </a>
-          <a href="projects.html" onclick="toggleMenu()">
+          <a href="projects" onclick="toggleMenu()">
             <h2>Projects</h2>
           </a>
         </div>
@@ -386,14 +386,11 @@
       function toggleMenu() {
         const overlay = document.getElementById("overlay");
         const headerContent = document.querySelectorAll(".header-content");
-
         overlay.classList.toggle("show");
-
         const menuButton = document.querySelectorAll(".menu-button-container");
         menuButton.forEach(element => {
           element.classList.toggle("menu-mode");
         });
-
         if (overlay.classList.contains("show")) {
           headerContent.forEach(element => {
             element.style.color = "var(--color-overlay)";
@@ -407,6 +404,7 @@
         }
       }
 
+      // Close the menu when clicking on the overlay
       window.addEventListener('click', function (event) {
         var overlay = document.getElementById("overlay");
         if (event.target == overlay) {
@@ -414,28 +412,22 @@
         }
       });
 
-      function underlineActiveLink() {
-        if (window.location.pathname.endsWith('index.html') && window.location.protocol === 'https:') {
-          window.history.replaceState({}, '', '/');
-        }
-
+      function markCurrentNavLinkAsActive() {
         const pathname = window.location.pathname.split('/');
         const windowPathAfterSlash = pathname[pathname.length - 1];
-        console.log(windowPathAfterSlash);
         const navLinks = document.querySelectorAll('.nav-links a');
-
         navLinks.forEach(link => {
-          const linkPath = `${link.getAttribute('href')}`;
-          const matchPath = (windowPathAfterSlash === linkPath);
-          const matchAbout = (windowPathAfterSlash === '' && linkPath === '/');
-          if (matchPath || matchAbout) {
+          const linkHref = `${link.getAttribute('href')}`;
+          const matchPath = (windowPathAfterSlash === linkHref);
+          const matchRoot = (windowPathAfterSlash === '' && linkHref === '/');
+          if (matchPath || matchRoot) {
             link.classList.add('active');
           } else {
             link.classList.remove('active');
           }
         });
       }
-      window.addEventListener('load', underlineActiveLink);
+      window.addEventListener('load', markCurrentNavLinkAsActive);
     </script>
     <script>
       function adjustHeroImgHeight() {

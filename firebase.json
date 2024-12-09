@@ -5,9 +5,6 @@
   },
   "hosting": {
     "public": "public",
-    "include": [
-      ".well-known/**"
-    ],
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -15,10 +12,15 @@
     ],
     "rewrites": [
       {
+        "source": "/projects",
+        "destination": "/projects.html"
+      },
+      {
         "source": "/",
         "destination": "/index.html"
       }
-    ]
+    ],
+    "cleanUrls": true
   },
   "emulators": {
     "functions": {
