@@ -352,9 +352,9 @@
   <div class="container">
     <div class="header">
       <div class="header-content">
-        <h1><a href="about.html">Christopher Cartland</a></h1>
+        <h1><a href="/">Christopher Cartland</a></h1>
         <div class="nav-links">
-          <a href="about.html">
+          <a href="/">
             <h2>About</h2>
           </a>
           <a href="projects.html">
@@ -373,7 +373,7 @@
     <div class="overlay" id="overlay" onclick="toggleMenu()">
       <div class="overlay-content">
         <div class="nav-links">
-          <a href="about.html" onclick="toggleMenu()">
+          <a href="/" onclick="toggleMenu()">
             <h2>About</h2>
           </a>
           <a href="projects.html" onclick="toggleMenu()">
@@ -416,7 +416,7 @@
       });
 
       function underlineActiveLink() {
-        if (window.location.pathname.endsWith('about.html') && window.location.protocol === 'https:') {
+        if (window.location.pathname.endsWith('index.html') && window.location.protocol === 'https:') {
           window.history.replaceState({}, '', '/');
         }
 
@@ -428,7 +428,7 @@
         navLinks.forEach(link => {
           const linkPath = `${link.getAttribute('href')}`;
           const matchPath = (windowPathAfterSlash === linkPath);
-          const matchAbout = (windowPathAfterSlash === '' && linkPath === 'about.html');
+          const matchAbout = (windowPathAfterSlash === '' && linkPath === '/');
           if (matchPath || matchAbout) {
             link.classList.add('active');
           } else {
