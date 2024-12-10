@@ -405,6 +405,10 @@
         </div>
       </div>
     </main>
+
+    <footer>
+      <p>© 2024 Christopher Cartland</p>
+    </footer>
   </div>
 
   <script>
@@ -463,8 +467,10 @@
         const matchRoot = (windowPathAfterSlash === '' && linkHref === '/');
         if (matchPath || matchRoot) {
           link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
         } else {
           link.classList.remove('active');
+          link.removeAttribute('aria-current');
         }
       });
     }
