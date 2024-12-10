@@ -2,6 +2,8 @@
 
 A minimalist, responsive personal website built with HTML, CSS, and vanilla JavaScript, deployed on Firebase Hosting.
 
+**Live site:** [chriscart.land](https://chriscart.land)
+
 ## Features
 
 - Responsive design that works on all devices
