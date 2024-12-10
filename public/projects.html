@@ -309,53 +309,6 @@
       </nav>
     </div>
 
-    <script>
-      function toggleMenu() {
-        const menuAwareElements = document.querySelectorAll(".menu-aware");
-        menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
-      }
-
-      // Close the menu when clicking on the overlay
-      window.addEventListener('click', function (event) {
-        var overlay = document.getElementById("overlay");
-        if (event.target == overlay) {
-          overlay.style.display = "none";
-        }
-      });
-
-      function markCurrentNavLinkAsActive() {
-        const pathname = window.location.pathname.split('/');
-        const windowPathAfterSlash = pathname[pathname.length - 1];
-        const navLinks = document.querySelectorAll('.nav-links a');
-        navLinks.forEach(link => {
-          const linkHref = `${link.getAttribute('href')}`;
-          const matchPath = (windowPathAfterSlash === linkHref);
-          const matchRoot = (windowPathAfterSlash === '' && linkHref === '/');
-          if (matchPath || matchRoot) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
-      }
-      window.addEventListener('load', markCurrentNavLinkAsActive);
-    </script>
-    <script>
-      function adjustHeroImgHeight() {
-        const textDiv = document.getElementById('hero-text');
-        const imageDiv = document.getElementById('hero-img');
-        if (!textDiv || !imageDiv) {
-          return;
-        }
-        if (window.innerWidth >= 600) {
-          imageDiv.style.height = textDiv.offsetHeight + 'px';
-        } else {
-          imageDiv.style.height = 'auto';
-        }
-      }
-      window.addEventListener('load', adjustHeroImgHeight);
-      window.addEventListener('resize', adjustHeroImgHeight);
-    </script>
     <div class="project-container">
       <div class="section-header">
         <h1 class="half">Projects</h1>
@@ -397,6 +350,38 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function toggleMenu() {
+      const menuAwareElements = document.querySelectorAll(".menu-aware");
+      menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
+    }
+
+    // Close the menu when clicking on the overlay
+    window.addEventListener('click', function (event) {
+      var overlay = document.getElementById("overlay");
+      if (event.target == overlay) {
+        overlay.style.display = "none";
+      }
+    });
+
+    function markCurrentNavLinkAsActive() {
+      const pathname = window.location.pathname.split('/');
+      const windowPathAfterSlash = pathname[pathname.length - 1];
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        const linkHref = `${link.getAttribute('href')}`;
+        const matchPath = (windowPathAfterSlash === linkHref);
+        const matchRoot = (windowPathAfterSlash === '' && linkHref === '/');
+        if (matchPath || matchRoot) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+    window.addEventListener('load', markCurrentNavLinkAsActive);
+  </script>
 </body>
 
 </html>
