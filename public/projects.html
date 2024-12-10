@@ -323,7 +323,7 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="container">
     <header>
-      <div class="header-container">
+      <div id="header-container" class="header-container">
         <div class="header-content menu-aware">
           <h1><a href="/" aria-label="Home - Christopher Cartland">Christopher Cartland</a></h1>
           <nav class="nav-links" aria-label="Main navigation">
@@ -343,7 +343,7 @@
           </div>
         </div>
       </div>
-      <div class="overlay menu-aware" id="overlay" onclick="toggleMenu()">
+      <div id="overlay" class="overlay menu-aware" onclick="toggleMenu()">
         <nav class="overlay-content" aria-label="Mobile navigation">
           <div class="nav-links">
             <a href="/" onclick="toggleMenu()" aria-label="About - Learn more about Christopher Cartland">
@@ -414,6 +414,11 @@
       const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true';
       menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
       menuIcon.setAttribute('aria-expanded', !isExpanded);
+      if (!isExpanded) {
+        document.addEventListener('keydown', trapFocus);
+      } else {
+        document.removeEventListener('keydown', trapFocus);
+      }
     }
 
     // Close the menu when clicking on the overlay
@@ -422,6 +427,31 @@
         toggleMenu();
       }
     });
+
+    function trapFocus(e) {
+      const overlay = document.getElementById("overlay");
+      const overlayElements = overlay.querySelectorAll(
+        'a[href], button, [tabindex]:not([tabindex="-1"])'
+      );
+      const menuIcon = document.querySelector('.menu-icon');
+      const focusableElements = [menuIcon, ...overlayElements];
+      const firstFocusable = focusableElements[0];
+      const lastFocusable = focusableElements[focusableElements.length - 1];
+
+      if (e.key === 'Tab' && e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else if (e.key === 'Tab') {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      } else if (e.key === 'Escape') {
+        toggleMenu();
+      }
+    }
 
     function markCurrentNavLinkAsActive() {
       const pathname = window.location.pathname.split('/');
