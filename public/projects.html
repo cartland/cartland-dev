@@ -108,7 +108,7 @@
       transition: opacity 0.3s ease;
     }
 
-    .overlay.show {
+    .overlay.menu-active-mode {
       display: block;
       opacity: 1;
       transition: opacity 0.3s ease, display 0.3s ease;
@@ -161,12 +161,12 @@
       top: calc(50% + (var(--menu-icon-size) * 4 / 40));
     }
 
-    .menu-button-container.menu-mode .hamburger-top {
+    .menu-button-container.menu-active-mode .hamburger-top {
       transform: rotate(135deg);
       top: 50%;
     }
 
-    .menu-button-container.menu-mode .hamburger-bottom {
+    .menu-button-container.menu-active-mode .hamburger-bottom {
       transform: rotate(-135deg);
       top: 50%;
     }
@@ -296,6 +296,14 @@
       border-radius: 16px;
     }
 
+    .header-content.menu-active-mode {
+      color: var(--color-overlay);
+    }
+
+    .header-content.menu-active-mode .line {
+      background-color: var(--color-overlay);
+    }
+
     /* Small Window */
     @media (max-width: 600px) {
       .nav-links {
@@ -350,7 +358,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <div class="header-content">
+      <div class="header-content menu-aware">
         <h1><a href="/">Christopher Cartland</a></h1>
         <div class="nav-links">
           <a href="/">
@@ -361,7 +369,7 @@
           </a>
         </div>
         <div class="menu-icon" onclick="toggleMenu()">
-          <div class="menu-button-container">
+          <div class="menu-button-container menu-aware">
             <div class="line hamburger-top"></div>
             <div class="line hamburger-bottom"></div>
           </div>
@@ -369,7 +377,7 @@
       </div>
     </div>
 
-    <div class="overlay" id="overlay" onclick="toggleMenu()">
+    <div class="overlay menu-aware" id="overlay" onclick="toggleMenu()">
       <div class="overlay-content">
         <div class="nav-links">
           <a href="/" onclick="toggleMenu()">
@@ -384,24 +392,8 @@
 
     <script>
       function toggleMenu() {
-        const overlay = document.getElementById("overlay");
-        const headerContent = document.querySelectorAll(".header-content");
-        overlay.classList.toggle("show");
-        const menuButton = document.querySelectorAll(".menu-button-container");
-        menuButton.forEach(element => {
-          element.classList.toggle("menu-mode");
-        });
-        if (overlay.classList.contains("show")) {
-          headerContent.forEach(element => {
-            element.style.color = "var(--color-overlay)";
-            element.querySelectorAll('.line').forEach(line => line.style.backgroundColor = "var(--color-overlay)");
-          });
-        } else {
-          headerContent.forEach(element => {
-            element.style.color = "";
-            element.querySelectorAll('.line').forEach(line => line.style.backgroundColor = "");
-          });
-        }
+        const menuAwareElements = document.querySelectorAll(".menu-aware");
+        menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
       }
 
       // Close the menu when clicking on the overlay
