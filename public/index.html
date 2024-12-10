@@ -8,6 +8,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
+    /* Root Variables */
     :root {
       --color: #ffffff;
       --color-link: #cccccc;
@@ -16,6 +17,7 @@
       --color-overlay: #000000;
     }
 
+    /* Base Styles */
     body {
       background-color: var(--background-color);
       font-family: 'Roboto', sans-serif;
@@ -34,13 +36,7 @@
       padding: 32px;
     }
 
-    .header {
-      width: 100%;
-      padding-bottom: 32px;
-      position: relative;
-      z-index: 2;
-    }
-
+    /* Typography */
     h1 {
       font-weight: normal;
       margin-top: 8px;
@@ -52,8 +48,16 @@
       color: var(--color-link);
     }
 
+    /* Header and Navigation */
+    .header {
+      width: 100%;
+      padding-bottom: 32px;
+      position: relative;
+      z-index: 2;
+    }
+
     .header h1 {
-      margin: 0px;
+      margin: 0;
       font-size: 24px;
     }
 
@@ -90,10 +94,46 @@
       margin: 0;
     }
 
+    /* Menu and Overlay */
     .menu-icon {
       display: none;
       font-size: 24px;
       cursor: pointer;
+    }
+
+    .menu-button-container {
+      --menu-icon-size: 36px;
+      width: var(--menu-icon-size);
+      height: var(--menu-icon-size);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .line {
+      background-color: var(--color);
+      height: calc(var(--menu-icon-size) * 3 / 40);
+      width: 100%;
+      position: absolute;
+      left: 0;
+      transition: transform 0.3s ease, top 0.3s ease;
+    }
+
+    .hamburger-top {
+      top: calc(50% - (var(--menu-icon-size) * 4 / 40));
+    }
+
+    .hamburger-bottom {
+      top: calc(50% + (var(--menu-icon-size) * 4 / 40));
+    }
+
+    .menu-button-container.menu-active-mode .hamburger-top {
+      transform: rotate(135deg);
+      top: 50%;
+    }
+
+    .menu-button-container.menu-active-mode .hamburger-bottom {
+      transform: rotate(-135deg);
+      top: 50%;
     }
 
     .overlay {
@@ -136,41 +176,16 @@
       color: var(--color-overlay);
     }
 
-    .menu-button-container {
-      --menu-icon-size: 36px;
-      width: var(--menu-icon-size);
-      height: var(--menu-icon-size);
-      cursor: pointer;
-      position: relative;
+    /* Menu State */
+    .header-content.menu-active-mode {
+      color: var(--color-overlay);
     }
 
-    .line {
-      background-color: var(--color);
-      height: calc(var(--menu-icon-size) * 3 / 40);
-      width: 100%;
-      position: absolute;
-      left: 0;
-      transition: transform 0.3s ease, top 0.3s ease;
+    .header-content.menu-active-mode .line {
+      background-color: var(--color-overlay);
     }
 
-    .hamburger-top {
-      top: calc(50% - (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .hamburger-bottom {
-      top: calc(50% + (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .menu-button-container.menu-active-mode .hamburger-top {
-      transform: rotate(135deg);
-      top: 50%;
-    }
-
-    .menu-button-container.menu-active-mode .hamburger-bottom {
-      transform: rotate(-135deg);
-      top: 50%;
-    }
-
+    /* Hero Section */
     .hero-container {
       width: 100%;
       display: flex;
@@ -187,6 +202,17 @@
       width: 50%;
     }
 
+    #hero-text {
+      text-align: left;
+      margin: 0;
+      min-height: 148px;
+    }
+
+    #hero-text p {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
     #hero-img {
       height: 50%;
     }
@@ -197,78 +223,7 @@
       object-fit: cover;
     }
 
-    #hero-text {
-      text-align: left;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      min-height: 148px;
-    }
-
-    #hero-text p {
-      margin-top: 0px;
-      margin-bottom: 16px;
-    }
-
-    .spacer {
-      height: 16px;
-      width: 32px;
-    }
-
-    .project-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .project-container .section-header {
-      grid-column: 1 / -1;
-      margin-top: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .project-container .section-header .half {
-      width: 50%;
-    }
-
-    .card {
-      width: 100%;
-      box-sizing: border-box;
-      flex-direction: column;
-      padding-bottom: 16px;
-    }
-
-    .card img {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 16px;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto 0px auto;
-    }
-
-    .card h2 {
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      margin-top: 0px;
-      margin-bottom: 12px;
-    }
-
-    .card a {
-      display: inline-block;
-      padding: 16px 16px;
-      text-decoration: none;
-      border: 1px solid var(--color-link);
-      border-radius: 32px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
+    /* Social Section */
     .social-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -295,15 +250,12 @@
       border-radius: 16px;
     }
 
-    .header-content.menu-active-mode {
-      color: var(--color-overlay);
+    .spacer {
+      height: 16px;
+      width: 32px;
     }
 
-    .header-content.menu-active-mode .line {
-      background-color: var(--color-overlay);
-    }
-
-    /* Small Window */
+    /* Responsive Design */
     @media (max-width: 600px) {
       .nav-links {
         display: none;
@@ -333,10 +285,6 @@
       .hero-container img {
         height: auto;
         object-fit: contain;
-      }
-
-      .project-container {
-        grid-template-columns: 1fr;
       }
 
       .social-container {
