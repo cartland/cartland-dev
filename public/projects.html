@@ -283,6 +283,17 @@
       width: 32px;
     }
 
+    /* Focus Styles */
+    a:focus-visible {
+      outline: 2px solid var(--color-link);
+      outline-offset: 2px;
+    }
+
+    .menu-icon:focus-visible {
+      outline: 2px solid var(--color-link);
+      outline-offset: 2px;
+    }
+
     /* Responsive Design */
     @media (max-width: 600px) {
       .nav-links {
@@ -304,17 +315,6 @@
       .project-container .section-header .half {
         width: 100%;
       }
-    }
-
-    /* Focus Styles */
-    a:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
-    }
-
-    .menu-icon:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
     }
   </style>
 </head>

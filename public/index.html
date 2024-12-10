@@ -277,7 +277,6 @@
 
     .social-item {
       aspect-ratio: 1;
-      overflow: hidden;
     }
 
     .social-item img {
@@ -290,6 +289,17 @@
     .spacer {
       height: 16px;
       width: 32px;
+    }
+
+    /* Focus Styles */
+    a:focus-visible {
+      outline: 2px solid var(--color-link);
+      outline-offset: 2px;
+    }
+
+    .menu-icon:focus-visible {
+      outline: 2px solid var(--color-link);
+      outline-offset: 2px;
     }
 
     /* Responsive Design */
@@ -327,17 +337,6 @@
       .social-container {
         grid-template-columns: repeat(2, 1fr);
       }
-    }
-
-    /* Focus Styles */
-    a:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
-    }
-
-    .menu-icon:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
     }
   </style>
 </head>
