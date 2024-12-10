@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Projects by Christopher Cartland - Android development, sustainable technology, and interactive art">
+  <meta name="description"
+    content="Projects by Christopher Cartland - Android development, sustainable technology, and interactive art">
   <meta name="theme-color" content="#263551">
   <title>Christopher Cartland</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,6 +35,7 @@
       color: black;
       text-decoration: none;
     }
+
     .skip-link:focus {
       left: 50%;
       transform: translateX(-50%);
@@ -55,7 +57,11 @@
       max-width: 1200px;
       margin: 0 auto;
       justify-content: center;
-      padding: 32px;
+      padding-inline: 32px;
+    }
+
+    #main-content {
+      width: 100%;
     }
 
     /* Typography */
@@ -70,26 +76,32 @@
       color: var(--color-link);
     }
 
-    /* Header and Navigation */
-    .header {
+    header {
       width: 100%;
+    }
+
+    .header-container {
+      width: 100%;
+      padding-top: 32px;
       padding-bottom: 32px;
       position: relative;
       z-index: 2;
     }
 
-    .header h1 {
+    .header-container h1 {
       margin: 0;
       font-size: 24px;
     }
 
-    .header h1 a {
+    .header-container h1 a {
       text-decoration: none;
       color: inherit;
+      padding-right: 16px;
     }
 
     .header-content {
       width: 100%;
+      height: 36px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -184,18 +196,20 @@
       height: 100%;
       text-align: center;
       background-color: white;
-      padding-top: 88px;
+      padding-top: 100px;
+      /* 32px + 36px + 32px */
       z-index: 1;
     }
 
     .overlay .nav-links {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 0px;
     }
 
     .overlay .nav-links a {
       color: var(--color-overlay);
+      padding: 16px;
     }
 
     /* Menu State */
@@ -294,13 +308,13 @@
 
     /* Focus Styles */
     a:focus-visible {
-        outline: 2px solid var(--color-link);
-        outline-offset: 2px;
+      outline: 2px solid var(--color-link);
+      outline-offset: 2px;
     }
 
     .menu-icon:focus-visible {
-        outline: 2px solid var(--color-link);
-        outline-offset: 2px;
+      outline: 2px solid var(--color-link);
+      outline-offset: 2px;
     }
   </style>
 </head>
@@ -308,97 +322,89 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="container">
-    <div class="header">
-      <header>
-      <div class="header-content menu-aware">
-        <h1><a href="/" aria-label="Home - Christopher Cartland">Christopher Cartland</a></h1>
-        <nav class="nav-links" aria-label="Main navigation">
-          <a href="/" aria-label="About - Learn more about Christopher Cartland">
-            <h2>About</h2>
-          </a>
-          <a href="projects" aria-label="Projects - View Christopher Cartland's work">
-            <h2>Projects</h2>
-          </a>
-        </nav>
-        <div class="menu-icon"
-             onclick="toggleMenu()"
-             role="button"
-             tabindex="0"
-             aria-label="Toggle navigation menu"
-             aria-expanded="false">
-          <div class="menu-button-container menu-aware">
-            <div class="line hamburger-top"></div>
-            <div class="line hamburger-bottom"></div>
+    <header>
+      <div class="header-container">
+        <div class="header-content menu-aware">
+          <h1><a href="/" aria-label="Home - Christopher Cartland">Christopher Cartland</a></h1>
+          <nav class="nav-links" aria-label="Main navigation">
+            <a href="/" aria-label="About - Learn more about Christopher Cartland">
+              <h2>About</h2>
+            </a>
+            <a href="projects" aria-label="Projects - View Christopher Cartland's work">
+              <h2>Projects</h2>
+            </a>
+          </nav>
+          <div class="menu-icon" onclick="toggleMenu()" role="button" tabindex="0" aria-label="Toggle navigation menu"
+            aria-expanded="false">
+            <div class="menu-button-container menu-aware">
+              <div class="line hamburger-top"></div>
+              <div class="line hamburger-bottom"></div>
+            </div>
           </div>
         </div>
       </div>
-      </header>
-    </div>
+      <div class="overlay menu-aware" id="overlay" onclick="toggleMenu()">
+        <nav class="overlay-content" aria-label="Mobile navigation">
+          <div class="nav-links">
+            <a href="/" onclick="toggleMenu()" aria-label="About - Learn more about Christopher Cartland">
+              <h2>About</h2>
+            </a>
+            <a href="projects" onclick="toggleMenu()" aria-label="Projects - View Christopher Cartland's work">
+              <h2>Projects</h2>
+            </a>
+          </div>
+        </nav>
+      </div>
+    </header>
 
-    <div class="overlay menu-aware" id="overlay" onclick="toggleMenu()">
-      <nav class="overlay-content" aria-label="Mobile navigation">
-        <div class="nav-links">
-          <a href="/" onclick="toggleMenu()" aria-label="About - Learn more about Christopher Cartland">
-            <h2>About</h2>
-          </a>
-          <a href="projects" onclick="toggleMenu()" aria-label="Projects - View Christopher Cartland's work">
-            <h2>Projects</h2>
-          </a>
+    <main id="main-content">
+      <div class="project-container">
+        <div class="section-header">
+          <h1 class="half">Projects</h1>
+          <div class="spacer"></div>
+          <p class="half">Here are some of my favorite projects, ranging from software development to sustainable
+            technology and
+            interactive art. I'm passionate about building things that are both useful and innovative, and I enjoy
+            exploring new technologies that push the boundary of my creative skills. </p>
         </div>
-      </nav>
-    </div>
-
-    <div id="main-content"></div>
-    <div class="project-container">
-      <div class="section-header">
-        <h1 class="half">Projects</h1>
-        <div class="spacer"></div>
-        <p class="half">Here are some of my favorite projects, ranging from software development to sustainable
-          technology and
-          interactive art. I'm passionate about building things that are both useful and innovative, and I enjoy
-          exploring new technologies that push the boundary of my creative skills. </p>
+        <div class="card"><img src="AndroidBuildTime.jpg" alt="Android Build Time Logo" loading="lazy">
+          <h2>Android Build Time</h2>
+          <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. I interview
+            developers about apps and technologies relevant to professional Android developers.
+          </p><a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer"
+            aria-label="Watch Android Build Time podcast">Podcast</a>
+        </div>
+        <div class="card"><img src="WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset" loading="lazy">
+          <h2>World Solar Challenge</h2>
+          <p>As team lead for CalSol, the UC Berkeley Solar Vehicle Team, I led the development of a solar-powered car
+            for
+            the 2011 Veolia World Solar Challenge. This involved managing mechanical, electrical, and business teams to
+            secure funding and build a street-legal vehicle from scratch, which we then raced across the continent of
+            Australia.</p><a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/"
+            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about World Solar Challenge">Blog
+            Post</a>
+        </div>
+        <div class="card"><img src="SmartGarageDoor.png" alt="Smart Garage Door Screenshot" loading="lazy">
+          <h2>Smart Garage Door</h2>
+          <p>This project involved designing and building a smart garage door system with internet-connected
+            microcontrollers and a companion Android app. The embedded software manages sensors and actuators to control
+            the garage door, while the Android app provides a user interface with features like push notifications for
+            door status and remote control.
+          </p><a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer"
+            aria-label="View Smart Garage Door project on GitHub">GitHub</a>
+        </div>
+        <div class="card"><img src="MaraudersMap.gif" alt="Marauder's Map Screenshot" loading="lazy">
+          <h2>Marauder's Map</h2>
+          <p>I built an interactive Marauder's Map for a Halloween party. The animations are drawn with an HTML5 Canvas
+            runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit
+            of magic with NFC magic wands that allowed the wizard to wave their wand and see their footsteps appear on
+            the
+            map in their real location.</p><a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda"
+            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about Marauder's Map project">Blog
+            Post</a>
+        </div>
       </div>
-      <div class="card"><img src="AndroidBuildTime.jpg" alt="Android Build Time Logo" loading="lazy">
-        <h2>Android Build Time</h2>
-        <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. I interview
-          developers about apps and technologies relevant to professional Android developers.
-        </p><a href="https://goo.gle/AndroidBuildTime"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Watch Android Build Time podcast">Podcast</a>
-      </div>
-      <div class="card"><img src="WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset" loading="lazy">
-        <h2>World Solar Challenge</h2>
-        <p>As team lead for CalSol, the UC Berkeley Solar Vehicle Team, I led the development of a solar-powered car for
-          the 2011 Veolia World Solar Challenge. This involved managing mechanical, electrical, and business teams to
-          secure funding and build a street-legal vehicle from scratch, which we then raced across the continent of
-          Australia.</p><a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Read blog post about World Solar Challenge">Blog Post</a>
-      </div>
-      <div class="card"><img src="SmartGarageDoor.png" alt="Smart Garage Door Screenshot" loading="lazy">
-        <h2>Smart Garage Door</h2>
-        <p>This project involved designing and building a smart garage door system with internet-connected
-          microcontrollers and a companion Android app. The embedded software manages sensors and actuators to control
-          the garage door, while the Android app provides a user interface with features like push notifications for
-          door status and remote control.
-        </p><a href="https://github.com/cartland/SmartGarageDoor"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="View Smart Garage Door project on GitHub">GitHub</a>
-      </div>
-      <div class="card"><img src="MaraudersMap.gif" alt="Marauder's Map Screenshot" loading="lazy">
-        <h2>Marauder's Map</h2>
-        <p>I built an interactive Marauder's Map for a Halloween party. The animations are drawn with an HTML5 Canvas
-          runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit
-          of magic with NFC magic wands that allowed the wizard to wave their wand and see their footsteps appear on the
-          map in their real location.</p><a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Read blog post about Marauder's Map project">Blog Post</a>
-      </div>
-    </div>
+    </main>
   </div>
 
   <script>
@@ -412,9 +418,8 @@
 
     // Close the menu when clicking on the overlay
     window.addEventListener('click', function (event) {
-      var overlay = document.getElementById("overlay");
-      if (event.target == overlay) {
-        overlay.style.display = "none";
+      if (event.target.matches('#overlay')) {
+        toggleMenu();
       }
     });
 
@@ -436,7 +441,7 @@
     window.addEventListener('load', markCurrentNavLinkAsActive);
 
     // Add keyboard support for menu
-    document.querySelector('.menu-icon').addEventListener('keypress', function(e) {
+    document.querySelector('.menu-icon').addEventListener('keypress', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         toggleMenu();
       }
