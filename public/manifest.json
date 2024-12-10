@@ -1,8 +1,16 @@
 {
-  "name": "Christopher Cartland - Maker", 
-  "short_name": "Chris Cartland - Maker",  
-  "icons": [], 
-  "start_url": "/hero.html", 
-  "display": "browser", 
-  "background_color": "#263551" 
+  "name": "Christopher Cartland - Software Engineer and Tech Maker",
+  "short_name": "Chris Cartland",
+  "description": "Software Engineer specializing in Android, Mobile, Embedded, and Serverless technologies",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#263551",
+  "theme_color": "#263551",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
 }
