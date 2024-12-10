@@ -301,14 +301,14 @@
     <div class="header">
       <div class="header-content menu-aware">
         <h1><a href="/">Christopher Cartland</a></h1>
-        <div class="nav-links">
-          <a href="/">
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="/" aria-label="About">
             <h2>About</h2>
           </a>
-          <a href="projects.html">
+          <a href="projects.html" aria-label="Projects">
             <h2>Projects</h2>
           </a>
-        </div>
+        </nav>
         <div class="menu-icon" onclick="toggleMenu()">
           <div class="menu-button-container menu-aware">
             <div class="line hamburger-top"></div>
@@ -319,16 +319,16 @@
     </div>
 
     <div class="overlay menu-aware" id="overlay" onclick="toggleMenu()">
-      <div class="overlay-content">
+      <nav class="overlay-content" aria-label="Mobile navigation">
         <div class="nav-links">
-          <a href="/" onclick="toggleMenu()">
+          <a href="/" onclick="toggleMenu()" aria-label="About">
             <h2>About</h2>
           </a>
-          <a href="projects.html" onclick="toggleMenu()">
+          <a href="projects.html" onclick="toggleMenu()" aria-label="Projects">
             <h2>Projects</h2>
           </a>
         </div>
-      </div>
+      </nav>
     </div>
 
     <script>
@@ -385,7 +385,7 @@
       </div>
       <div class="spacer"></div>
       <div id="hero-img" class="hero">
-        <img src="GoldenGateBridge.jpg" alt="Golden Gate Bridge at sunset">
+        <img src="GoldenGateBridge.jpg" alt="Golden Gate Bridge at sunset" loading="lazy">
       </div>
     </div>
     <script>
@@ -410,22 +410,22 @@
       </div>
       <div class="social-item">
         <a href="https://www.linkedin.com/in/cartland" target="_blank">
-          <img src="LinkedIn.png" alt="LinkedIn">
+          <img src="LinkedIn.png" alt="LinkedIn" loading="lazy">
         </a>
       </div>
       <div class="social-item">
         <a href="https://github.com/cartland" target="_blank">
-          <img src="GitHub.png" alt="GitHub">
+          <img src="GitHub.png" alt="GitHub" loading="lazy">
         </a>
       </div>
       <div class="social-item">
         <a href="https://twitter.com/LandOfCart" target="_blank">
-          <img src="Twitter.png" alt="Twitter">
+          <img src="Twitter.png" alt="Twitter" loading="lazy">
         </a>
       </div>
       <div class="social-item">
         <a href="https://www.threads.net/@LandOfCart" target="_blank">
-          <img src="Threads.png" alt="Threads">
+          <img src="Threads.png" alt="Threads" loading="lazy">
         </a>
       </div>
     </div>

@@ -279,14 +279,14 @@
     <div class="header">
       <div class="header-content menu-aware">
         <h1><a href="/">Christopher Cartland</a></h1>
-        <div class="nav-links">
-          <a href="/">
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="/" aria-label="About">
             <h2>About</h2>
           </a>
-          <a href="projects">
+          <a href="projects" aria-label="Projects">
             <h2>Projects</h2>
           </a>
-        </div>
+        </nav>
         <div class="menu-icon" onclick="toggleMenu()">
           <div class="menu-button-container menu-aware">
             <div class="line hamburger-top"></div>
@@ -297,16 +297,16 @@
     </div>
 
     <div class="overlay menu-aware" id="overlay" onclick="toggleMenu()">
-      <div class="overlay-content">
+      <nav class="overlay-content" aria-label="Mobile navigation">
         <div class="nav-links">
-          <a href="/" onclick="toggleMenu()">
+          <a href="/" onclick="toggleMenu()" aria-label="About">
             <h2>About</h2>
           </a>
-          <a href="projects" onclick="toggleMenu()">
+          <a href="projects" onclick="toggleMenu()" aria-label="Projects">
             <h2>Projects</h2>
           </a>
         </div>
-      </div>
+      </nav>
     </div>
 
     <script>
@@ -365,13 +365,13 @@
           interactive art. I'm passionate about building things that are both useful and innovative, and I enjoy
           exploring new technologies that push the boundary of my creative skills. </p>
       </div>
-      <div class="card"><img src="AndroidBuildTime.jpg" alt="Android Build Time Logo">
+      <div class="card"><img src="AndroidBuildTime.jpg" alt="Android Build Time Logo" loading="lazy">
         <h2>Android Build Time</h2>
         <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. I interview
           developers about apps and technologies relevant to professional Android developers.
         </p><a href="https://goo.gle/AndroidBuildTime" target="_blank">Podcast</a>
       </div>
-      <div class="card"><img src="WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset">
+      <div class="card"><img src="WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset" loading="lazy">
         <h2>World Solar Challenge</h2>
         <p>As team lead for CalSol, the UC Berkeley Solar Vehicle Team, I led the development of a solar-powered car for
           the 2011 Veolia World Solar Challenge. This involved managing mechanical, electrical, and business teams to
@@ -379,7 +379,7 @@
           Australia.</p><a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/"
           target="_blank">Blog Post</a>
       </div>
-      <div class="card"><img src="SmartGarageDoor.png" alt="Smart Garage Door Screenshot">
+      <div class="card"><img src="SmartGarageDoor.png" alt="Smart Garage Door Screenshot" loading="lazy">
         <h2>Smart Garage Door</h2>
         <p>This project involved designing and building a smart garage door system with internet-connected
           microcontrollers and a companion Android app. The embedded software manages sensors and actuators to control
@@ -387,7 +387,7 @@
           door status and remote control.
         </p><a href="https://github.com/cartland/SmartGarageDoor" target="_blank">GitHub</a>
       </div>
-      <div class="card"><img src="MaraudersMap.gif" alt="Marauder's Map Screenshot">
+      <div class="card"><img src="MaraudersMap.gif" alt="Marauder's Map Screenshot" loading="lazy">
         <h2>Marauder’s Map</h2>
         <p>I built an interactive Marauder’s Map for a Halloween party. The animations are drawn with an HTML5 Canvas
           runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit
