@@ -435,6 +435,13 @@
     }
     window.addEventListener('load', adjustHeroImgHeight);
     window.addEventListener('resize', adjustHeroImgHeight);
+
+    // Add keyboard support for menu
+    document.querySelector('.menu-icon').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        toggleMenu();
+      }
+    });
   </script>
 </body>
 

@@ -387,6 +387,13 @@
       });
     }
     window.addEventListener('load', markCurrentNavLinkAsActive);
+
+    // Add keyboard support for menu
+    document.querySelector('.menu-icon').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        toggleMenu();
+      }
+    });
   </script>
 </body>
 
