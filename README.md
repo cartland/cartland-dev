@@ -8,7 +8,6 @@ A minimalist, responsive personal website built with HTML, CSS, and vanilla Java
 
 - Responsive design that works on all devices
 - Accessible navigation with keyboard support
-- Dark theme optimized for readability
 - Progressive Web App (PWA) support
 - Fast loading with optimized images
 - Clean URLs using Firebase Hosting rewrites
@@ -17,14 +16,16 @@ A minimalist, responsive personal website built with HTML, CSS, and vanilla Java
 
     .
     ├── public/               # Static files served by Firebase
-    │   ├── index.html       # Home page
-    │   ├── projects.html    # Projects page
-    │   ├── 404.html        # Custom 404 page
-    │   ├── manifest.json    # PWA manifest
-    │   └── images/         # Image assets
-    ├── .github/             # GitHub Actions workflows
-    ├── firebase.json        # Firebase configuration
-    └── .firebaserc         # Firebase project settings
+    │   ├── index.html        # Home page
+    │   ├── projects.html     # Projects page
+    │   ├── 404.html          # Custom 404 page
+    │   ├── manifest.json     # PWA manifest
+    │   ├── *.jpg             # Image assets
+    │   └── favicon.ico       # Site favicon
+    ├── .github/              # GitHub Actions workflows
+    │   └── workflows/        # Deployment configurations
+    ├── firebase.json         # Firebase configuration
+    └── .firebaserc           # Firebase project settings
 
 ## Development
 
@@ -61,17 +62,12 @@ firebase deploy
 
 Two workflows are configured for automated deployments:
 
-1. **Pull Request Workflow** (.github/workflows/firebase-hosting-pull-request.yml)
-   - Triggers on pull requests
-   - Creates preview deployments
-   - Adds preview URL to pull request comments
-
-2. **Merge Workflow** (.github/workflows/firebase-hosting-merge.yml)
+**Merge Workflow** (.github/workflows/firebase-hosting-merge.yml)
    - Triggers on merges to main branch
    - Deploys to production
    - Updates the live site at chriscart.land
 
-Both workflows require the following secrets:
+Workflows require the following GitHub Actions secrets:
 - `FIREBASE_SERVICE_ACCOUNT_CARTLAND_DEV`
 - `GITHUB_TOKEN`
 
