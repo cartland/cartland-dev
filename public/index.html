@@ -352,6 +352,33 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
+
+    .image-gradient-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border-radius: 32px;
+      overflow: hidden;
+    }
+
+    .image-gradient-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+      z-index: 1;
+    }
+
+    .image-gradient-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: relative;
+    }
   </style>
 </head>
 
@@ -427,25 +454,33 @@
         <div class="social-item">
           <a href="https://www.linkedin.com/in/cartland" target="_blank" rel="noopener noreferrer"
             aria-label="Visit Christopher Cartland's LinkedIn profile">
-            <img src="/i/LinkedIn.jpg" alt="LinkedIn" loading="lazy">
+            <div class="image-gradient-container">
+              <img src="/i/LinkedIn.jpg" alt="LinkedIn" loading="lazy">
+            </div>
           </a>
         </div>
         <div class="social-item">
           <a href="https://github.com/cartland" target="_blank" rel="noopener noreferrer"
             aria-label="Visit Christopher Cartland's GitHub profile">
-            <img src="/i/GitHub.jpg" alt="GitHub" loading="lazy">
+            <div class="image-gradient-container">
+              <img src="/i/GitHub.jpg" alt="GitHub" loading="lazy">
+            </div>
           </a>
         </div>
         <div class="social-item">
           <a href="https://twitter.com/LandOfCart" target="_blank" rel="noopener noreferrer"
             aria-label="Visit Christopher Cartland's Twitter profile">
-            <img src="/i/Twitter.jpg" alt="Twitter" loading="lazy">
+            <div class="image-gradient-container">
+              <img src="/i/Twitter.jpg" alt="Twitter" loading="lazy">
+            </div>
           </a>
         </div>
         <div class="social-item">
           <a href="https://www.threads.net/@LandOfCart" target="_blank" rel="noopener noreferrer"
             aria-label="Visit Christopher Cartland's Threads profile">
-            <img src="/i/Threads.jpg" alt="Threads" loading="lazy">
+            <div class="image-gradient-container">
+              <img src="/i/Threads.jpg" alt="Threads" loading="lazy">
+            </div>
           </a>
         </div>
       </div>
