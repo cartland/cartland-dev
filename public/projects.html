@@ -25,6 +25,7 @@
       --color: #ffffff;
       --color-link: #cccccc;
       --background-color: #263551;
+      --background-color-accent: #3d5685;
       --background-color-overlay: rgba(0, 0, 0, 0.5);
       --color-overlay: #000000;
     }
@@ -49,7 +50,7 @@
     body {
       background-color: var(--background-color);
       font-family: 'Roboto', sans-serif;
-      font-size: 18px;
+      font-size: 14px;
       color: var(--color);
       margin: 0;
     }
@@ -62,6 +63,7 @@
       margin: 0 auto;
       justify-content: center;
       padding-inline: 32px;
+      background-image: repeating-linear-gradient(to bottom, var(--background-color-accent) 0px, var(--background-color) 400px, var(--background-color-accent) 800px);
     }
 
     #main-content {
@@ -250,7 +252,7 @@
       width: 100%;
       box-sizing: border-box;
       flex-direction: column;
-      padding-bottom: 16px;
+      margin-bottom: 32px;
     }
 
     .card img {
@@ -478,6 +480,8 @@
       const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true';
       menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
       menuIcon.setAttribute('aria-expanded', !isExpanded);
+      document.body.style.overflow = isExpanded ? '' : 'hidden';
+      overlay.style.pointerEvents = isExpanded ? 'none' : 'all';
       if (!isExpanded) {
         document.addEventListener('keydown', trapFocus);
       } else {
