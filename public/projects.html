@@ -50,20 +50,20 @@
     body {
       background-color: var(--background-color);
       font-family: 'Roboto', sans-serif;
-      font-size: 1.2em;
+      font-size: 1.1em;
       color: var(--color);
       margin: 0;
+      background-image: repeating-linear-gradient(to bottom, var(--background-color-accent) 0px, var(--background-color) 400px, var(--background-color-accent) 800px);
     }
 
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto;
       justify-content: center;
       padding-inline: 32px;
-      background-image: repeating-linear-gradient(to bottom, var(--background-color-accent) 0px, var(--background-color) 400px, var(--background-color-accent) 800px);
     }
 
     #main-content {
@@ -326,7 +326,7 @@
     }
 
     footer {
-      width: 100%; 
+      width: 100%;
     }
 
     footer p {
@@ -400,10 +400,9 @@
         <div class="section-header">
           <h1 class="half">Projects</h1>
           <div class="spacer"></div>
-          <p class="half">Here are some of my favorite projects, ranging from software development to sustainable
-            technology and
-            interactive art. I'm passionate about building things that are both useful and innovative, and I enjoy
-            exploring new technologies that push the boundary of my creative skills. </p>
+          <p class="half">Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
+            COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive art.
+            These projects showcase my expertise in developer platforms, embedded systems, and creative technology solutions.</p>
         </div>
         <div class="card">
           <a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer">
@@ -412,8 +411,8 @@
             </div>
           </a>
           <h2>Android Build Time</h2>
-          <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. Through in-depth 
-            technical conversations with Android developers, I interview developers about apps and technologies relevant to 
+          <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. Through in-depth
+            technical conversations with Android developers, I interview developers about apps and technologies relevant to
             professional Android developers.
           </p>
           <a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer"
@@ -426,10 +425,10 @@
             </div>
           </a>
           <h2>Google TV App Ecosystem</h2>
-          <p>I bootstrapped the Google TV app ecosystem by working with top streaming services to build and launch their apps. 
-            The platform's success led Wirecutter to choose Google TV devices as both their top and budget picks for streaming 
+          <p>I bootstrapped the Google TV app ecosystem by working with top streaming services to build and launch their apps.
+            The platform's success led Wirecutter to choose Google TV devices as both their top and budget picks for streaming
             devices multiple years in a row, citing the seamless app integration with the system.</p>
-          <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank" 
+          <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank"
             rel="noopener noreferrer" aria-label="Read Wirecutter's review of Google TV" class="project-link">Wirecutter</a>
         </div>
         <div class="card">
@@ -439,8 +438,8 @@
             </div>
           </a>
           <h2>Android Auto Apps</h2>
-          <p>I led Developer Relations for Android Auto from its announcement in 2014, making music and audio app integrations 
-            safer and more delightful with Android Auto and Android Automotive OS. Through partnerships with automotive and app 
+          <p>I led Developer Relations for Android Auto from its announcement in 2014, making music and audio app integrations
+            safer and more delightful with Android Auto and Android Automotive OS. Through partnerships with automotive and app
             developers, we've grown the platform to be compatible with over 200 million cars on the road as of 2024.</p>
           <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html" target="_blank"
             rel="noopener noreferrer" aria-label="Read blog post about Android Auto launch" class="project-link">Blog Post</a>
@@ -452,11 +451,11 @@
             </div>
           </a>
           <h2>COVID-19 Exposure Notifications</h2>
-          <p>I led Developer Relations for the Exposure Notifications System, a collaboration between Google and Apple that 
-            helped governments alert people who were exposed to COVID-19. The privacy-preserving technology was adopted by 
-            over 50 countries and regions worldwide. Research showed it could detect almost twice as many potential infections 
+          <p>I led Developer Relations for the Exposure Notifications System, a collaboration between Google and Apple that
+            helped governments alert people who were exposed to COVID-19. The privacy-preserving technology was adopted by
+            over 50 countries and regions worldwide. Research showed it could detect almost twice as many potential infections
             as manual contact tracing, and Popular Science recognized it as "Innovation of the Year" in 2020.</p>
-          <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank" 
+          <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank"
             rel="noopener noreferrer" aria-label="Read about COVID-19 Exposure Notifications" class="project-link">Blog Post</a>
         </div>
         <div class="card">
@@ -484,7 +483,7 @@
           <h2>Smart Garage Door</h2>
           <p>This project involved designing and building a smart garage door system with internet-connected
             microcontrollers and a companion Android app. The embedded software manages sensors and actuators to control
-            the garage door, while the Android app provides push notifications and remote control - saving us from 
+            the garage door, while the Android app provides push notifications and remote control - saving us from
             accidentally leaving the door open and giving us peace of mind when we're away from home.
           </p>
           <a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer"
@@ -513,10 +512,10 @@
             </div>
           </a>
           <h2>Google Sign-In</h2>
-          <p>I wrote sample code that demonstrated how to authenticate users with Google+ Sign-In (now "Sign in with Google") 
-            across multiple platforms. When we started, few apps supported federated identity. Today, most apps and websites 
-            let users sign in with their Google account. I created client examples in JavaScript, Java, and Objective-C, along 
-            with server implementations in Python, Java, Go, and PHP. I presented this work at Google I/O 2013, helping 
+          <p>I wrote sample code that demonstrated how to authenticate users with Google+ Sign-In (now "Sign in with Google")
+            across multiple platforms. When we started, few apps supported federated identity. Today, most apps and websites
+            let users sign in with their Google account. I created client examples in JavaScript, Java, and Objective-C, along
+            with server implementations in Python, Java, Go, and PHP. I presented this work at Google I/O 2013, helping
             developers understand and implement Google authentication in their apps.</p>
           <a href="https://www.youtube.com/watch?v=UUk1bjN7WR8" target="_blank" rel="noopener noreferrer"
             aria-label="Watch Google I/O 2013 talk about Google Sign-In" class="project-link">Google I/O Talk</a>
@@ -528,11 +527,11 @@
             </div>
           </a>
           <h2>Instant Runoff Voting</h2>
-          <p>I developed a voting system using Google Apps Script and Google Forms that implements Instant Runoff 
-            Voting. The system includes features like unique voting keys, vote modification capabilities, and 
-            unauthorized vote prevention. I shared this solution through a technical blog post on the Google Developers Blog, 
+          <p>I developed a voting system using Google Apps Script and Google Forms that implements Instant Runoff
+            Voting. The system includes features like unique voting keys, vote modification capabilities, and
+            unauthorized vote prevention. I shared this solution through a technical blog post on the Google Developers Blog,
             making it accessible for other developers to implement similar voting systems.</p>
-          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html" target="_blank" 
+          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html" target="_blank"
             rel="noopener noreferrer" aria-label="Read blog post about Instant Runoff Voting" class="project-link">Blog Post</a>
         </div>
         <div class="card">
