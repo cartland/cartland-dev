@@ -252,6 +252,29 @@
       background-color: var(--color-overlay);
     }
 
+
+    .section-header ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9em;
+      columns: 2;
+      column-gap: 20px;
+    }
+
+    .section-header ul li {
+      margin-bottom: 12px;
+      break-inside: avoid;
+    }
+
+    .section-header ul a {
+      text-decoration: none;
+    }
+
+    .section-header ul a:hover {
+      text-decoration: underline;
+    }
+
     /* Project Cards */
     .project-container {
       display: grid;
@@ -343,6 +366,8 @@
         display: block;
       }
 
+
+
       .project-container {
         grid-template-columns: 1fr;
       }
@@ -354,33 +379,7 @@
       .project-container .section-header .half {
         width: 100%;
       }
-    }
 
-    .section-header ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      font-size: 0.9em;
-      columns: 2;
-      column-gap: 20px;
-    }
-
-    .section-header ul li {
-      margin-bottom: 4px;
-      line-height: 1.2;
-      break-inside: avoid;
-    }
-
-    .section-header ul a {
-      text-decoration: none;
-    }
-
-    .section-header ul a:hover {
-      text-decoration: underline;
-    }
-
-    /* For mobile screens, revert to single column */
-    @media (max-width: 600px) {
       .section-header ul {
         columns: 1;
       }
