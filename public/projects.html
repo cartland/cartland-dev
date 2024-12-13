@@ -301,6 +301,7 @@
       box-sizing: border-box;
       flex-direction: column;
       margin-bottom: 32px;
+      transition: background-color 0.3s ease;
     }
 
     .card img {
@@ -391,6 +392,15 @@
       .section-header ul {
         columns: 1;
       }
+    }
+
+    /* Add highlight effect when card is targeted by URL hash */
+    :target {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      padding: 8px;
+      margin: -8px;
     }
   </style>
 </head>
