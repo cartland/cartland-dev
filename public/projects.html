@@ -355,6 +355,24 @@
         width: 100%;
       }
     }
+
+    .section-header ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .section-header ul li {
+      margin-bottom: 8px;
+    }
+
+    .section-header ul a {
+      text-decoration: none;
+    }
+
+    .section-header ul a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -398,13 +416,30 @@
     <main id="main-content">
       <div class="project-container">
         <div class="section-header">
-          <h1 class="half">Projects</h1>
+          <div class="half">
+            <h1>Projects</h1>
+            <p>Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
+              COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive art.
+              These projects showcase my expertise in developer platforms, embedded systems, and creative technology solutions.</p>
+          </div>
           <div class="spacer"></div>
-          <p class="half">Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
-            COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive art.
-            These projects showcase my expertise in developer platforms, embedded systems, and creative technology solutions.</p>
+          <div class="half">
+            <ul>
+              <li><a href="#android-build-time">Android Build Time</a></li>
+              <li><a href="#google-tv">Google TV App Ecosystem</a></li>
+              <li><a href="#android-auto">Android Auto Apps</a></li>
+              <li><a href="#exposure-notifications">COVID-19 Exposure Notifications</a></li>
+              <li><a href="#world-solar-challenge">World Solar Challenge</a></li>
+              <li><a href="#smart-garage">Smart Garage Door</a></li>
+              <li><a href="#marauders-map">Marauder's Map</a></li>
+              <li><a href="#google-sign-in">Google Sign-In</a></li>
+              <li><a href="#instant-runoff">Instant Runoff Voting</a></li>
+              <li><a href="#autostereogram">Autostereogram Generator</a></li>
+              <li><a href="#portfolio">Portfolio Website</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="card">
+        <div class="card" id="android-build-time">
           <a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/AndroidBuildTime.jpg" alt="Android Build Time Logo" loading="lazy">
@@ -418,7 +453,7 @@
           <a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer"
             aria-label="Watch Android Build Time podcast" class="project-link">Podcast</a>
         </div>
-        <div class="card">
+        <div class="card" id="google-tv">
           <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/GoogleTVWirecutter.jpg" alt="Google TV Interface" loading="lazy">
@@ -431,7 +466,7 @@
           <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank"
             rel="noopener noreferrer" aria-label="Read Wirecutter's review of Google TV" class="project-link">Wirecutter</a>
         </div>
-        <div class="card">
+        <div class="card" id="android-auto">
           <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/AndroidAutoApps.jpg" alt="Android Auto Interface" loading="lazy">
@@ -444,7 +479,7 @@
           <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html" target="_blank"
             rel="noopener noreferrer" aria-label="Read blog post about Android Auto launch" class="project-link">Blog Post</a>
         </div>
-        <div class="card">
+        <div class="card" id="exposure-notifications">
           <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/ExposureNotifications.jpg" alt="COVID-19 Exposure Notifications Interface" loading="lazy">
@@ -458,7 +493,7 @@
           <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank"
             rel="noopener noreferrer" aria-label="Read about COVID-19 Exposure Notifications" class="project-link">Blog Post</a>
         </div>
-        <div class="card">
+        <div class="card" id="world-solar-challenge">
           <a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset" loading="lazy">
@@ -474,7 +509,7 @@
             rel="noopener noreferrer" aria-label="Read blog post about World Solar Challenge" class="project-link">Blog
             Post</a>
         </div>
-        <div class="card">
+        <div class="card" id="smart-garage">
           <a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/SmartGarageDoor.jpg" alt="Smart Garage Door Screenshot" loading="lazy">
@@ -489,7 +524,7 @@
           <a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer"
             aria-label="View Smart Garage Door project on GitHub" class="project-link">GitHub</a>
         </div>
-        <div class="card">
+        <div class="card" id="marauders-map">
           <a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/MaraudersMap.gif" alt="Marauder's Map Screenshot" loading="lazy">
@@ -505,7 +540,7 @@
             rel="noopener noreferrer" aria-label="Read blog post about Marauder's Map project" class="project-link">Blog
             Post</a>
         </div>
-        <div class="card">
+        <div class="card" id="google-sign-in">
           <a href="https://www.youtube.com/watch?v=UUk1bjN7WR8" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/GoogleSignIn.jpg" alt="Google Sign-In Image" loading="lazy">
@@ -520,7 +555,7 @@
           <a href="https://www.youtube.com/watch?v=UUk1bjN7WR8" target="_blank" rel="noopener noreferrer"
             aria-label="Watch Google I/O 2013 talk about Google Sign-In" class="project-link">Google I/O Talk</a>
         </div>
-        <div class="card">
+        <div class="card" id="instant-runoff">
           <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/InstantRunoffVoting.jpg" alt="Instant Runoff Voting Interface" loading="lazy">
@@ -534,7 +569,7 @@
           <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html" target="_blank"
             rel="noopener noreferrer" aria-label="Read blog post about Instant Runoff Voting" class="project-link">Blog Post</a>
         </div>
-        <div class="card">
+        <div class="card" id="autostereogram">
           <a href="https://github.com/cartland/imagic" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/Autostereogram.jpg" alt="Autostereogram Example" loading="lazy">
@@ -548,7 +583,7 @@
           <a href="https://github.com/cartland/imagic" target="_blank" rel="noopener noreferrer"
             aria-label="View Autostereogram Generator on GitHub" class="project-link">GitHub</a>
         </div>
-        <div class="card">
+        <div class="card" id="portfolio">
           <a href="https://github.com/cartland/cartland-dev" target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/ChrisCartlandWebsite.jpg" alt="Portfolio Website Screenshot" loading="lazy">
