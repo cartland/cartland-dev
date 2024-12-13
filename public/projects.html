@@ -746,6 +746,19 @@
         toggleMenu();
       }
     });
+
+    function setupCardFocus() {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('click', function(event) {
+          // Don't change hash if clicking on a link
+          if (!event.target.closest('a')) {
+            window.location.hash = this.id;
+          }
+        });
+      });
+    }
+    window.addEventListener('load', setupCardFocus);
   </script>
 </body>
 
