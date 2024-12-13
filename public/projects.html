@@ -315,6 +315,7 @@
     .card h2 {
       margin-top: 8px;
       margin-bottom: 8px;
+      font-size: 1.2em; /* Some titles are very wide. */
     }
 
     .card p {
@@ -330,6 +331,12 @@
       border-radius: 32px;
       text-align: center;
       text-transform: uppercase;
+    }
+
+    .tags {
+      font-size: 0.5em;
+      color: var(--color-link);
+      margin-top: 8px;
     }
 
     .spacer {
@@ -430,8 +437,10 @@
           <div class="half">
             <h1>Projects</h1>
             <p>Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
-              COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive art.
-              These projects showcase my expertise in developer platforms, embedded systems, and creative technology solutions.</p>
+              COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive
+              art.
+              These projects showcase my expertise in developer platforms, embedded systems, and creative technology
+              solutions.</p>
           </div>
           <div class="spacer"></div>
           <div class="half">
@@ -457,55 +466,75 @@
             </div>
           </a>
           <h2>Android Build Time</h2>
-          <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. Through in-depth
-            technical conversations with Android developers, I interview developers about apps and technologies relevant to
-            professional Android developers.
+          <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. Through
+            in-depth technical conversations with Android developers, I interview developers about apps and technologies
+            relevant to professional Android developers.
           </p>
           <a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer"
             aria-label="Watch Android Build Time podcast" class="project-link">Podcast</a>
+          <div class="tags">Android, Developer Relations, Technical Communication, Public Speaking
+          </div>
         </div>
         <div class="card" id="google-tv">
-          <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank"
+            rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/GoogleTVWirecutter.jpg" alt="Google TV Interface" loading="lazy">
             </div>
           </a>
           <h2>Google TV App Ecosystem</h2>
-          <p>I bootstrapped the Google TV app ecosystem by working with top streaming services to build and launch their apps.
-            The platform's success led Wirecutter to choose Google TV devices as both their top and budget picks for streaming
+          <p>I bootstrapped the Google TV app ecosystem by working with top streaming services to build and launch their
+            apps.
+            The platform's success led Wirecutter to choose Google TV devices as both their top and budget picks for
+            streaming
             devices multiple years in a row, citing the seamless app integration with the system.</p>
           <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank"
-            rel="noopener noreferrer" aria-label="Read Wirecutter's review of Google TV" class="project-link">Wirecutter</a>
-        </div>
+            rel="noopener noreferrer" aria-label="Read Wirecutter's review of Google TV"
+            class="project-link">Wirecutter</a>
+          <div class="tags">Android TV, Google TV, Developer Relations, Streaming Media, App Ecosystem</div>
+          </div>
         <div class="card" id="android-auto">
-          <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html" target="_blank" rel="noopener noreferrer">
+          <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html"
+            target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/AndroidAutoApps.jpg" alt="Android Auto Interface" loading="lazy">
             </div>
           </a>
           <h2>Android Auto Apps</h2>
-          <p>I led Developer Relations for Android Auto from its announcement in 2014, making music and audio app integrations
-            safer and more delightful with Android Auto and Android Automotive OS. Through partnerships with automotive and app
+          <p>I led Developer Relations for Android Auto from its announcement in 2014, making music and audio app
+            integrations
+            safer and more delightful with Android Auto and Android Automotive OS. Through partnerships with automotive
+            and app
             developers, we've grown the platform to be compatible with over 200 million cars on the road as of 2024.</p>
-          <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html" target="_blank"
-            rel="noopener noreferrer" aria-label="Read blog post about Android Auto launch" class="project-link">Blog Post</a>
+          <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html"
+            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about Android Auto launch"
+            class="project-link">Blog Post</a>
+          <div class="tags">Android Auto, Automotive, Cars, Developer Relations, Audio Streaming Apps
+          </div>
         </div>
         <div class="card" id="exposure-notifications">
-          <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank" rel="noopener noreferrer">
+          <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank"
+            rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/ExposureNotifications.jpg" alt="COVID-19 Exposure Notifications Interface" loading="lazy">
             </div>
           </a>
           <h2>COVID-19 Exposure Notifications</h2>
-          <p>I led Developer Relations for the Exposure Notifications System, a collaboration between Google and Apple that
-            helped governments alert people who were exposed to COVID-19. The privacy-preserving technology was adopted by
-            over 50 countries and regions worldwide. Research showed it could detect almost twice as many potential infections
+          <p>I led Developer Relations for the Exposure Notifications System, a collaboration between Google and Apple
+            that
+            helped governments alert people who were exposed to COVID-19. The privacy-preserving technology was adopted
+            by
+            over 50 countries and regions worldwide. Research showed it could detect almost twice as many potential
+            infections
             as manual contact tracing, and Popular Science recognized it as "Innovation of the Year" in 2020.</p>
           <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank"
-            rel="noopener noreferrer" aria-label="Read about COVID-19 Exposure Notifications" class="project-link">Blog Post</a>
+            rel="noopener noreferrer" aria-label="Read about COVID-19 Exposure Notifications" class="project-link">Blog
+            Post</a>
+          <div class="tags">COVID-19, Privacy, Public Health, Government Partnerships</div>
         </div>
         <div class="card" id="world-solar-challenge">
-          <a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/" target="_blank" rel="noopener noreferrer">
+          <a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/" target="_blank"
+            rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset" loading="lazy">
             </div>
@@ -519,6 +548,7 @@
           <a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/" target="_blank"
             rel="noopener noreferrer" aria-label="Read blog post about World Solar Challenge" class="project-link">Blog
             Post</a>
+          <div class="tags">Solar Power, Renewable Energy, Electrical Engineering, Embedded Software, Engineering Leadership</div>
         </div>
         <div class="card" id="smart-garage">
           <a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer">
@@ -530,13 +560,14 @@
           <p>This project involved designing and building a smart garage door system with internet-connected
             microcontrollers and a companion Android app. The embedded software manages sensors and actuators to control
             the garage door, while the Android app provides push notifications and remote control - saving us from
-            accidentally leaving the door open and giving us peace of mind when we're away from home.
-          </p>
+            accidentally leaving the door open and giving us peace of mind when we're away from home.</p>
           <a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer"
             aria-label="View Smart Garage Door project on GitHub" class="project-link">GitHub</a>
+          <div class="tags">Kotlin, Compose, Macrobenchmark, CI/CD, TypeScript, IoT, Embedded Systems, Android Development, Home Automation, Microcontrollers, Serverless</div>
         </div>
         <div class="card" id="marauders-map">
-          <a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda" target="_blank" rel="noopener noreferrer">
+          <a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda" target="_blank"
+            rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/MaraudersMap.gif" alt="Marauder's Map Screenshot" loading="lazy">
             </div>
@@ -545,11 +576,11 @@
           <p>I built an interactive Marauder's Map for a Halloween party. The animations are drawn with an HTML5 Canvas
             runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit
             of magic with NFC magic wands that allowed the wizard to wave their wand and see their footsteps appear on
-            the
-            map in their real location.</p>
+            the map in their real location.</p>
           <a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda" target="_blank"
             rel="noopener noreferrer" aria-label="Read blog post about Marauder's Map project" class="project-link">Blog
             Post</a>
+          <div class="tags">Interactive Art, Android Development, HTML5 Canvas, React, NFC, Animation</div>
         </div>
         <div class="card" id="google-sign-in">
           <a href="https://www.youtube.com/watch?v=UUk1bjN7WR8" target="_blank" rel="noopener noreferrer">
@@ -558,16 +589,21 @@
             </div>
           </a>
           <h2>Google Sign-In</h2>
-          <p>I wrote sample code that demonstrated how to authenticate users with Google+ Sign-In (now "Sign in with Google")
-            across multiple platforms. When we started, few apps supported federated identity. Today, most apps and websites
-            let users sign in with their Google account. I created client examples in JavaScript, Java, and Objective-C, along
+          <p>I wrote sample code that demonstrated how to authenticate users with Google+ Sign-In (now "Sign in with
+            Google")
+            across multiple platforms. When we started, few apps supported federated identity. Today, most apps and
+            websites
+            let users sign in with their Google account. I created client examples in JavaScript, Java, and Objective-C,
+            along
             with server implementations in Python, Java, Go, and PHP. I presented this work at Google I/O 2013, helping
             developers understand and implement Google authentication in their apps.</p>
           <a href="https://www.youtube.com/watch?v=UUk1bjN7WR8" target="_blank" rel="noopener noreferrer"
             aria-label="Watch Google I/O 2013 talk about Google Sign-In" class="project-link">Google I/O Talk</a>
+          <div class="tags">Authentication, OAuth, Android, iOS, Web, Cross-Platform Development, Public Speaking</div>
         </div>
         <div class="card" id="instant-runoff">
-          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html" target="_blank" rel="noopener noreferrer">
+          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html"
+            target="_blank" rel="noopener noreferrer">
             <div class="image-gradient-container">
               <img src="/i/InstantRunoffVoting.jpg" alt="Instant Runoff Voting Interface" loading="lazy">
             </div>
@@ -575,10 +611,13 @@
           <h2>Instant Runoff Voting</h2>
           <p>I developed a voting system using Google Apps Script and Google Forms that implements Instant Runoff
             Voting. The system includes features like unique voting keys, vote modification capabilities, and
-            unauthorized vote prevention. I shared this solution through a technical blog post on the Google Developers Blog,
+            unauthorized vote prevention. I shared this solution through a technical blog post on the Google Developers
+            Blog,
             making it accessible for other developers to implement similar voting systems.</p>
-          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html" target="_blank"
-            rel="noopener noreferrer" aria-label="Read blog post about Instant Runoff Voting" class="project-link">Blog Post</a>
+          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html"
+            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about Instant Runoff Voting"
+            class="project-link">Blog Post</a>
+          <div class="tags">Google Apps Script, JavaScript</div>
         </div>
         <div class="card" id="autostereogram">
           <a href="https://github.com/cartland/imagic" target="_blank" rel="noopener noreferrer">
@@ -588,11 +627,14 @@
           </a>
           <h2>Autostereogram Generator</h2>
           <p>I wrote software in Go to generate autostereograms (also known as "Magic Eye" images). Starting from first
-            principles and my experience viewing these 3D illusions, I developed a library that creates autostereograms from
-            depth maps and pattern images. The project includes both a command-line tool and a web service hosted on Google
+            principles and my experience viewing these 3D illusions, I developed a library that creates autostereograms
+            from
+            depth maps and pattern images. The project includes both a command-line tool and a web service hosted on
+            Google
             App Engine, making it easy for others to create their own 3D illusions.</p>
           <a href="https://github.com/cartland/imagic" target="_blank" rel="noopener noreferrer"
             aria-label="View Autostereogram Generator on GitHub" class="project-link">GitHub</a>
+          <div class="tags">Go Programming, Image Processing, Algorithms</div>
         </div>
         <div class="card" id="portfolio">
           <a href="https://github.com/cartland/cartland-dev" target="_blank" rel="noopener noreferrer">
@@ -606,6 +648,7 @@
             maintaining strong accessibility standards.</p>
           <a href="https://github.com/cartland/cartland-dev" target="_blank" rel="noopener noreferrer"
             aria-label="View Portfolio Website" class="project-link">GitHub</a>
+          <div class="tags">Web Development, HTML, CSS, JavaScript, CI/CD, Accessibility, Responsive Design</div>
         </div>
       </div>
     </main>
