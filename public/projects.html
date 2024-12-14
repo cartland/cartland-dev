@@ -760,7 +760,6 @@
         card.addEventListener('click', function(event) {
           // Don't change hash if clicking on a link
           if (!event.target.closest('a')) {
-            console.log('clicked on card', this.id, window.location.hash);
             if (window.location.hash !== ("#" + this.id)) {
               window.location.hash = this.id;
             } else {
