@@ -15,17 +15,17 @@ A minimalist, responsive personal website built with HTML, CSS, and vanilla Java
 ## Project Structure
 
     .
-    ├── public/               # Static files served by Firebase
+    ├── public/                # Static files served by Firebase
     │   ├── index.html        # Home page
     │   ├── projects.html     # Projects page
     │   ├── 404.html          # Custom 404 page
     │   ├── manifest.json     # PWA manifest
-    │   ├── *.jpg             # Image assets
+    │   ├── i/                # Image assets
     │   └── favicon.ico       # Site favicon
-    ├── .github/              # GitHub Actions workflows
+    ├── .github/               # GitHub Actions workflows
     │   └── workflows/        # Deployment configurations
-    ├── firebase.json         # Firebase configuration
-    └── .firebaserc           # Firebase project settings
+    ├── firebase.json          # Firebase configuration
+    └── .firebaserc            # Firebase project settings
 
 ## Development
 
