@@ -278,7 +278,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       justify-content: center;
-      gap: 32px;
+      gap: 0px;
     }
 
     .project-container .section-header {
@@ -300,6 +300,7 @@
       flex-direction: column;
       margin-bottom: 32px;
       transition: background-color 0.3s ease;
+      padding: 16px;
     }
 
     .card:target {
@@ -309,14 +310,15 @@
     .card:target::before {
       content: '';
       position: absolute;
-      top: -16px;
-      left: -16px;
-      right: -16px;
-      bottom: -16px;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
       background-color: var(--color-card-background-selected);
       border-radius: 40px;
       z-index: -1;
     }
+
     .card img {
       width: 100%;
       aspect-ratio: 1;
@@ -339,6 +341,7 @@
     }
 
     .project-link {
+      margin-top: auto;
       display: inline-block;
       padding: 16px;
       text-decoration: none;
@@ -352,6 +355,7 @@
       font-size: 0.5em;
       color: var(--color-link);
       margin-top: 8px;
+      height: 48px;
     }
 
     .spacer {
