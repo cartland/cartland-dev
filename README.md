@@ -60,7 +60,7 @@ firebase deploy
 
 ## GitHub Actions
 
-Two workflows are configured for automated deployments:
+A workflow is configured for automated deployments:
 
 **Merge Workflow** (.github/workflows/firebase-hosting-merge.yml)
    - Triggers on merges to main branch
