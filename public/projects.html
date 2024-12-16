@@ -791,15 +791,18 @@
     function setupCardFocus() {
       const cards = document.querySelectorAll('.card');
       cards.forEach(card => {
-        card.addEventListener('click', function (event) {
-          if (!event.target.closest('a')) {
-            if (window.location.hash !== ("#" + this.id)) {
-              window.location.hash = this.id;
+        const img = card.querySelector('.image-gradient-container');
+        if (img) {
+          img.addEventListener('click', function (event) {
+            event.preventDefault();
+            const cardId = event.target.closest('.card').id;
+            if (window.location.hash !== ("#" + cardId)) {
+              window.location.hash = cardId;
             } else {
               window.location.hash = '###';
             }
-          }
-        });
+          });
+        }
       });
     }
     window.addEventListener('load', setupCardFocus);
