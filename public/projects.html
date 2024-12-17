@@ -418,6 +418,118 @@
         columns: 1;
       }
     }
+
+    /* Print Styles */
+    @media print {
+      /* Basic print optimization */
+      body {
+        background-color: white;
+        color: black;
+      }
+
+      /* Ensure cards don't break across pages */
+      .card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        /* For better print layout */
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+
+      /* Hide navigation elements */
+      .menu-icon,
+      .skip-link,
+      .overlay {
+        display: none;
+      }
+
+      /* Optimize links for print */
+      a {
+        color: black;
+        text-decoration: none;
+      }
+
+      /* Add URL after links */
+      .project-link::after {
+        content: "\A(" attr(href) ")";
+      }
+
+      /* Adjust colors for better print contrast */
+      :root {
+        --color: black;
+        --color-link: #333333;
+        --background-color: white;
+      }
+
+      /* Ensure images print well */
+      img {
+        max-width: 100%;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      /* Adjust container padding for print margins */
+      .container {
+        padding-inline: 20px;
+      }
+
+      /* Hide footer for print */
+      footer {
+        display: none;
+      }
+
+      /* Adjust margins to account for scaling */
+      @page {
+        margin: 0.5cm;
+      }
+
+      /* Adjust grid to fit more cards per page */
+      .project-container {
+        grid-template-columns: repeat(3, 1fr);  /* Show 3 columns when printing */
+        gap: 10px;  /* Reduce gap between items */
+      }
+
+      /* Remove the transform scaling */
+      .container {
+        padding-inline: 20px;
+      }
+
+      /* Instead, adjust the base font size and card sizes directly */
+      body {
+        font-size: 8pt; /* Adjust this value as needed */
+      }
+
+      .card {
+        /* Adjust card size directly instead of using transform */
+        padding: 8px;
+        margin-bottom: 12px;
+      }
+
+      .card img {
+        max-height: 120px; /* Control image height to fit more content per page */
+        width: auto;
+      }
+
+      .card h2 {
+        font-size: 10pt;
+        margin: 4px 0;
+      }
+
+      .card p {
+        font-size: 8pt;
+        margin: 4px 0;
+      }
+
+      .project-link {
+        padding: 4px 8px;
+        font-size: 7pt;
+      }
+
+      .tags {
+        font-size: 6pt;
+      }
+    }
   </style>
 </head>
 
