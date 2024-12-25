@@ -262,29 +262,6 @@
       align-items: center;
     }
 
-    .section-header ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      font-size: 0.9em;
-      columns: 2;
-      column-gap: 24px;
-    }
-
-    .section-header ul li {
-      min-height: 2.2em;
-      margin-bottom: 8px;
-      break-inside: avoid;
-    }
-
-    .section-header ul a {
-      text-decoration: none;
-    }
-
-    .section-header ul a:hover {
-      text-decoration: underline;
-    }
-
     /* Project Cards */
     .project-container {
       display: grid;
@@ -293,7 +270,27 @@
       gap: 0px;
     }
 
+    .toc {
+      min-height: 2.2em;
+      margin-bottom: 8px;
+      padding-left: 16px;
+      break-inside: avoid;
+      text-decoration: none;
+    }
+
+    .toc:hover {
+      text-decoration: underline;
+    }
+
     .project-container .section-header {
+      grid-column: 1 / -1;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .project-container h1 {
       grid-column: 1 / -1;
       margin-top: 16px;
       margin-bottom: 16px;
@@ -415,10 +412,6 @@
 
       .project-container .section-header .half {
         width: 100%;
-      }
-
-      .section-header ul {
-        columns: 1;
       }
     }
 
@@ -573,35 +566,30 @@
       <div class="project-container">
         <h1>Projects</h1>
         <div class="section-header">
-          <div class="half">
-            <p>Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
-              COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive
-              art.
-              These projects showcase my expertise in developer platforms, embedded systems, and creative technology
-              solutions.</p>
-          </div>
-          <div class="spacer"></div>
-          <div class="half">
-            <ul>
-              <li><a href="#android-build-time">Android Build Time</a></li>
-              <li><a href="#google-tv">Google TV App Ecosystem</a></li>
-              <li><a href="#android-auto">Android Auto Apps</a></li>
-              <li><a href="#music-alarms">Music Alarms on Android</a></li>
-              <li><a href="#play-billing">Google Play Billing</a></li>
-              <li><a href="#exposure-notifications">COVID-19 Exposure Notifications</a></li>
-              <li><a href="#google-sign-in">Google Sign-In</a></li>
-              <li><a href="#android-deep-links">Android Deep Links</a></li>
-              <li><a href="#world-solar-challenge">World Solar Challenge</a></li>
-              <li><a href="#smart-garage">Smart Garage Door</a></li>
-              <li><a href="#marauders-map">Marauder's Map</a></li>
-              <li><a href="#instant-runoff">Instant Runoff Voting</a></li>
-              <li><a href="#autostereogram">Autostereogram Generator</a></li>
-              <li><a href="#computer-history-museum">Computer History Museum</a></li>
-              <li><a href="#berkeley-alumni">Berkeley Alumni Spotlight</a></li>
-              <li><a href="#templeton-alumni">Templeton Alumni Profile</a></li>
-              <li><a href="#portfolio">Portfolio Website</a></li>
-            </ul>
-          </div>
+          <p>Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
+            COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive
+            art.
+            These projects showcase my expertise in developer platforms, embedded systems, and creative technology
+            solutions.</p>
+        </div>
+        <a class="toc" href="#android-build-time">Android Build Time</a>
+        <a class="toc" href="#google-tv">Google TV App Ecosystem</a>
+        <a class="toc" href="#android-auto">Android Auto Apps</a>
+        <a class="toc" href="#play-billing">Google Play Billing</a>
+        <a class="toc" href="#music-alarms">Music Alarms on Android</a>
+        <a class="toc" href="#exposure-notifications">COVID-19 Exposure Notifications</a>
+        <a class="toc" href="#google-sign-in">Google Sign-In</a>
+        <a class="toc" href="#android-deep-links">Android Deep Link</li>
+        <a class="toc" href="#world-solar-challenge">World Solar Challenge</a>
+        <a class="toc" href="#smart-garage">Smart Garage Door</a>
+        <a class="toc" href="#marauders-map">Marauder's Map</a>
+        <a class="toc" href="#instant-runoff">Instant Runoff Voting</a>
+        <a class="toc" href="#autostereogram">Autostereogram Generator</a>
+        <a class="toc" href="#computer-history-museum">Computer History Museum</a>
+        <a class="toc" href="#berkeley-alumni">Berkeley Alumni Spotlight</a>
+        <a class="toc" href="#templeton-alumni">Templeton Alumni Profile</a>
+        <a class="toc" href="#portfolio">Portfolio Website</a>
+        <div class="section-header">
         </div>
         <div class="card" id="android-build-time">
           <div class="image-gradient-container">
