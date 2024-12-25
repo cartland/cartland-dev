@@ -24,7 +24,7 @@
     :root {
       --color: #ffffff;
       --color-link: #cccccc;
-      --background-color: #0f1724;
+      --background-color: #130830;
       --background-color-overlay: rgba(0, 0, 0, 0.5);
       --color-overlay: #000000;
     }
@@ -139,6 +139,10 @@
       transition: color 0.3s ease;
       color: var(--color);
       z-index: inherit;
+    }
+
+    .header-content img {
+      height: 48px;
     }
 
     .nav-links {
@@ -420,7 +424,7 @@
     <header>
       <div id="header-container" class="header-container">
         <div class="header-content menu-aware">
-          <h1><a href="/" aria-label="Home - Christopher Cartland">Christopher Cartland</a></h1>
+          <a href="/" aria-label="Home - Christopher Cartland"><img src="i/ChristopherCartlandLogo.jpg" alt="Christopher Cartland Logo"></a>
           <nav class="nav-links" aria-label="Main navigation">
             <a href="/" aria-label="About - Learn more about Christopher Cartland">
               <h2>About</h2>
