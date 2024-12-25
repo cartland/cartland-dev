@@ -141,8 +141,33 @@
       z-index: inherit;
     }
 
-    .logo {
+    .logo-container {
       height: 48px;
+      position: relative;
+    }
+
+    .logo-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .logo-container .primary {
+      opacity: 1;
+    }
+
+    .logo-container .primary.menu-active-mode {
+      opacity: 0;
+    }
+
+    .logo-container .secondary {
+      opacity: 0;
+    }
+
+    .logo-container .secondary.menu-active-mode {
+      opacity: 1;
     }
 
     .nav-links {
@@ -424,7 +449,16 @@
     <header>
       <div id="header-container" class="header-container">
         <div class="header-content menu-aware">
-          <a href="/" aria-label="Home - Christopher Cartland"><img class="logo" src="i/ChristopherCartlandLogo.jpg" alt="Christopher Cartland Logo"></a>
+          <a href="/" aria-label="Home - Christopher Cartland">
+            <div class="logo-container">
+              <div class="primary menu-aware">
+                <img src="i/ChristopherCartlandLogo.jpg" alt="Christopher Cartland Logo">
+              </div>
+              <div class="secondary menu-aware">
+                <img src="i/ChristopherCartlandLogoLight.jpg" alt="Christopher Cartland Logo">
+              </div>
+            </div>
+          </a>
           <nav class="nav-links" aria-label="Main navigation">
             <a href="/" aria-label="About - Learn more about Christopher Cartland">
               <h2>About</h2>
