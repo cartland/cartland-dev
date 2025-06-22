@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Temperature Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #1a1a2e; /* Dark background similar to screenshot */
+            color: #e0e0e0;
+        }
+        .visualization-container {
+            display: grid;
+            /* Updated: Years as columns, Months as rows */
+            /* grid-template-columns will be set dynamically by JS */
+            grid-template-rows: repeat(12, 1fr); /* 12 rows for months */
+            width: 800px; /* Adjust as needed */
+            height: 400px; /* Adjust as needed */
+            border: 1px solid #333;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .temp-bar {
+            width: 100%;
+            height: 100%;
+            /* Each bar will be colored by JS */
+        }
+        .description {
+            width: 800px;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.5;
+            color: #b0b0b0;
+        }
+        .description strong {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="visualization-container" id="temp-visualization"></div>
+    <p class="description" id="description-text">
+        This visualization shows global monthly temperature from January 1850 to December 2024. Annual average
+        temperatures range from <strong>[MIN_C]°C ([MIN_F]°F)</strong> to <strong>[MAX_C]°C ([MAX_F]°F)</strong>.
+    </p>
+
+    <script>
+        const DATA_FILE_PATH = 'global-temperatures/1850-2024-Months.csv';
+        const BASELINE_FILE_PATH = 'global-temperatures/baseline-1991-2020.json';
+        let monthlyBaselineTemps = new Map(); // Map to store monthly baseline temperatures (month number -> temp in C)
+        let annualOverallBaselineTempC; // Annual average baseline for description
+
+        function celsiusToFahrenheit(celsius) {
+            return (celsius * 9/5) + 32;
+        }
+
+        async function loadTemperatureData() {
+            try {
+                const [csvResponse, baselineResponse] = await Promise.all([
+                    fetch(DATA_FILE_PATH),
+                    fetch(BASELINE_FILE_PATH)
+                ]);
+
+                const csvText = await csvResponse.text();
+                const baselineData = await baselineResponse.json();
+
+                // Populate monthlyBaselineTemps map
+                baselineData.monthlyAverages.forEach((avg, index) => {
+                    // Month index is 0-based in array, but 1-based for actual month number
+                    monthlyBaselineTemps.set(index + 1, avg.landAndOceanC);
+                });
+                annualOverallBaselineTempC = baselineData.annualAverage.landAndOceanC;
+
+                return parseCSV(csvText);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('temp-visualization').textContent = 'Failed to load data.';
+                return [];
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.trim().split('\n');
+            // Skip header lines (lines starting with #) and the column header line
+            const dataLines = lines.filter(line => !line.startsWith('#') && line.includes(','));
+            
+            const parsedData = [];
+            for (const line of dataLines) {
+                const [dateStr, anomalyStr] = line.split(',');
+                const year = parseInt(dateStr.substring(0, 4));
+                const month = parseInt(dateStr.substring(4, 6));
+                const anomaly = parseFloat(anomalyStr);
+
+                if (!isNaN(year) && !isNaN(month) && !isNaN(anomaly)) {
+                    parsedData.push({ year, month, anomaly });
+                }
+            }
+            return parsedData;
+        }
+
+        function getColorForTemperature(temp, minTemp, maxTemp) {
+            // Normalize temperature to a 0-1 range
+            const normalizedTemp = (temp - minTemp) / (maxTemp - minTemp);
+
+            // Define color stops for a blue-white-orange gradient
+            // Blue for colder, white for middle, orange for warmer
+            let r, g, b;
+
+            if (normalizedTemp < 0.5) {
+                // Blue to White (0 to 0.5)
+                const t = normalizedTemp * 2; // Scale to 0-1 for this segment
+                r = Math.round(255 * t);
+                g = Math.round(255 * t);
+                b = 255;
+            } else {
+                // White to Orange (0.5 to 1)
+                const t = (normalizedTemp - 0.5) * 2; // Scale to 0-1 for this segment
+                r = 255;
+                g = Math.round(255 * (1 - t));
+                b = Math.round(255 * (1 - t));
+            }
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        async function renderVisualization() {
+            const data = await loadTemperatureData();
+            if (data.length === 0) {
+                document.getElementById('temp-visualization').textContent = 'Failed to load temperature data.';
+                return;
+            }
+
+            // Calculate absolute temperatures using monthly baselines
+            const absoluteTemperatures = data.map(d => {
+                const monthlyBaseline = monthlyBaselineTemps.get(d.month);
+                return d.anomaly + monthlyBaseline;
+            });
+            const minOverallTemp = Math.min(...absoluteTemperatures);
+            const maxOverallTemp = Math.max(...absoluteTemperatures);
+
+            const visualizationContainer = document.getElementById('temp-visualization');
+            
+            const startYear = data[0].year;
+            const endYear = data[data.length - 1].year;
+            const numYears = endYear - startYear + 1;
+
+            // Set grid-template-columns dynamically based on number of years
+            visualizationContainer.style.gridTemplateColumns = `repeat(${numYears}, 1fr)`;
+            // grid-template-rows is already set to 12 in CSS for months
+
+            // Create a map for easier data access: monthlyData[year][month]
+            const monthlyDataMap = new Map();
+            data.forEach(d => {
+                if (!monthlyDataMap.has(d.year)) {
+                    monthlyDataMap.set(d.year, new Map());
+                }
+                const monthlyBaseline = monthlyBaselineTemps.get(d.month);
+                monthlyDataMap.get(d.year).set(d.month, d.anomaly + monthlyBaseline);
+            });
+
+            // Iterate through months (rows) then years (columns) to populate the grid
+            for (let month = 1; month <= 12; month++) {
+                for (let year = startYear; year <= endYear; year++) {
+                    const tempBar = document.createElement('div');
+                    tempBar.classList.add('temp-bar');
+                    
+                    const absoluteTemp = monthlyDataMap.has(year) && monthlyDataMap.get(year).has(month)
+                        ? monthlyDataMap.get(year).get(month)
+                        : null; // Handle missing data if any
+
+                    if (absoluteTemp !== null) {
+                        tempBar.style.backgroundColor = getColorForTemperature(absoluteTemp, minOverallTemp, maxOverallTemp);
+                        tempBar.title = `Year: ${year}, Month: ${month}, Absolute: ${absoluteTemp.toFixed(2)}°C`;
+                    } else {
+                        // Style for missing data, e.g., light grey or transparent
+                        tempBar.style.backgroundColor = '#333'; 
+                        tempBar.title = `Year: ${year}, Month: ${month}, Data Missing`;
+                    }
+                    
+                    visualizationContainer.appendChild(tempBar);
+                }
+            }
+
+            // Calculate annual average temperatures using corrected absolute monthly temperatures
+            const annualTemperatures = {};
+            data.forEach(d => {
+                if (!annualTemperatures[d.year]) {
+                    annualTemperatures[d.year] = [];
+                }
+                const monthlyBaseline = monthlyBaselineTemps.get(d.month);
+                annualTemperatures[d.year].push(d.anomaly + monthlyBaseline);
+            });
+
+            const annualAverages = Object.values(annualTemperatures).map(temps => {
+                const sum = temps.reduce((acc, curr) => acc + curr, 0);
+                return sum / temps.length;
+            });
+
+            const minAnnualAvgC = Math.min(...annualAverages);
+            const maxAnnualAvgC = Math.max(...annualAverages);
+
+            const minAnnualAvgF = celsiusToFahrenheit(minAnnualAvgC);
+            const maxAnnualAvgF = celsiusToFahrenheit(maxAnnualAvgC);
+
+            const descriptionElement = document.getElementById('description-text');
+            descriptionElement.innerHTML = `
+                This visualization shows global monthly temperature from January ${startYear} to December ${endYear}. Annual average
+                temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
+            `;
+        }
+
+        renderVisualization();
+    </script>
+</body>
+</html>
