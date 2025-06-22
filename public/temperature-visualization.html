@@ -42,14 +42,38 @@
         .description strong {
             color: #ffffff;
         }
+        .mode-toggle-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .mode-toggle-bar button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .mode-toggle-bar button:hover {
+            background-color: #555;
+        }
+        .mode-toggle-bar button.active {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
+    <div class="mode-toggle-bar">
+        <button id="temperature-mode-btn" class="active">Temperature Mode</button>
+        <button id="anomaly-mode-btn">Anomaly Mode</button>
+    </div>
     <div class="visualization-container" id="temp-visualization"></div>
-    <p class="description" id="description-text">
-        This visualization shows global monthly temperature from January 1850 to December 2024. Annual average
-        temperatures range from <strong>[MIN_C]°C ([MIN_F]°F)</strong> to <strong>[MAX_C]°C ([MAX_F]°F)</strong>.
-    </p>
+    <p class="description" id="description-text"></p>
 
     <script>
         const DATA_FILE_PATH = 'global-temperatures/1850-2024-Months.csv';
@@ -105,23 +129,23 @@
             return parsedData;
         }
 
-        function getColorForTemperature(temp, minTemp, maxTemp) {
-            // Normalize temperature to a 0-1 range
-            const normalizedTemp = (temp - minTemp) / (maxTemp - minTemp);
+        function getColorForValue(value, minVal, maxVal) {
+            // Normalize value to a 0-1 range
+            const normalizedValue = (value - minVal) / (maxVal - minVal);
 
             // Define color stops for a blue-white-orange gradient
             // Blue for colder, white for middle, orange for warmer
             let r, g, b;
 
-            if (normalizedTemp < 0.5) {
+            if (normalizedValue < 0.5) {
                 // Blue to White (0 to 0.5)
-                const t = normalizedTemp * 2; // Scale to 0-1 for this segment
+                const t = normalizedValue * 2; // Scale to 0-1 for this segment
                 r = Math.round(255 * t);
                 g = Math.round(255 * t);
                 b = 255;
             } else {
                 // White to Orange (0.5 to 1)
-                const t = (normalizedTemp - 0.5) * 2; // Scale to 0-1 for this segment
+                const t = (normalizedValue - 0.5) * 2; // Scale to 0-1 for this segment
                 r = 255;
                 g = Math.round(255 * (1 - t));
                 b = Math.round(255 * (1 - t));
@@ -129,56 +153,65 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
-        async function renderVisualization() {
-            const data = await loadTemperatureData();
-            if (data.length === 0) {
-                document.getElementById('temp-visualization').textContent = 'Failed to load temperature data.';
-                return;
+        let currentMode = 'anomaly'; // 'temperature' or 'anomaly'
+        let allData = []; // Store parsed data globally
+
+        async function renderVisualization(mode) {
+            currentMode = mode;
+            const visualizationContainer = document.getElementById('temp-visualization');
+            visualizationContainer.innerHTML = ''; // Clear previous visualization
+
+            if (allData.length === 0) {
+                allData = await loadTemperatureData();
+                if (allData.length === 0) {
+                    visualizationContainer.textContent = 'Failed to load temperature data.';
+                    return;
+                }
             }
 
-            // Calculate absolute temperatures using monthly baselines
-            const absoluteTemperatures = data.map(d => {
-                const monthlyBaseline = monthlyBaselineTemps.get(d.month);
-                return d.anomaly + monthlyBaseline;
-            });
-            const minOverallTemp = Math.min(...absoluteTemperatures);
-            const maxOverallTemp = Math.max(...absoluteTemperatures);
+            const dataToVisualize = currentMode === 'temperature'
+                ? allData.map(d => d.anomaly + monthlyBaselineTemps.get(d.month))
+                : allData.map(d => d.anomaly);
 
-            const visualizationContainer = document.getElementById('temp-visualization');
-            
-            const startYear = data[0].year;
-            const endYear = data[data.length - 1].year;
+            const minVal = Math.min(...dataToVisualize);
+            const maxVal = Math.max(...dataToVisualize);
+
+            const startYear = allData[0].year;
+            const endYear = allData[allData.length - 1].year;
             const numYears = endYear - startYear + 1;
 
-            // Set grid-template-columns dynamically based on number of years
             visualizationContainer.style.gridTemplateColumns = `repeat(${numYears}, 1fr)`;
-            // grid-template-rows is already set to 12 in CSS for months
 
-            // Create a map for easier data access: monthlyData[year][month]
             const monthlyDataMap = new Map();
-            data.forEach(d => {
+            allData.forEach(d => {
                 if (!monthlyDataMap.has(d.year)) {
                     monthlyDataMap.set(d.year, new Map());
                 }
-                const monthlyBaseline = monthlyBaselineTemps.get(d.month);
-                monthlyDataMap.get(d.year).set(d.month, d.anomaly + monthlyBaseline);
+                monthlyDataMap.get(d.year).set(d.month, d); // Store full data object
             });
 
-            // Iterate through months (rows) then years (columns) to populate the grid
             for (let month = 1; month <= 12; month++) {
                 for (let year = startYear; year <= endYear; year++) {
                     const tempBar = document.createElement('div');
                     tempBar.classList.add('temp-bar');
                     
-                    const absoluteTemp = monthlyDataMap.has(year) && monthlyDataMap.get(year).has(month)
+                    const monthData = monthlyDataMap.has(year) && monthlyDataMap.get(year).has(month)
                         ? monthlyDataMap.get(year).get(month)
-                        : null; // Handle missing data if any
+                        : null;
 
-                    if (absoluteTemp !== null) {
-                        tempBar.style.backgroundColor = getColorForTemperature(absoluteTemp, minOverallTemp, maxOverallTemp);
-                        tempBar.title = `Year: ${year}, Month: ${month}, Absolute: ${absoluteTemp.toFixed(2)}°C`;
+                    if (monthData !== null) {
+                        let value;
+                        let titleText;
+                        if (currentMode === 'temperature') {
+                            value = monthData.anomaly + monthlyBaselineTemps.get(monthData.month);
+                            titleText = `Absolute: ${value.toFixed(2)}°C`;
+                        } else { // anomaly mode
+                            value = monthData.anomaly;
+                            titleText = `Anomaly: ${value.toFixed(2)}°C`;
+                        }
+                        tempBar.style.backgroundColor = getColorForValue(value, minVal, maxVal);
+                        tempBar.title = `Year: ${year}, Month: ${month}, ${titleText}`;
                     } else {
-                        // Style for missing data, e.g., light grey or transparent
                         tempBar.style.backgroundColor = '#333'; 
                         tempBar.title = `Year: ${year}, Month: ${month}, Data Missing`;
                     }
@@ -187,35 +220,49 @@
                 }
             }
 
-            // Calculate annual average temperatures using corrected absolute monthly temperatures
-            const annualTemperatures = {};
-            data.forEach(d => {
-                if (!annualTemperatures[d.year]) {
-                    annualTemperatures[d.year] = [];
-                }
-                const monthlyBaseline = monthlyBaselineTemps.get(d.month);
-                annualTemperatures[d.year].push(d.anomaly + monthlyBaseline);
-            });
-
-            const annualAverages = Object.values(annualTemperatures).map(temps => {
-                const sum = temps.reduce((acc, curr) => acc + curr, 0);
-                return sum / temps.length;
-            });
-
-            const minAnnualAvgC = Math.min(...annualAverages);
-            const maxAnnualAvgC = Math.max(...annualAverages);
-
-            const minAnnualAvgF = celsiusToFahrenheit(minAnnualAvgC);
-            const maxAnnualAvgF = celsiusToFahrenheit(maxAnnualAvgC);
-
             const descriptionElement = document.getElementById('description-text');
-            descriptionElement.innerHTML = `
-                This visualization shows global monthly temperature from January ${startYear} to December ${endYear}. Annual average
-                temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
-            `;
+            if (currentMode === 'temperature') {
+                const annualTemperatures = {};
+                allData.forEach(d => {
+                    if (!annualTemperatures[d.year]) {
+                        annualTemperatures[d.year] = [];
+                    }
+                    annualTemperatures[d.year].push(d.anomaly + monthlyBaselineTemps.get(d.month));
+                });
+
+                const annualAverages = Object.values(annualTemperatures).map(temps => {
+                    const sum = temps.reduce((acc, curr) => acc + curr, 0);
+                    return sum / temps.length;
+                });
+
+                const minAnnualAvgC = Math.min(...annualAverages);
+                const maxAnnualAvgC = Math.max(...annualAverages);
+                const minAnnualAvgF = celsiusToFahrenheit(minAnnualAvgC);
+                const maxAnnualAvgF = celsiusToFahrenheit(maxAnnualAvgC);
+
+                descriptionElement.innerHTML = `
+                    This visualization shows global monthly temperature from January ${startYear} to December ${endYear}. Annual average
+                    temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
+                `;
+            } else { // anomaly mode
+                const minAnomaly = Math.min(...allData.map(d => d.anomaly));
+                const maxAnomaly = Math.max(...allData.map(d => d.anomaly));
+                descriptionElement.innerHTML = `
+                    This visualization shows global monthly temperature anomalies from January ${startYear} to December ${endYear}. Anomalies
+                    range from <strong>${minAnomaly.toFixed(2)}°C</strong> to <strong>${maxAnomaly.toFixed(2)}°C</strong> relative to the 1991-2020 baseline.
+                `;
+            }
+
+            // Update button active states
+            document.getElementById('temperature-mode-btn').classList.toggle('active', currentMode === 'temperature');
+            document.getElementById('anomaly-mode-btn').classList.toggle('active', currentMode === 'anomaly');
         }
 
-        renderVisualization();
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('temperature-mode-btn').addEventListener('click', () => renderVisualization('temperature'));
+            document.getElementById('anomaly-mode-btn').addEventListener('click', () => renderVisualization('anomaly'));
+            renderVisualization('anomaly'); // Initial render
+        });
     </script>
 </body>
 </html>
