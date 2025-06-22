@@ -129,26 +129,41 @@
             return parsedData;
         }
 
+        // Function to convert hex color to RGB
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.slice(1), 16);
+            const r = (bigint >> 16) & 255;
+            const g = (bigint >> 8) & 255;
+            const b = bigint & 255;
+            return { r, g, b };
+        }
+
+        // Define the three hex colors
+        const COLOR_COLD = '#0000FF'; // Blue
+        const COLOR_MID = '#FFFFFF';  // Middle
+        const COLOR_HOT = '#FF0000';  // Red
+
         function getColorForValue(value, minVal, maxVal) {
-            // Normalize value to a 0-1 range
             const normalizedValue = (value - minVal) / (maxVal - minVal);
 
-            // Define color stops for a blue-white-orange gradient
-            // Blue for colder, white for middle, orange for warmer
+            const colorColdRgb = hexToRgb(COLOR_COLD);
+            const colorMidRgb = hexToRgb(COLOR_MID);
+            const colorHotRgb = hexToRgb(COLOR_HOT);
+
             let r, g, b;
 
             if (normalizedValue < 0.5) {
-                // Blue to White (0 to 0.5)
+                // Transition from COLOR_COLD to COLOR_MID
                 const t = normalizedValue * 2; // Scale to 0-1 for this segment
-                r = Math.round(255 * t);
-                g = Math.round(255 * t);
-                b = 255;
+                r = Math.round(colorColdRgb.r + (colorMidRgb.r - colorColdRgb.r) * t);
+                g = Math.round(colorColdRgb.g + (colorMidRgb.g - colorColdRgb.g) * t);
+                b = Math.round(colorColdRgb.b + (colorMidRgb.b - colorColdRgb.b) * t);
             } else {
-                // White to Orange (0.5 to 1)
+                // Transition from COLOR_MID to COLOR_HOT
                 const t = (normalizedValue - 0.5) * 2; // Scale to 0-1 for this segment
-                r = 255;
-                g = Math.round(255 * (1 - t));
-                b = Math.round(255 * (1 - t));
+                r = Math.round(colorMidRgb.r + (colorHotRgb.r - colorMidRgb.r) * t);
+                g = Math.round(colorMidRgb.g + (colorHotRgb.g - colorMidRgb.g) * t);
+                b = Math.round(colorMidRgb.b + (colorHotRgb.b - colorMidRgb.b) * t);
             }
             return `rgb(${r}, ${g}, ${b})`;
         }
