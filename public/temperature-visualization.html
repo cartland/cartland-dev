@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Temperature Visualization</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,6 +72,27 @@
             background-color: #007bff;
             border-color: #007bff;
             color: #ffffff;
+        }
+        .save-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #28a745; /* Green color for save */
+            color: #ffffff;
+            border: 1px solid #218838;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; /* Add some space above */
+            margin-bottom: 20px; /* Add margin below */
+        }
+        .save-button:hover {
+            background-color: #218838;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .color-picker-container {
@@ -157,6 +179,9 @@
     </div>
     <div class="visualization-container" id="temp-visualization"></div>
     <p class="description" id="description-text"></p>
+    <div class="button-container">
+        <button id="save-image-btn" class="save-button">Download Image</button>
+    </div>
 
     <script>
         // Data Source for Temperature Anomalies: NOAA National Centers for Environmental Information (NCEI)
@@ -535,6 +560,20 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('temperature-mode-btn').addEventListener('click', () => renderVisualization('temperature'));
             document.getElementById('anomaly-mode-btn').addEventListener('click', () => renderVisualization('anomaly'));
+
+            document.getElementById('save-image-btn').addEventListener('click', () => {
+                const visualizationContainer = document.getElementById('temp-visualization');
+                html2canvas(visualizationContainer, {
+                    backgroundColor: '#1a1a2e', // Match body background
+                    scale: 4 // Default to 2x resolution
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    const modeName = currentMode === 'temperature' ? 'Temperature' : 'Anomaly';
+                    link.download = `temperature-visualization-${modeName}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            });
 
             renderVisualization('temperature'); // Initial render
         });
