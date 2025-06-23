@@ -413,10 +413,6 @@
         }
 
         function getAnomalyColorForValue(value, minAnomaly, maxAnomaly) {
-            const absMaxAnomaly = Math.max(Math.abs(minAnomaly), Math.abs(maxAnomaly));
-            const symmetricalMin = -absMaxAnomaly;
-            const symmetricalMax = absMaxAnomaly;
-
             // Convert HSV colors to RGB for interpolation
             const lowRgb = hslToRgb(hsvToHsl(lowColor.h, lowColor.s, lowColor.v).h, hsvToHsl(lowColor.h, lowColor.s, lowColor.v).s, hsvToHsl(lowColor.h, lowColor.s, lowColor.v).l);
             const lowMidRgb = hslToRgb(hsvToHsl(lowMidColor.h, lowMidColor.s, lowMidColor.v).h, hsvToHsl(lowMidColor.h, lowMidColor.s, lowMidColor.v).s, hsvToHsl(lowMidColor.h, lowMidColor.s, lowMidColor.v).l);
@@ -424,25 +420,26 @@
             const highMidRgb = hslToRgb(hsvToHsl(highMidColor.h, highMidColor.s, highMidColor.v).h, hsvToHsl(highMidColor.h, highMidColor.s, highMidColor.v).s, hsvToHsl(highMidColor.h, highMidColor.s, highMidColor.v).l);
             const highRgb = hslToRgb(hsvToHsl(highColor.h, highColor.s, highColor.v).h, hsvToHsl(highColor.h, highColor.s, highColor.v).s, hsvToHsl(highColor.h, highColor.s, highColor.v).l);
 
-            // Normalize value to a 0-1 scale where 0 is at 0.5
-            const normalizedValue = (value - symmetricalMin) / (symmetricalMax - symmetricalMin);
+            if (value <= 0) {
+                // Interpolate from Low (minAnomaly) to Mid (0)
+                // Normalize value from [minAnomaly, 0] to [0, 1]
+                const t = minAnomaly === 0 ? 0 : (value - minAnomaly) / (0 - minAnomaly);
 
-            if (normalizedValue < 0.25) {
-                // Transition from Low to LowMid
-                const t = normalizedValue * 4;
-                return interpolateColor(t, lowRgb, lowMidRgb);
-            } else if (normalizedValue < 0.5) {
-                // Transition from LowMid to Mid
-                const t = (normalizedValue - 0.25) * 4;
-                return interpolateColor(t, lowMidRgb, midRgb);
-            } else if (normalizedValue < 0.75) {
-                // Transition from Mid to HighMid
-                const t = (normalizedValue - 0.5) * 4;
-                return interpolateColor(t, midRgb, highMidRgb);
-            } else {
-                // Transition from HighMid to High
-                const t = (normalizedValue - 0.75) * 4;
-                return interpolateColor(t, highMidRgb, highRgb);
+                if (t <= 0.5) { // Low to LowMid
+                    return interpolateColor(t * 2, lowRgb, lowMidRgb);
+                } else { // LowMid to Mid
+                    return interpolateColor((t - 0.5) * 2, lowMidRgb, midRgb);
+                }
+            } else { // value > 0
+                // Interpolate from Mid (0) to High (maxAnomaly)
+                // Normalize value from [0, maxAnomaly] to [0, 1]
+                const t = maxAnomaly === 0 ? 0 : value / maxAnomaly;
+
+                if (t <= 0.5) { // Mid to HighMid
+                    return interpolateColor(t * 2, midRgb, highMidRgb);
+                } else { // HighMid to High
+                    return interpolateColor((t - 0.5) * 2, highMidRgb, highRgb);
+                }
             }
         }
 
