@@ -11,19 +11,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Align content to the top */
             min-height: 100vh;
             margin: 0;
             background-color: #1a1a2e; /* Dark background similar to screenshot */
             color: #e0e0e0;
+            padding: 20px; /* Add padding for smaller screens */
+            box-sizing: border-box; /* Include padding in width/height calculations */
         }
         .visualization-container {
             display: grid;
             /* Updated: Years as columns, Months as rows */
             /* grid-template-columns will be set dynamically by JS */
             grid-template-rows: repeat(12, 1fr); /* 12 rows for months */
-            width: 800px; /* Adjust as needed */
-            height: 400px; /* Adjust as needed */
+            width: 100%; /* Make width responsive */
+            max-width: 800px; /* Maximum width */
+            aspect-ratio: 2 / 1; /* Maintain aspect ratio */
             border: 1px solid #333;
             overflow: hidden;
             margin-bottom: 20px;
@@ -34,11 +37,14 @@
             /* Each bar will be colored by JS */
         }
         .description {
-            width: 800px;
+            width: 100%; /* Make width responsive */
+            max-width: 800px; /* Maximum width */
             text-align: center;
             font-size: 1.1em;
             line-height: 1.5;
             color: #b0b0b0;
+            padding: 0 20px; /* Add horizontal padding */
+            box-sizing: border-box;
         }
         .description strong {
             color: #ffffff;
@@ -97,12 +103,14 @@
 
         .color-picker-container {
             display: flex;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
             gap: 40px;
             margin-bottom: 20px;
             padding: 20px;
             background-color: #2a2a4a;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            justify-content: center; /* Center the items */
         }
 
         .color-picker {
@@ -170,9 +178,47 @@
             width: 100px;
             text-align: center;
         }
+
+        header {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        header a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .mode-toggle-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .color-picker-container {
+                gap: 20px;
+            }
+
+            .slider-group {
+                width: 150px;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <h1><a href="/projects.html">Projects</a></h1>
+    </header>
     <div class="mode-toggle-bar">
         <button id="temperature-mode-btn" class="active">Temperature Mode</button>
         <button id="anomaly-mode-btn">Anomaly Mode</button>
