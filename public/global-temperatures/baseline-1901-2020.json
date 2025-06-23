@@ -1,5 +1,5 @@
 {
-  "basePeriod": "1991-2020",
+  "basePeriod": "1901-2020",
   "monthlyAverages": [
     {"month": "January", "landAndOceanC": 12.0, "landF": 53.6, "landC": 2.8, "oceanF": 37.0, "oceanC": 15.8, "oceanF": 60.5},
     {"month": "February", "landAndOceanC": 12.1, "landF": 53.9, "landC": 3.2, "oceanF": 37.8, "oceanC": 15.9, "oceanF": 60.6},
