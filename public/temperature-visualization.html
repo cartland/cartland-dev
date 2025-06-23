@@ -242,12 +242,12 @@
         // Data Source for Temperature Anomalies: NOAA National Centers for Environmental Information (NCEI)
         // Global Time Series, Land+Ocean, Monthly, 1850-2024
         // URL: https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024
-        const DATA_FILE_PATH = 'global-temperatures/1850-2024-Months.csv';
+        const DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv';
 
         // Data Source for Baseline Temperatures (1901-2000 average): NOAA NCEI
-        // Global Climate Report - Data Info (provides details on the 1901-2000 baseline period)
+        // Global Climate Report - Data Info (provides details on the 1850-1900 baseline period)
         // URL: https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/data-info
-        const BASELINE_FILE_PATH = 'global-temperatures/baseline-1901-2020.json';
+        const BASELINE_FILE_PATH = 'global-temperatures/baseline-1850-1900.json';
         let monthlyBaselineTemps = new Map(); // Map to store monthly baseline temperatures (month number -> temp in C)
         let annualOverallBaselineTempC; // Annual average baseline for description
 
@@ -583,11 +583,25 @@
                     This visualization shows estimated global monthly average temperatures from January ${startYear} to December ${endYear}. Annual average temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgC.toFixed(1)}°F)</strong>.
                 `;
             } else { // anomaly mode
-                const minAnomaly = Math.min(...allData.map(d => d.anomaly));
-                const maxAnomaly = Math.max(...allData.map(d => d.anomaly));
+                const annualAnomalies = {};
+                allData.forEach(d => {
+                    if (!annualAnomalies[d.year]) {
+                        annualAnomalies[d.year] = [];
+                    }
+                    annualAnomalies[d.year].push(d.anomaly);
+                });
+
+                const annualAverageAnomalies = Object.values(annualAnomalies).map(anomalies => {
+                    const sum = anomalies.reduce((acc, curr) => acc + curr, 0);
+                    return sum / anomalies.length;
+                });
+
+                const minAnnualAvgAnomaly = Math.min(...annualAverageAnomalies);
+                const maxAnnualAvgAnomaly = Math.max(...annualAverageAnomalies);
+
                 descriptionElement.innerHTML = `
-                    This visualization shows global monthly temperature anomalies from January ${startYear} to December ${endYear}. Anomalies
-                    range from <strong>${minAnomaly.toFixed(2)}°C</strong> to <strong>${maxAnomaly.toFixed(2)}°C</strong> relative to the 1901-2000 baseline.
+                    This visualization shows global monthly temperature anomalies from January ${startYear} to December ${endYear},
+                    relative to the 1850-1900 baseline.
                 `;
             }
 
