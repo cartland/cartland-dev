@@ -42,6 +42,10 @@
         .description strong {
             color: #ffffff;
         }
+        .description a {
+            color: #ffffff; /* Set link color to white */
+            text-decoration: underline; /* Keep underline for clarity */
+        }
         .mode-toggle-bar {
             margin-bottom: 20px;
             display: flex;
@@ -144,93 +148,6 @@
     </style>
 </head>
 <body>
-    <div class="color-picker-container">
-        <div class="color-picker">
-            <label>Low Color</label>
-            <div class="slider-group">
-                <label for="low-hue">Hue:</label>
-                <input type="range" id="low-hue" min="0" max="360">
-            </div>
-            <div class="slider-group">
-                <label for="low-saturation">Saturation:</label>
-                <input type="range" id="low-saturation" min="0" max="100">
-            </div>
-            <div class="slider-group">
-                <label for="low-value">Value:</label>
-                <input type="range" id="low-value" min="0" max="100">
-            </div>
-            <input type="text" id="low-hex-input" class="hex-display">
-        </div>
-
-        <div class="color-picker">
-            <label>LowMid Color</label>
-            <div class="slider-group">
-                <label for="lowMid-hue">Hue:</label>
-                <input type="range" id="lowMid-hue" min="0" max="360">
-            </div>
-            <div class="slider-group">
-                <label for="lowMid-saturation">Saturation:</label>
-                <input type="range" id="lowMid-saturation" min="0" max="100">
-            </div>
-            <div class="slider-group">
-                <label for="lowMid-value">Value:</label>
-                <input type="range" id="lowMid-value" min="0" max="100">
-            </div>
-            <input type="text" id="lowMid-hex-input" class="hex-display">
-        </div>
-
-        <div class="color-picker">
-            <label>Mid Color</label>
-            <div class="slider-group">
-                <label for="mid-hue">Hue:</label>
-                <input type="range" id="mid-hue" min="0" max="360">
-            </div>
-            <div class="slider-group">
-                <label for="mid-saturation">Saturation:</label>
-                <input type="range" id="mid-saturation" min="0" max="100">
-            </div>
-            <div class="slider-group">
-                <label for="mid-value">Value:</label>
-                <input type="range" id="mid-value" min="0" max="100">
-            </div>
-            <input type="text" id="mid-hex-input" class="hex-display">
-        </div>
-
-        <div class="color-picker">
-            <label>HighMid Color</label>
-            <div class="slider-group">
-                <label for="highMid-hue">Hue:</label>
-                <input type="range" id="highMid-hue" min="0" max="360">
-            </div>
-            <div class="slider-group">
-                <label for="highMid-saturation">Saturation:</label>
-                <input type="range" id="highMid-saturation" min="0" max="100">
-            </div>
-            <div class="slider-group">
-                <label for="highMid-value">Value:</label>
-                <input type="range" id="highMid-value" min="0" max="100">
-            </div>
-            <input type="text" id="highMid-hex-input" class="hex-display">
-        </div>
-
-        <div class="color-picker">
-            <label>High Color</label>
-            <div class="slider-group">
-                <label for="high-hue">Hue:</label>
-                <input type="range" id="high-hue" min="0" max="360">
-            </div>
-            <div class="slider-group">
-                <label for="high-saturation">Saturation:</label>
-                <input type="range" id="high-saturation" min="0" max="100">
-            </div>
-            <div class="slider-group">
-                <label for="high-value">Value:</label>
-                <input type="range" id="high-value" min="0" max="100">
-            </div>
-            <input type="text" id="high-hex-input" class="hex-display">
-        </div>
-    </div>
-
     <div class="mode-toggle-bar">
         <button id="temperature-mode-btn" class="active">Temperature Mode</button>
         <button id="anomaly-mode-btn">Anomaly Mode</button>
@@ -580,7 +497,8 @@
                 const maxAnnualAvgF = celsiusToFahrenheit(maxAnnualAvgC);
 
                 descriptionElement.innerHTML = `
-                    This visualization shows estimated global monthly average temperatures from January ${startYear} to December ${endYear}. Annual average temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgC.toFixed(1)}°F)</strong>.
+                    This visualization shows estimated global monthly average temperatures from January ${startYear} to December ${endYear}. Annual average temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
+                    Data source: <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024" target="_blank">NOAA National Centers for Environmental Information (NCEI)</a>.
                 `;
             } else { // anomaly mode
                 const annualAnomalies = {};
@@ -602,6 +520,7 @@
                 descriptionElement.innerHTML = `
                     This visualization shows global monthly temperature anomalies from January ${startYear} to December ${endYear},
                     relative to the 1850-1900 baseline.
+                    Data source: <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024" target="_blank">NOAA National Centers for Environmental Information (NCEI)</a>.
                 `;
             }
 
@@ -614,118 +533,207 @@
             document.getElementById('temperature-mode-btn').addEventListener('click', () => renderVisualization('temperature'));
             document.getElementById('anomaly-mode-btn').addEventListener('click', () => renderVisualization('anomaly'));
 
-            // Helper function to update color and re-render
-            function updateColor(colorType) {
-                const hue = parseInt(document.getElementById(`${colorType}-hue`).value);
-                const saturation = parseInt(document.getElementById(`${colorType}-saturation`).value);
-                const value = parseInt(document.getElementById(`${colorType}-value`).value);
-
-                if (colorType === 'low') {
-                    lowColor = { h: hue, s: saturation, v: value };
-                } else if (colorType === 'lowMid') {
-                    lowMidColor = { h: hue, s: saturation, v: value };
-                } else if (colorType === 'mid') {
-                    midColor = { h: hue, s: saturation, v: value };
-                } else if (colorType === 'highMid') {
-                    highMidColor = { h: hue, s: saturation, v: value };
-                } else if (colorType === 'high') {
-                    highColor = { h: hue, s: saturation, v: value };
-                }
-
-                const hsl = hsvToHsl(hue, saturation, value);
-                const rgb = hslToRgb(hsl.h, hsl.s, hsl.l);
-                const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
-                document.getElementById(`${colorType}-hex-input`).value = hex;
-
-                renderVisualization(currentMode);
-            }
-
-            // Helper function to update sliders from hex input
-            function updateSlidersFromHex(colorType) {
-                const hexInput = document.getElementById(`${colorType}-hex-input`);
-                const hex = hexInput.value;
-
-                if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex)) {
-                    // Invalid hex code, do not update
-                    return;
-                }
-
-                const rgb = hexToRgb(hex);
-                const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-
-                // Convert HSL to HSV for consistency with existing color model
-                const h = hsl.h;
-                const s = hsl.s;
-                const l = hsl.l;
-                const v = l + s * Math.min(l, 100 - l) / 100;
-                const newS = v === 0 ? 0 : 2 * (1 - l / v) * 100;
-
-                document.getElementById(`${colorType}-hue`).value = h;
-                document.getElementById(`${colorType}-saturation`).value = newS;
-                document.getElementById(`${colorType}-value`).value = v;
-
-                // Update the color object and re-render
-                if (colorType === 'low') {
-                    lowColor = { h: h, s: newS, v: v };
-                } else if (colorType === 'lowMid') {
-                    lowMidColor = { h: h, s: newS, v: v };
-                } else if (colorType === 'mid') {
-                    midColor = { h: h, s: newS, v: v };
-                } else if (colorType === 'highMid') {
-                    highMidColor = { h: h, s: newS, v: v };
-                } else if (colorType === 'high') {
-                    highColor = { h: h, s: newS, v: v };
-                }
-
-                renderVisualization(currentMode);
-            }
-
-            // Add event listeners for low color sliders
-            document.getElementById('low-hue').addEventListener('input', () => updateColor('low'));
-            document.getElementById('low-saturation').addEventListener('input', () => updateColor('low'));
-            document.getElementById('low-value').addEventListener('input', () => updateColor('low'));
-            document.getElementById('low-hex-input').addEventListener('change', () => updateSlidersFromHex('low')); // 'change' event for hex input
-
-            // Add event listeners for lowMid color sliders
-            document.getElementById('lowMid-hue').addEventListener('input', () => updateColor('lowMid'));
-            document.getElementById('lowMid-saturation').addEventListener('input', () => updateColor('lowMid'));
-            document.getElementById('lowMid-value').addEventListener('input', () => updateColor('lowMid'));
-            document.getElementById('lowMid-hex-input').addEventListener('change', () => updateSlidersFromHex('lowMid'));
-
-            // Add event listeners for mid color sliders
-            document.getElementById('mid-hue').addEventListener('input', () => updateColor('mid'));
-            document.getElementById('mid-saturation').addEventListener('input', () => updateColor('mid'));
-            document.getElementById('mid-value').addEventListener('input', () => updateColor('mid'));
-            document.getElementById('mid-hex-input').addEventListener('change', () => updateSlidersFromHex('mid'));
-
-            // Add event listeners for highMid color sliders
-            document.getElementById('highMid-hue').addEventListener('input', () => updateColor('highMid'));
-            document.getElementById('highMid-saturation').addEventListener('input', () => updateColor('highMid'));
-            document.getElementById('highMid-value').addEventListener('input', () => updateColor('highMid'));
-            document.getElementById('highMid-hex-input').addEventListener('change', () => updateSlidersFromHex('highMid'));
-
-            // Add event listeners for high color sliders
-            document.getElementById('high-hue').addEventListener('input', () => updateColor('high'));
-            document.getElementById('high-saturation').addEventListener('input', () => updateColor('high'));
-            document.getElementById('high-value').addEventListener('input', () => updateColor('high'));
-            document.getElementById('high-hex-input').addEventListener('change', () => updateSlidersFromHex('high'));
-
-            // Set initial hex input values from defaults
-            document.getElementById('low-hex-input').value = DEFAULT_LOW_COLOR_HEX;
-            document.getElementById('lowMid-hex-input').value = DEFAULT_LOW_MID_COLOR_HEX;
-            document.getElementById('mid-hex-input').value = DEFAULT_MID_COLOR_HEX;
-            document.getElementById('highMid-hex-input').value = DEFAULT_HIGH_MID_COLOR_HEX;
-            document.getElementById('high-hex-input').value = DEFAULT_HIGH_COLOR_HEX;
-
-            // Initial update of sliders and color objects from hex inputs
-            updateSlidersFromHex('low');
-            updateSlidersFromHex('lowMid');
-            updateSlidersFromHex('mid');
-            updateSlidersFromHex('highMid');
-            updateSlidersFromHex('high');
-
             renderVisualization('temperature'); // Initial render
         });
+    </script>
+
+    <div class="color-picker-container">
+        <div class="color-picker">
+            <label>Low Color</label>
+            <div class="slider-group">
+                <label for="low-hue">Hue:</label>
+                <input type="range" id="low-hue" min="0" max="360">
+            </div>
+            <div class="slider-group">
+                <label for="low-saturation">Saturation:</label>
+                <input type="range" id="low-saturation" min="0" max="100">
+            </div>
+            <div class="slider-group">
+                <label for="low-value">Value:</label>
+                <input type="range" id="low-value" min="0" max="100">
+            </div>
+            <input type="text" id="low-hex-input" class="hex-display">
+        </div>
+
+        <div class="color-picker">
+            <label>LowMid Color</label>
+            <div class="slider-group">
+                <label for="lowMid-hue">Hue:</label>
+                <input type="range" id="lowMid-hue" min="0" max="360">
+            </div>
+            <div class="slider-group">
+                <label for="lowMid-saturation">Saturation:</label>
+                <input type="range" id="lowMid-saturation" min="0" max="100">
+            </div>
+            <div class="slider-group">
+                <label for="lowMid-value">Value:</label>
+                <input type="range" id="lowMid-value" min="0" max="100">
+            </div>
+            <input type="text" id="lowMid-hex-input" class="hex-display">
+        </div>
+
+        <div class="color-picker">
+            <label>Mid Color</label>
+            <div class="slider-group">
+                <label for="mid-hue">Hue:</label>
+                <input type="range" id="mid-hue" min="0" max="360">
+            </div>
+            <div class="slider-group">
+                <label for="mid-saturation">Saturation:</label>
+                <input type="range" id="mid-saturation" min="0" max="100">
+            </div>
+            <div class="slider-group">
+                <label for="mid-value">Value:</label>
+                <input type="range" id="mid-value" min="0" max="100">
+            </div>
+            <input type="text" id="mid-hex-input" class="hex-display">
+        </div>
+
+        <div class="color-picker">
+            <label>HighMid Color</label>
+            <div class="slider-group">
+                <label for="highMid-hue">Hue:</label>
+                <input type="range" id="highMid-hue" min="0" max="360">
+            </div>
+            <div class="slider-group">
+                <label for="highMid-saturation">Saturation:</label>
+                <input type="range" id="highMid-saturation" min="0" max="100">
+            </div>
+            <div class="slider-group">
+                <label for="highMid-value">Value:</label>
+                <input type="range" id="highMid-value" min="0" max="100">
+            </div>
+            <input type="text" id="highMid-hex-input" class="hex-display">
+        </div>
+
+        <div class="color-picker">
+            <label>High Color</label>
+            <div class="slider-group">
+                <label for="high-hue">Hue:</label>
+                <input type="range" id="high-hue" min="0" max="360">
+            </div>
+            <div class="slider-group">
+                <label for="high-saturation">Saturation:</label>
+                <input type="range" id="high-saturation" min="0" max="100">
+            </div>
+            <div class="slider-group">
+                <label for="high-value">Value:</label>
+                <input type="range" id="high-value" min="0" max="100">
+            </div>
+            <input type="text" id="high-hex-input" class="hex-display">
+        </div>
+    </div>
+
+    <script>
+        // Helper function to update color and re-render
+        function updateColor(colorType) {
+            const hue = parseInt(document.getElementById(`${colorType}-hue`).value);
+            const saturation = parseInt(document.getElementById(`${colorType}-saturation`).value);
+            const value = parseInt(document.getElementById(`${colorType}-value`).value);
+
+            if (colorType === 'low') {
+                lowColor = { h: hue, s: saturation, v: value };
+            } else if (colorType === 'lowMid') {
+                lowMidColor = { h: hue, s: saturation, v: value };
+            } else if (colorType === 'mid') {
+                midColor = { h: hue, s: saturation, v: value };
+            } else if (colorType === 'highMid') {
+                highMidColor = { h: hue, s: saturation, v: value };
+            } else if (colorType === 'high') {
+                highColor = { h: hue, s: saturation, v: value };
+            }
+
+            const hsl = hsvToHsl(hue, saturation, value);
+            const rgb = hslToRgb(hsl.h, hsl.s, hsl.l);
+            const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+            document.getElementById(`${colorType}-hex-input`).value = hex;
+
+            renderVisualization(currentMode);
+        }
+
+        // Helper function to update sliders from hex input
+        function updateSlidersFromHex(colorType) {
+            const hexInput = document.getElementById(`${colorType}-hex-input`);
+            const hex = hexInput.value;
+
+            if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex)) {
+                // Invalid hex code, do not update
+                return;
+            }
+
+            const rgb = hexToRgb(hex);
+            const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+            // Convert HSL to HSV for consistency with existing color model
+            const h = hsl.h;
+            const s = hsl.s;
+            const l = hsl.l;
+            const v = l + s * Math.min(l, 100 - l) / 100;
+            const newS = v === 0 ? 0 : 2 * (1 - l / v) * 100;
+
+            document.getElementById(`${colorType}-hue`).value = h;
+            document.getElementById(`${colorType}-saturation`).value = newS;
+            document.getElementById(`${colorType}-value`).value = v;
+
+            // Update the color object and re-render
+            if (colorType === 'low') {
+                lowColor = { h: h, s: newS, v: v };
+            } else if (colorType === 'lowMid') {
+                lowMidColor = { h: h, s: newS, v: v };
+            } else if (colorType === 'mid') {
+                midColor = { h: h, s: newS, v: v };
+            } else if (colorType === 'highMid') {
+                highMidColor = { h: h, s: newS, v: v };
+            } else if (colorType === 'high') {
+                highColor = { h: h, s: newS, v: v };
+            }
+
+            renderVisualization(currentMode);
+        }
+
+        // Add event listeners for low color sliders
+        document.getElementById('low-hue').addEventListener('input', () => updateColor('low'));
+        document.getElementById('low-saturation').addEventListener('input', () => updateColor('low'));
+        document.getElementById('low-value').addEventListener('input', () => updateColor('low'));
+        document.getElementById('low-hex-input').addEventListener('change', () => updateSlidersFromHex('low')); // 'change' event for hex input
+
+        // Add event listeners for lowMid color sliders
+        document.getElementById('lowMid-hue').addEventListener('input', () => updateColor('lowMid'));
+        document.getElementById('lowMid-saturation').addEventListener('input', () => updateColor('lowMid'));
+        document.getElementById('lowMid-value').addEventListener('input', () => updateColor('lowMid'));
+        document.getElementById('lowMid-hex-input').addEventListener('change', () => updateSlidersFromHex('lowMid'));
+
+        // Add event listeners for mid color sliders
+        document.getElementById('mid-hue').addEventListener('input', () => updateColor('mid'));
+        document.getElementById('mid-saturation').addEventListener('input', () => updateColor('mid'));
+        document.getElementById('mid-value').addEventListener('input', () => updateColor('mid'));
+        document.getElementById('mid-hex-input').addEventListener('change', () => updateSlidersFromHex('mid'));
+
+        // Add event listeners for highMid color sliders
+        document.getElementById('highMid-hue').addEventListener('input', () => updateColor('highMid'));
+        document.getElementById('highMid-saturation').addEventListener('input', () => updateColor('highMid'));
+        document.getElementById('highMid-value').addEventListener('input', () => updateColor('highMid'));
+        document.getElementById('highMid-hex-input').addEventListener('change', () => updateSlidersFromHex('highMid'));
+
+        // Add event listeners for high color sliders
+        document.getElementById('high-hue').addEventListener('input', () => updateColor('high'));
+        document.getElementById('high-saturation').addEventListener('input', () => updateColor('high'));
+        document.getElementById('high-value').addEventListener('input', () => updateColor('high'));
+        document.getElementById('high-hex-input').addEventListener('change', () => updateSlidersFromHex('high'));
+
+        // Set initial hex input values from defaults
+        document.getElementById('low-hex-input').value = DEFAULT_LOW_COLOR_HEX;
+        document.getElementById('lowMid-hex-input').value = DEFAULT_LOW_MID_COLOR_HEX;
+        document.getElementById('mid-hex-input').value = DEFAULT_MID_COLOR_HEX;
+        document.getElementById('highMid-hex-input').value = DEFAULT_HIGH_MID_COLOR_HEX;
+        document.getElementById('high-hex-input').value = DEFAULT_HIGH_COLOR_HEX;
+
+        // Initial update of sliders and color objects from hex inputs
+        updateSlidersFromHex('low');
+        updateSlidersFromHex('lowMid');
+        updateSlidersFromHex('mid');
+        updateSlidersFromHex('highMid');
+        updateSlidersFromHex('high');
     </script>
 </body>
 </html>
