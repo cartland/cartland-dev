@@ -405,16 +405,52 @@
         let highMidColor = { h: 0, s: 0, v: 0 };
         let highColor = { h: 0, s: 0, v: 0 };
 
-        // Function to convert HSV to HSL (since hslToRgb expects HSL)
-        function hsvToHsl(h, s, v) {
-            s /= 100;
-            v /= 100;
-            const l = (2 - s) * v / 2;
-            const newS = l === 0 || l === 1 ? 0 : (s * v) / (l < 0.5 ? l * 2 : 2 - l * 2);
-            return { h: h, s: newS * 100, l: l * 100 };
+        function interpolateColor(t, color1, color2) {
+            const r = Math.round(color1.r + (color2.r - color1.r) * t);
+            const g = Math.round(color1.g + (color2.g - color1.g) * t);
+            const b = Math.round(color1.b + (color2.b - color1.b) * t);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function getAnomalyColorForValue(value, minAnomaly, maxAnomaly) {
+            const absMaxAnomaly = Math.max(Math.abs(minAnomaly), Math.abs(maxAnomaly));
+            const symmetricalMin = -absMaxAnomaly;
+            const symmetricalMax = absMaxAnomaly;
+
+            // Convert HSV colors to RGB for interpolation
+            const lowRgb = hslToRgb(hsvToHsl(lowColor.h, lowColor.s, lowColor.v).h, hsvToHsl(lowColor.h, lowColor.s, lowColor.v).s, hsvToHsl(lowColor.h, lowColor.s, lowColor.v).l);
+            const lowMidRgb = hslToRgb(hsvToHsl(lowMidColor.h, lowMidColor.s, lowMidColor.v).h, hsvToHsl(lowMidColor.h, lowMidColor.s, lowMidColor.v).s, hsvToHsl(lowMidColor.h, lowMidColor.s, lowMidColor.v).l);
+            const midRgb = hslToRgb(hsvToHsl(midColor.h, midColor.s, midColor.v).h, hsvToHsl(midColor.h, midColor.s, midColor.v).s, hsvToHsl(midColor.h, midColor.s, midColor.v).l);
+            const highMidRgb = hslToRgb(hsvToHsl(highMidColor.h, highMidColor.s, highMidColor.v).h, hsvToHsl(highMidColor.h, highMidColor.s, highMidColor.v).s, hsvToHsl(highMidColor.h, highMidColor.s, highMidColor.v).l);
+            const highRgb = hslToRgb(hsvToHsl(highColor.h, highColor.s, highColor.v).h, hsvToHsl(highColor.h, highColor.s, highColor.v).s, hsvToHsl(highColor.h, highColor.s, highColor.v).l);
+
+            // Normalize value to a 0-1 scale where 0 is at 0.5
+            const normalizedValue = (value - symmetricalMin) / (symmetricalMax - symmetricalMin);
+
+            if (normalizedValue < 0.25) {
+                // Transition from Low to LowMid
+                const t = normalizedValue * 4;
+                return interpolateColor(t, lowRgb, lowMidRgb);
+            } else if (normalizedValue < 0.5) {
+                // Transition from LowMid to Mid
+                const t = (normalizedValue - 0.25) * 4;
+                return interpolateColor(t, lowMidRgb, midRgb);
+            } else if (normalizedValue < 0.75) {
+                // Transition from Mid to HighMid
+                const t = (normalizedValue - 0.5) * 4;
+                return interpolateColor(t, midRgb, highMidRgb);
+            } else {
+                // Transition from HighMid to High
+                const t = (normalizedValue - 0.75) * 4;
+                return interpolateColor(t, highMidRgb, highRgb);
+            }
         }
 
         function getColorForValue(value, minVal, maxVal) {
+            if (currentMode === 'anomaly') {
+                return getAnomalyColorForValue(value, minVal, maxVal);
+            }
+
             const normalizedValue = (value - minVal) / (maxVal - minVal);
 
             const lowHsl = hsvToHsl(lowColor.h, lowColor.s, lowColor.v);
