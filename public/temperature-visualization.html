@@ -234,6 +234,11 @@
         <input type="file" id="upload-colors-input" style="display: none;" accept=".json">
     </div>
 
+    <div class="mode-toggle-bar">
+        <button id="default-colors-btn">Default Colors</button>
+        <button id="greyscale-colors-btn">Greyscale Colors</button>
+    </div>
+
     <script>
         // Data Source for Temperature Anomalies: NOAA National Centers for Environmental Information (NCEI)
         // Global Time Series, Land+Ocean, Monthly, 1850-2024
@@ -607,6 +612,9 @@
             document.getElementById('filtered-mode-btn').addEventListener('click', () => renderVisualization('filtered'));
             document.getElementById('filtered-5-month-mode-btn').addEventListener('click', () => renderVisualization('filtered-5-month'));
 
+            document.getElementById('default-colors-btn').addEventListener('click', () => loadColorPreset('default'));
+            document.getElementById('greyscale-colors-btn').addEventListener('click', () => loadColorPreset('greyscale'));
+
             document.getElementById('save-image-btn').addEventListener('click', () => {
                 const visualizationContainer = document.getElementById('temp-visualization');
                 html2canvas(visualizationContainer, {
@@ -887,6 +895,37 @@
             // Reset the input so the same file can be uploaded again
             event.target.value = '';
         });
+
+        async function loadColorPreset(presetName) {
+            const filePath = `global-temperatures/temperature-${presetName}.json`;
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const colorConfig = await response.json();
+
+                if (colorConfig.low && colorConfig.lowMid && colorConfig.mid && colorConfig.highMid && colorConfig.high) {
+                    document.getElementById('low-hex-input').value = colorConfig.low;
+                    document.getElementById('lowMid-hex-input').value = colorConfig.lowMid;
+                    document.getElementById('mid-hex-input').value = colorConfig.mid;
+                    document.getElementById('highMid-hex-input').value = colorConfig.highMid;
+                    document.getElementById('high-hex-input').value = colorConfig.high;
+
+                    // Update sliders and re-render
+                    updateSlidersFromHex('low');
+                    updateSlidersFromHex('lowMid');
+                    updateSlidersFromHex('mid');
+                    updateSlidersFromHex('highMid');
+                    updateSlidersFromHex('high');
+                } else {
+                    alert('Invalid color configuration file.');
+                }
+            } catch (error) {
+                alert(`Error loading ${presetName} color preset.`);
+                console.error(`Error loading color preset:`, error);
+            }
+        }
     </script>
 </body>
 </html>
