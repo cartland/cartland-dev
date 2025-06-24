@@ -619,7 +619,7 @@
                 const visualizationContainer = document.getElementById('temp-visualization');
                 html2canvas(visualizationContainer, {
                     backgroundColor: '#1a1a2e', // Match body background
-                    scale: 4 // Default to 2x resolution
+                    scale: 8 // Default to 2x resolution
                 }).then(canvas => {
                     const link = document.createElement('a');
                     const modeName = currentMode === 'temperature' ? 'Temperature' : 'Anomaly';
