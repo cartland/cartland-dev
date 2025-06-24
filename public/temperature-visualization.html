@@ -227,6 +227,9 @@
     <p class="description" id="description-text"></p>
     <div class="button-container">
         <button id="save-image-btn" class="save-button">Download Image</button>
+        <button id="download-colors-btn" class="save-button">Download Colors</button>
+        <button id="upload-colors-btn" class="save-button">Upload Colors</button>
+        <input type="file" id="upload-colors-input" style="display: none;" accept=".json">
     </div>
 
     <script>
@@ -787,6 +790,71 @@
         updateSlidersFromHex('mid');
         updateSlidersFromHex('highMid');
         updateSlidersFromHex('high');
+
+        document.getElementById('download-colors-btn').addEventListener('click', () => {
+            const colorConfig = {
+                low: document.getElementById('low-hex-input').value,
+                lowMid: document.getElementById('lowMid-hex-input').value,
+                mid: document.getElementById('mid-hex-input').value,
+                highMid: document.getElementById('highMid-hex-input').value,
+                high: document.getElementById('high-hex-input').value,
+            };
+
+            const jsonString = JSON.stringify(colorConfig, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'color-configuration.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('upload-colors-btn').addEventListener('click', () => {
+            document.getElementById('upload-colors-input').click();
+        });
+
+        document.getElementById('upload-colors-input').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const colorConfig = JSON.parse(e.target.result);
+
+                    // Validate the config object
+                    if (colorConfig.low && colorConfig.lowMid && colorConfig.mid && colorConfig.highMid && colorConfig.high) {
+                        document.getElementById('low-hex-input').value = colorConfig.low;
+                        document.getElementById('lowMid-hex-input').value = colorConfig.lowMid;
+                        document.getElementById('mid-hex-input').value = colorConfig.mid;
+                        document.getElementById('highMid-hex-input').value = colorConfig.highMid;
+                        document.getElementById('high-hex-input').value = colorConfig.high;
+
+                        // Update sliders and re-render
+                        updateSlidersFromHex('low');
+                        updateSlidersFromHex('lowMid');
+                        updateSlidersFromHex('mid');
+                        updateSlidersFromHex('highMid');
+                        updateSlidersFromHex('high');
+                    } else {
+                        alert('Invalid color configuration file.');
+                    }
+                } catch (error) {
+                    alert('Error parsing JSON file.');
+                    console.error('Error parsing color configuration:', error);
+                }
+            };
+            reader.readAsText(file);
+
+            // Reset the input so the same file can be uploaded again
+            event.target.value = '';
+        });
     </script>
 </body>
 </html>
