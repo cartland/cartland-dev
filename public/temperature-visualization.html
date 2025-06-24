@@ -220,8 +220,9 @@
         <h1><a href="/projects.html">Projects</a></h1>
     </header>
     <div class="mode-toggle-bar">
-        <button id="temperature-mode-btn" class="active">Temperature Mode</button>
-        <button id="anomaly-mode-btn">Anomaly Mode</button>
+        <button id="temperature-mode-btn" class="active">Temperature</button>
+        <button id="anomaly-mode-btn">Anomaly</button>
+        <button id="filtered-mode-btn">Anomaly (3-Month Average)</button>
     </div>
     <div class="visualization-container" id="temp-visualization"></div>
     <p class="description" id="description-text"></p>
@@ -236,7 +237,8 @@
         // Data Source for Temperature Anomalies: NOAA National Centers for Environmental Information (NCEI)
         // Global Time Series, Land+Ocean, Monthly, 1850-2024
         // URL: https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024
-        const DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv';
+        const ORIGINAL_DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv';
+        const FILTERED_DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-3-months.csv';
 
         // Data Source for Baseline Temperatures (1901-2000 average): NOAA NCEI
         // Global Climate Report - Data Info (provides details on the 1850-1900 baseline period)
@@ -249,10 +251,11 @@
             return (celsius * 9/5) + 32;
         }
 
-        async function loadTemperatureData() {
+        async function loadTemperatureData(filtered = false) {
+            const dataFilePath = filtered ? FILTERED_DATA_FILE_PATH : ORIGINAL_DATA_FILE_PATH;
             try {
                 const [csvResponse, baselineResponse] = await Promise.all([
-                    fetch(DATA_FILE_PATH),
+                    fetch(dataFilePath),
                     fetch(BASELINE_FILE_PATH)
                 ]);
 
@@ -451,37 +454,45 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
-        let currentMode = 'temperature'; // 'temperature' or 'anomaly'
-        let allData = []; // Store parsed data globally
+        let currentMode = 'temperature'; // 'temperature', 'anomaly', or 'filtered'
+        let originalData = [];
+        let filteredData = [];
 
         async function renderVisualization(mode) {
             currentMode = mode;
             const visualizationContainer = document.getElementById('temp-visualization');
             visualizationContainer.innerHTML = ''; // Clear previous visualization
 
-            if (allData.length === 0) {
-                allData = await loadTemperatureData();
-                if (allData.length === 0) {
-                    visualizationContainer.textContent = 'Failed to load temperature data.';
-                    return;
-                }
+            const isFiltered = mode === 'filtered';
+
+            if (isFiltered && filteredData.length === 0) {
+                filteredData = await loadTemperatureData(true);
+            } else if (!isFiltered && originalData.length === 0) {
+                originalData = await loadTemperatureData(false);
+            }
+
+            const data = isFiltered ? filteredData : originalData;
+
+            if (data.length === 0) {
+                visualizationContainer.textContent = 'Failed to load temperature data.';
+                return;
             }
 
             const dataToVisualize = currentMode === 'temperature'
-                ? allData.map(d => d.anomaly + monthlyBaselineTemps.get(d.month))
-                : allData.map(d => d.anomaly);
+                ? data.map(d => d.anomaly + monthlyBaselineTemps.get(d.month))
+                : data.map(d => d.anomaly);
 
             const minVal = Math.min(...dataToVisualize);
             const maxVal = Math.max(...dataToVisualize);
 
-            const startYear = allData[0].year;
-            const endYear = allData[allData.length - 1].year;
+            const startYear = data[0].year;
+            const endYear = data[data.length - 1].year;
             const numYears = endYear - startYear + 1;
 
             visualizationContainer.style.gridTemplateColumns = `repeat(${numYears}, 1fr)`;
 
             const monthlyDataMap = new Map();
-            allData.forEach(d => {
+            data.forEach(d => {
                 if (!monthlyDataMap.has(d.year)) {
                     monthlyDataMap.set(d.year, new Map());
                 }
@@ -521,7 +532,7 @@
             const descriptionElement = document.getElementById('description-text');
             if (currentMode === 'temperature') {
                 const annualTemperatures = {};
-                allData.forEach(d => {
+                data.forEach(d => {
                     if (!annualTemperatures[d.year]) {
                         annualTemperatures[d.year] = [];
                     }
@@ -542,9 +553,9 @@
                     This visualization shows estimated global monthly average temperatures from January ${startYear} to December ${endYear}. Annual average temperatures range from <strong>${minAnnualAvgC.toFixed(1)}°C (${minAnnualAvgF.toFixed(1)}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(1)}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
                     <br><span class="data-source-link">Data source: <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024" target="_blank">NOAA National Centers for Environmental Information (NCEI)</a></span>
                 `;
-            } else { // anomaly mode
+            } else { // anomaly or filtered mode
                 const annualAnomalies = {};
-                allData.forEach(d => {
+                data.forEach(d => {
                     if (!annualAnomalies[d.year]) {
                         annualAnomalies[d.year] = [];
                     }
@@ -559,21 +570,24 @@
                 const minAnnualAvgAnomaly = Math.min(...annualAverageAnomalies);
                 const maxAnnualAvgAnomaly = Math.max(...annualAverageAnomalies);
 
-                descriptionElement.innerHTML = `
-                    This visualization shows global monthly temperature anomalies from January ${startYear} to December ${endYear},
-                    relative to the 1850-1900 baseline.
-                    <br><span class="data-source-link">Data source: <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024" target="_blank">NOAA National Centers for Environmental Information (NCEI)</a></span>
-                `;
+                let description = `This visualization shows global monthly temperature anomalies from January ${startYear} to December ${endYear}, relative to the 1850-1900 baseline.`;
+                if (currentMode === 'filtered') {
+                    description += ' A 3-month averaging filter has been applied.';
+                }
+                description += `<br><span class="data-source-link">Data source: <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024" target="_blank">NOAA National Centers for Environmental Information (NCEI)</a></span>`;
+                descriptionElement.innerHTML = description;
             }
 
             // Update button active states
             document.getElementById('temperature-mode-btn').classList.toggle('active', currentMode === 'temperature');
             document.getElementById('anomaly-mode-btn').classList.toggle('active', currentMode === 'anomaly');
+            document.getElementById('filtered-mode-btn').classList.toggle('active', currentMode === 'filtered');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('temperature-mode-btn').addEventListener('click', () => renderVisualization('temperature'));
             document.getElementById('anomaly-mode-btn').addEventListener('click', () => renderVisualization('anomaly'));
+            document.getElementById('filtered-mode-btn').addEventListener('click', () => renderVisualization('filtered'));
 
             document.getElementById('save-image-btn').addEventListener('click', () => {
                 const visualizationContainer = document.getElementById('temp-visualization');
