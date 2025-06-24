@@ -223,6 +223,7 @@
         <button id="temperature-mode-btn" class="active">Temperature</button>
         <button id="anomaly-mode-btn">Anomaly</button>
         <button id="filtered-mode-btn">Anomaly (3-Month Average)</button>
+        <button id="filtered-5-month-mode-btn">Anomaly (5-Month Average)</button>
     </div>
     <div class="visualization-container" id="temp-visualization"></div>
     <p class="description" id="description-text"></p>
@@ -238,7 +239,8 @@
         // Global Time Series, Land+Ocean, Monthly, 1850-2024
         // URL: https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024
         const ORIGINAL_DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv';
-        const FILTERED_DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-3-months.csv';
+        const FILTERED_3_MONTH_DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-3-months.csv';
+        const FILTERED_5_MONTH_DATA_FILE_PATH = 'global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-5-months.csv';
 
         // Data Source for Baseline Temperatures (1901-2000 average): NOAA NCEI
         // Global Climate Report - Data Info (provides details on the 1850-1900 baseline period)
@@ -251,8 +253,13 @@
             return (celsius * 9/5) + 32;
         }
 
-        async function loadTemperatureData(filtered = false) {
-            const dataFilePath = filtered ? FILTERED_DATA_FILE_PATH : ORIGINAL_DATA_FILE_PATH;
+        async function loadTemperatureData(filterMonths = 0) {
+            let dataFilePath = ORIGINAL_DATA_FILE_PATH;
+            if (filterMonths === 3) {
+                dataFilePath = FILTERED_3_MONTH_DATA_FILE_PATH;
+            } else if (filterMonths === 5) {
+                dataFilePath = FILTERED_5_MONTH_DATA_FILE_PATH;
+            }
             try {
                 const [csvResponse, baselineResponse] = await Promise.all([
                     fetch(dataFilePath),
@@ -454,24 +461,33 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
-        let currentMode = 'temperature'; // 'temperature', 'anomaly', or 'filtered'
+        let currentMode = 'temperature'; // 'temperature', 'anomaly', 'filtered', or 'filtered-5-month'
         let originalData = [];
-        let filteredData = [];
+        let filtered3MonthData = [];
+        let filtered5MonthData = [];
 
         async function renderVisualization(mode) {
             currentMode = mode;
             const visualizationContainer = document.getElementById('temp-visualization');
             visualizationContainer.innerHTML = ''; // Clear previous visualization
 
-            const isFiltered = mode === 'filtered';
-
-            if (isFiltered && filteredData.length === 0) {
-                filteredData = await loadTemperatureData(true);
-            } else if (!isFiltered && originalData.length === 0) {
-                originalData = await loadTemperatureData(false);
+            let data;
+            if (mode === 'filtered') {
+                if (filtered3MonthData.length === 0) {
+                    filtered3MonthData = await loadTemperatureData(3);
+                }
+                data = filtered3MonthData;
+            } else if (mode === 'filtered-5-month') {
+                if (filtered5MonthData.length === 0) {
+                    filtered5MonthData = await loadTemperatureData(5);
+                }
+                data = filtered5MonthData;
+            } else {
+                if (originalData.length === 0) {
+                    originalData = await loadTemperatureData(0);
+                }
+                data = originalData;
             }
-
-            const data = isFiltered ? filteredData : originalData;
 
             if (data.length === 0) {
                 visualizationContainer.textContent = 'Failed to load temperature data.';
@@ -582,12 +598,14 @@
             document.getElementById('temperature-mode-btn').classList.toggle('active', currentMode === 'temperature');
             document.getElementById('anomaly-mode-btn').classList.toggle('active', currentMode === 'anomaly');
             document.getElementById('filtered-mode-btn').classList.toggle('active', currentMode === 'filtered');
+            document.getElementById('filtered-5-month-mode-btn').classList.toggle('active', currentMode === 'filtered-5-month');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('temperature-mode-btn').addEventListener('click', () => renderVisualization('temperature'));
             document.getElementById('anomaly-mode-btn').addEventListener('click', () => renderVisualization('anomaly'));
             document.getElementById('filtered-mode-btn').addEventListener('click', () => renderVisualization('filtered'));
+            document.getElementById('filtered-5-month-mode-btn').addEventListener('click', () => renderVisualization('filtered-5-month'));
 
             document.getElementById('save-image-btn').addEventListener('click', () => {
                 const visualizationContainer = document.getElementById('temp-visualization');
