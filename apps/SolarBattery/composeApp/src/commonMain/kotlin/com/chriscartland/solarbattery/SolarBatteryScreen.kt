@@ -11,13 +11,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
@@ -66,18 +67,16 @@ fun SolarBatteryScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
+            val pv = WindowInsets.safeContent.asPaddingValues()
+            val dir = LocalLayoutDirection.current
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = WindowInsets.safeGestures.asPaddingValues().let { pv ->
-                    LocalLayoutDirection.current.let { dir ->
-                        PaddingValues(
-                            start = pv.calculateStartPadding(dir),
-                            end = pv.calculateStartPadding(dir),
-                        )
-                    }
-                },
+                contentPadding = PaddingValues(
+                    start = pv.calculateStartPadding(dir).coerceAtLeast(16.dp),
+                    end = pv.calculateEndPadding(dir).coerceAtLeast(16.dp),
+                ),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 item { Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing)) }
