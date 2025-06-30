@@ -56,10 +56,15 @@ import kotlin.math.abs
 fun SolarBatteryScreen() {
     var inputs by remember { mutableStateOf(FinancialInputs()) }
     var result by remember { mutableStateOf(CalculationResult()) }
+    var invalidFields by remember { mutableStateOf(emptySet<String>()) }
 
     // Recalculate whenever inputs change
     LaunchedEffect(inputs) {
-        result = FinancialCalculator.runAnalysis(inputs)
+        val errors = FinancialCalculator.validate(inputs)
+        if (errors.isEmpty()) {
+            result = FinancialCalculator.runAnalysis(inputs)
+        }
+        invalidFields = errors
     }
 
     SolarBatteryTheme {
@@ -88,6 +93,7 @@ fun SolarBatteryScreen() {
                         onInputsChange = { newInputs ->
                             inputs = newInputs
                         },
+                        invalidFields = invalidFields,
                     )
                 }
                 item { ActionButtons(onRestoreDefaults = { inputs = FinancialInputs() }) }
@@ -217,6 +223,7 @@ fun CostSummaryItem(
 fun FinancialAssumptions(
     inputs: FinancialInputs,
     onInputsChange: (FinancialInputs) -> Unit,
+    invalidFields: Set<String>,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -239,28 +246,32 @@ fun FinancialAssumptions(
                     InputField(
                         label = "Analysis Duration (Years)",
                         value = inputs.duration,
-                        onValueChange = { onInputsChange(inputs.copy(duration = it.toInt())) },
+                        onValueChange = { onInputsChange(inputs.copy(duration = it)) },
                         description = "Length of the cost comparison.",
+                        isError = "duration" in invalidFields,
                     )
                     InputField(
                         label = "Investment Opportunity Cost (%)",
                         value = inputs.opportunityCostRate,
-                        onValueChange = { onInputsChange(inputs.copy(opportunityCostRate = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(opportunityCostRate = it)) },
                         description = "Expected return if you invested the money instead.",
+                        isError = "opportunityCostRate" in invalidFields,
                     )
                 }
                 AssumptionGroup(title = "Utility Settings", color = MaterialTheme.colorScheme.tertiary, modifier = Modifier.weight(1f)) {
                     InputField(
                         label = "Current Annual Utility Bill ($)",
                         value = inputs.initialUtilityCost,
-                        onValueChange = { onInputsChange(inputs.copy(initialUtilityCost = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(initialUtilityCost = it)) },
                         description = "Your total electricity cost for the last 12 months.",
+                        isError = "initialUtilityCost" in invalidFields,
                     )
                     InputField(
                         label = "Annual Cost Increase (%)",
                         value = inputs.utilityCostIncrease,
-                        onValueChange = { onInputsChange(inputs.copy(utilityCostIncrease = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(utilityCostIncrease = it)) },
                         description = "The average yearly rate increase from your utility.",
+                        isError = "utilityCostIncrease" in invalidFields,
                     )
                 }
                 AssumptionGroup(
@@ -271,38 +282,44 @@ fun FinancialAssumptions(
                     InputField(
                         label = "Upfront Solar System Cost ($)",
                         value = inputs.solarCostBase,
-                        onValueChange = { onInputsChange(inputs.copy(solarCostBase = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(solarCostBase = it)) },
                         description = "Initial cost to purchase and install solar panels.",
+                        isError = "solarCostBase" in invalidFields,
                     )
                     InputField(
                         label = "Solar System Lifespan (Years)",
                         value = inputs.solarLife,
-                        onValueChange = { onInputsChange(inputs.copy(solarLife = it.toInt())) },
+                        onValueChange = { onInputsChange(inputs.copy(solarLife = it)) },
                         description = "How long the solar panels are expected to last.",
+                        isError = "solarLife" in invalidFields,
                     )
                     InputField(
                         label = "Battery Cost ($)",
                         value = inputs.batteryCostBase,
-                        onValueChange = { onInputsChange(inputs.copy(batteryCostBase = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(batteryCostBase = it)) },
                         description = "Initial cost to purchase and install a home battery.",
+                        isError = "batteryCostBase" in invalidFields,
                     )
                     InputField(
                         label = "Battery Lifespan (Years)",
                         value = inputs.batteryLife,
-                        onValueChange = { onInputsChange(inputs.copy(batteryLife = it.toInt())) },
+                        onValueChange = { onInputsChange(inputs.copy(batteryLife = it)) },
                         description = "How long the battery is expected to last before replacement.",
+                        isError = "batteryLife" in invalidFields,
                     )
                     InputField(
                         label = "Battery Cost Decrease per ${inputs.batteryLife} years (%)",
                         value = inputs.batteryCostDecrease,
-                        onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it)) },
                         description = "Projected price drop for batteries at each replacement.",
+                        isError = "batteryCostDecrease" in invalidFields,
                     )
                     InputField(
                         label = "Ongoing Grid Connection Fee (%)",
                         value = inputs.unavoidableUtilityPercent,
-                        onValueChange = { onInputsChange(inputs.copy(unavoidableUtilityPercent = it.toDouble())) },
+                        onValueChange = { onInputsChange(inputs.copy(unavoidableUtilityPercent = it)) },
                         description = "Percentage of utility bill for grid access, even with solar.",
+                        isError = "unavoidableUtilityPercent" in invalidFields,
                     )
                 }
             }
@@ -331,32 +348,19 @@ fun AssumptionGroup(
 @Composable
 fun InputField(
     label: String,
-    value: Number,
-    onValueChange: (Number) -> Unit,
+    value: String,
+    onValueChange: (String) -> Unit,
     description: String,
+    isError: Boolean,
 ) {
-    var text by remember(value) { mutableStateOf(value.toString()) }
-    var isError by remember { mutableStateOf(false) }
-
-    val onTextChange: (String) -> Unit = { newText ->
-        text = newText
-        val number = newText.toDoubleOrNull()
-        if (number != null) {
-            onValueChange(number)
-            isError = false
-        } else {
-            isError = true
-        }
-    }
-
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(label, style = MaterialTheme.typography.labelLarge)
         Spacer(modifier = Modifier.height(2.dp))
         Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
-            value = text,
-            onValueChange = onTextChange,
+            value = value,
+            onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             isError = isError,
