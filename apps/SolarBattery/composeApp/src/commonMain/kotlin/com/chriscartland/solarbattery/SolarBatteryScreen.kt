@@ -31,10 +31,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.chriscartland.solarbattery.ui.theme.GradientBlue500
+import com.chriscartland.solarbattery.ui.theme.GradientGreen400
 import com.chriscartland.solarbattery.ui.theme.SolarBatteryTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import java.text.NumberFormat
@@ -86,10 +90,15 @@ fun Header() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "Utility vs. Solar + Battery: A Cost Analysis",
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineMedium.merge(
+                TextStyle(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(GradientGreen400, GradientBlue500)
+                    )
+                )
+            ),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -109,7 +118,7 @@ fun MainContent(result: CalculationResult) {
     ) {
         Card(
             modifier = Modifier.weight(2f),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text("Annual Cost Comparison", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
@@ -120,7 +129,7 @@ fun MainContent(result: CalculationResult) {
         }
         Card(
             modifier = Modifier.weight(1f),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -178,7 +187,7 @@ fun FinancialAssumptions(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("Financial Assumptions", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
@@ -213,7 +222,7 @@ fun FinancialAssumptions(
 fun AssumptionGroup(title: String, color: Color, modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.background, shape = MaterialTheme.shapes.medium)
             .padding(12.dp)
     ) {
         Text(text = title, style = MaterialTheme.typography.titleMedium, color = color)
