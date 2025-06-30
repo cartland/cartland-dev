@@ -212,19 +212,60 @@
             const shareableLinkContainer = document.getElementById('shareableLinkContainer');
             const shareableLinkInput = document.getElementById('shareableLink');
 
-            const paramAliases = {
-                duration: 'd',
-                opportunityCostRate: 'ocr',
-                initialUtilityCost: 'iuc',
-                utilityCostIncrease: 'uci',
-                solarCostBase: 'scb',
-                solarLife: 'sl',
-                batteryCostBase: 'bcb',
-                batteryLife: 'bl',
-                batteryCostDecrease: 'bcd',
-                unavoidableUtilityPercent: 'uup',
+            // --- URL PARAMETER CONFIGURATION ---
+            // DO NOT CHANGE EXISTING URL PARAMETERS.
+            // Changing them will break existing shared links.
+            // Consider adding new parameters instead to avoid unexpected behavior.
+            const urlParamsConfig = {
+                duration: {
+                    abbr: 'd',
+                    description: 'The total duration of the financial analysis in years.'
+                },
+                opportunityCostRate: {
+                    abbr: 'ocr',
+                    description: 'The annual rate of return (%) that could be earned on an investment with similar risk. This is used to calculate the opportunity cost of spending money on the solar/battery system instead of investing it.'
+                },
+                initialUtilityCost: {
+                    abbr: 'iuc',
+                    description: 'The total cost of electricity from the utility for the first year of the analysis ($).'
+                },
+                utilityCostIncrease: {
+                    abbr: 'uci',
+                    description: 'The projected annual percentage increase in utility electricity costs (%).'
+                },
+                solarCostBase: {
+                    abbr: 'scb',
+                    description: 'The initial, upfront cost of the solar panel system, including installation ($). This cost is scaled based on the initial utility cost.'
+                },
+                solarLife: {
+                    abbr: 'sl',
+                    description: 'The expected operational lifespan of the solar panels in years before they need replacement.'
+                },
+                batteryCostBase: {
+                    abbr: 'bcb',
+                    description: 'The initial, upfront cost of the battery storage system, including installation ($). This cost is also scaled.'
+                },
+                batteryLife: {
+                    abbr: 'bl',
+                    description: 'The expected operational lifespan of the battery in years before it needs replacement.'
+                },
+                batteryCostDecrease: {
+                    abbr: 'bcd',
+                    description: 'The projected percentage decrease in the cost of batteries for each subsequent replacement, reflecting expected technological improvements and market changes (%).'
+                },
+                unavoidableUtilityPercent: {
+                    abbr: 'uup',
+                    description: 'The percentage of the utility bill that remains even with a solar and battery system, representing fixed connection fees or charges for grid services (%).'
+                }
             };
-            const reverseParamAliases = Object.fromEntries(Object.entries(paramAliases).map(a => a.reverse()));
+
+            // --- DERIVED PARAMETER MAPPINGS ---
+            const paramAliases = Object.fromEntries(
+                Object.entries(urlParamsConfig).map(([key, config]) => [key, config.abbr])
+            );
+            const reverseParamAliases = Object.fromEntries(
+                Object.entries(urlParamsConfig).map(([key, config]) => [config.abbr, key])
+            );
 
             const clearURLParams = () => {
                 const url = new URL(window.location);
