@@ -4,15 +4,15 @@ import kotlin.math.pow
 
 data class FinancialInputs(
     val duration: String = "30",
-    val opportunityCostRate: String = "4.0",
-    val initialUtilityCost: String = "2400.0",
-    val utilityCostIncrease: String = "2.0",
-    val solarCostBase: String = "10200.0",
+    val opportunityCostRate: String = "4",
+    val initialUtilityCost: String = "2400",
+    val utilityCostIncrease: String = "2",
+    val solarCostBase: String = "10200",
     val solarLife: String = "30",
-    val batteryCostBase: String = "14500.0",
+    val batteryCostBase: String = "14500",
     val batteryLife: String = "10",
-    val batteryCostDecrease: String = "30.0",
-    val unavoidableUtilityPercent: String = "20.0",
+    val batteryCostDecrease: String = "30",
+    val unavoidableUtilityPercent: String = "20",
 )
 
 data class CalculationResult(
