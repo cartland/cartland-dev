@@ -58,13 +58,13 @@ fun AnnualCostChartM3(
         chart =
             rememberCartesianChart(
                 rememberColumnCartesianLayer(
+                    mergeMode = { ColumnCartesianLayer.MergeMode.Grouped(columnSpacing = 0.dp) },
                     columnProvider =
                         ColumnCartesianLayer.ColumnProvider.series(
                             columnColors.map { color ->
                                 rememberLineComponent(fill = Fill(color), thickness = 8.dp)
                             },
                         ),
-                    columnCollectionSpacing = 4.dp,
                 ),
                 startAxis = VerticalAxis.rememberStart(
                     valueFormatter = CartesianValueFormatter { context, value, _ ->
