@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.multiplatform.cartesian.Zoom
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
@@ -15,6 +16,7 @@ import com.patrykandpatrick.vico.multiplatform.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.multiplatform.cartesian.layer.ColumnCartesianLayer
 import com.patrykandpatrick.vico.multiplatform.cartesian.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.multiplatform.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.multiplatform.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.multiplatform.common.Fill
 import com.patrykandpatrick.vico.multiplatform.common.Insets
 import com.patrykandpatrick.vico.multiplatform.common.LegendItem
@@ -95,5 +97,9 @@ fun AnnualCostChartM3(
                     ),
             ),
         modelProducer = modelProducer,
+        zoomState = rememberVicoZoomState(
+            zoomEnabled = false,
+            initialZoom = Zoom.Content,
+        ),
     )
 }
