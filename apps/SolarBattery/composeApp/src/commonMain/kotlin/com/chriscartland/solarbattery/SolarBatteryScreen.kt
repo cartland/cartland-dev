@@ -6,13 +6,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -32,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,14 +68,21 @@ fun SolarBatteryScreen() {
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = WindowInsets.safeGestures.asPaddingValues().let { pv ->
+                    LocalLayoutDirection.current.let { dir ->
+                        PaddingValues(
+                            start = pv.calculateStartPadding(dir),
+                            end = pv.calculateStartPadding(dir),
+                        )
+                    }
+                },
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
+                item { Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing)) }
                 item { Header() }
-                item { Spacer(modifier = Modifier.height(24.dp)) }
                 item { MainContent(result) }
-                item { Spacer(modifier = Modifier.height(24.dp)) }
                 item {
                     FinancialAssumptions(
                         inputs = inputs,
@@ -75,8 +91,8 @@ fun SolarBatteryScreen() {
                         },
                     )
                 }
-                item { Spacer(modifier = Modifier.height(16.dp)) }
                 item { ActionButtons(onRestoreDefaults = { inputs = FinancialInputs() }) }
+                item { Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing)) }
             }
         }
     }
