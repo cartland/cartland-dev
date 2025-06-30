@@ -221,88 +221,72 @@ fun FinancialAssumptions(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 AssumptionGroup(title = "General", color = MaterialTheme.colorScheme.secondary, modifier = Modifier.weight(1f)) {
-                    InputField(label = "Analysis Duration (Years)", value = inputs.duration.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                duration =
-                                    it.toIntOrNull() ?: 0,
-                            ),
-                        )
-                    }, description = "Length of the cost comparison.")
-                    InputField(label = "Investment Opportunity Cost (%)", value = inputs.opportunityCostRate.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                opportunityCostRate =
-                                    it.toDoubleOrNull() ?: 0.0,
-                            ),
-                        )
-                    }, description = "Expected return if you invested the money instead.")
+                    InputField(
+                        label = "Analysis Duration (Years)",
+                        value = inputs.duration,
+                        onValueChange = { onInputsChange(inputs.copy(duration = it.toInt())) },
+                        description = "Length of the cost comparison.",
+                    )
+                    InputField(
+                        label = "Investment Opportunity Cost (%)",
+                        value = inputs.opportunityCostRate,
+                        onValueChange = { onInputsChange(inputs.copy(opportunityCostRate = it.toDouble())) },
+                        description = "Expected return if you invested the money instead.",
+                    )
                 }
                 AssumptionGroup(title = "Utility Settings", color = MaterialTheme.colorScheme.tertiary, modifier = Modifier.weight(1f)) {
-                    InputField(label = "Current Annual Utility Bill ($)", value = inputs.initialUtilityCost.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                initialUtilityCost =
-                                    it.toDoubleOrNull() ?: 0.0,
-                            ),
-                        )
-                    }, description = "Your total electricity cost for the last 12 months.")
-                    InputField(label = "Annual Cost Increase (%)", value = inputs.utilityCostIncrease.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                utilityCostIncrease =
-                                    it.toDoubleOrNull() ?: 0.0,
-                            ),
-                        )
-                    }, description = "The average yearly rate increase from your utility.")
+                    InputField(
+                        label = "Current Annual Utility Bill ($)",
+                        value = inputs.initialUtilityCost,
+                        onValueChange = { onInputsChange(inputs.copy(initialUtilityCost = it.toDouble())) },
+                        description = "Your total electricity cost for the last 12 months.",
+                    )
+                    InputField(
+                        label = "Annual Cost Increase (%)",
+                        value = inputs.utilityCostIncrease,
+                        onValueChange = { onInputsChange(inputs.copy(utilityCostIncrease = it.toDouble())) },
+                        description = "The average yearly rate increase from your utility.",
+                    )
                 }
                 AssumptionGroup(
                     title = "Solar + Battery Settings",
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                 ) {
-                    InputField(label = "Upfront Solar System Cost ($)", value = inputs.solarCostBase.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                solarCostBase =
-                                    it.toDoubleOrNull() ?: 0.0,
-                            ),
-                        )
-                    }, description = "Initial cost to purchase and install solar panels.")
-                    InputField(label = "Solar System Lifespan (Years)", value = inputs.solarLife.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                solarLife =
-                                    it.toIntOrNull() ?: 0,
-                            ),
-                        )
-                    }, description = "How long the solar panels are expected to last.")
-                    InputField(label = "Battery Cost ($)", value = inputs.batteryCostBase.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                batteryCostBase =
-                                    it.toDoubleOrNull() ?: 0.0,
-                            ),
-                        )
-                    }, description = "Initial cost to purchase and install a home battery.")
-                    InputField(label = "Battery Lifespan (Years)", value = inputs.batteryLife.toString(), onValueChange = {
-                        onInputsChange(
-                            inputs.copy(
-                                batteryLife =
-                                    it.toIntOrNull() ?: 0,
-                            ),
-                        )
-                    }, description = "How long the battery is expected to last before replacement.")
+                    InputField(
+                        label = "Upfront Solar System Cost ($)",
+                        value = inputs.solarCostBase,
+                        onValueChange = { onInputsChange(inputs.copy(solarCostBase = it.toDouble())) },
+                        description = "Initial cost to purchase and install solar panels.",
+                    )
+                    InputField(
+                        label = "Solar System Lifespan (Years)",
+                        value = inputs.solarLife,
+                        onValueChange = { onInputsChange(inputs.copy(solarLife = it.toInt())) },
+                        description = "How long the solar panels are expected to last.",
+                    )
+                    InputField(
+                        label = "Battery Cost ($)",
+                        value = inputs.batteryCostBase,
+                        onValueChange = { onInputsChange(inputs.copy(batteryCostBase = it.toDouble())) },
+                        description = "Initial cost to purchase and install a home battery.",
+                    )
+                    InputField(
+                        label = "Battery Lifespan (Years)",
+                        value = inputs.batteryLife,
+                        onValueChange = { onInputsChange(inputs.copy(batteryLife = it.toInt())) },
+                        description = "How long the battery is expected to last before replacement.",
+                    )
                     InputField(
                         label = "Battery Cost Decrease per ${inputs.batteryLife} years (%)",
-                        value = inputs.batteryCostDecrease.toString(),
-                        onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it.toDoubleOrNull() ?: 0.0)) },
+                        value = inputs.batteryCostDecrease,
+                        onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it.toDouble())) },
                         description = "Projected price drop for batteries at each replacement.",
                     )
                     InputField(
                         label = "Ongoing Grid Connection Fee (%)",
-                        value = inputs.unavoidableUtilityPercent.toString(),
-                        onValueChange = { onInputsChange(inputs.copy(unavoidableUtilityPercent = it.toDoubleOrNull() ?: 0.0)) },
+                        value = inputs.unavoidableUtilityPercent,
+                        onValueChange = { onInputsChange(inputs.copy(unavoidableUtilityPercent = it.toDouble())) },
                         description = "Percentage of utility bill for grid access, even with solar.",
                     )
                 }
@@ -332,20 +316,35 @@ fun AssumptionGroup(
 @Composable
 fun InputField(
     label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: Number,
+    onValueChange: (Number) -> Unit,
     description: String,
 ) {
+    var text by remember(value) { mutableStateOf(value.toString()) }
+    var isError by remember { mutableStateOf(false) }
+
+    val onTextChange: (String) -> Unit = { newText ->
+        text = newText
+        val number = newText.toDoubleOrNull()
+        if (number != null) {
+            onValueChange(number)
+            isError = false
+        } else {
+            isError = true
+        }
+    }
+
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(label, style = MaterialTheme.typography.labelLarge)
         Spacer(modifier = Modifier.height(2.dp))
         Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
+            value = text,
+            onValueChange = onTextChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            isError = isError,
         )
     }
 }
