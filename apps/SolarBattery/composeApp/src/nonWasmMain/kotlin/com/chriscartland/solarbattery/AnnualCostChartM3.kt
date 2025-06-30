@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
@@ -47,9 +48,11 @@ fun AnnualCostChartM3(
     }
     val columnColors = listOf(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.primary)
     val textComponent = rememberTextComponent(
-        style = androidx.compose.ui.text.TextStyle(
+        style = MaterialTheme.typography.labelSmall.copy(
             color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center,
         ),
+        lineCount = 2,
     )
     CartesianChartHost(
         chart =
@@ -71,7 +74,7 @@ fun AnnualCostChartM3(
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { context, value, _ ->
-                        "Year " + (value.toInt() + 1).toString()
+                        "Year\n" + (value.toInt() + 1).toString()
                     },
                     label = textComponent,
                 ),
