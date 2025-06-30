@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,20 +37,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chriscartland.solarbattery.ui.theme.SolarBatteryTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import java.text.NumberFormat
+import java.util.Locale
+import kotlin.math.abs
 
 @Composable
 fun SolarBatteryScreen() {
-    // State for all the input fields
-    var duration by remember { mutableStateOf("30") }
-    var opportunityCostRate by remember { mutableStateOf("4") }
-    var initialUtilityCost by remember { mutableStateOf("2400") }
-    var utilityCostIncrease by remember { mutableStateOf("2") }
-    var solarCostBase by remember { mutableStateOf("10200") }
-    var solarLife by remember { mutableStateOf("30") }
-    var batteryCostBase by remember { mutableStateOf("14500") }
-    var batteryLife by remember { mutableStateOf("10") }
-    var batteryCostDecrease by remember { mutableStateOf("30") }
-    var unavoidableUtilityPercent by remember { mutableStateOf("20") }
+    var inputs by remember { mutableStateOf(FinancialInputs()) }
+    var result by remember { mutableStateOf(CalculationResult()) }
+
+    // Recalculate whenever inputs change
+    LaunchedEffect(inputs) {
+        result = FinancialCalculator.runAnalysis(inputs)
+    }
 
     SolarBatteryTheme {
         Surface(
@@ -64,24 +64,18 @@ fun SolarBatteryScreen() {
             ) {
                 item { Header() }
                 item { Spacer(modifier = Modifier.height(24.dp)) }
-                item { MainContent() }
+                item { MainContent(result) }
                 item { Spacer(modifier = Modifier.height(24.dp)) }
                 item {
                     FinancialAssumptions(
-                        duration = duration, onDurationChange = { duration = it },
-                        opportunityCostRate = opportunityCostRate, onOpportunityCostRateChange = { opportunityCostRate = it },
-                        initialUtilityCost = initialUtilityCost, onInitialUtilityCostChange = { initialUtilityCost = it },
-                        utilityCostIncrease = utilityCostIncrease, onUtilityCostIncreaseChange = { utilityCostIncrease = it },
-                        solarCostBase = solarCostBase, onSolarCostBaseChange = { solarCostBase = it },
-                        solarLife = solarLife, onSolarLifeChange = { solarLife = it },
-                        batteryCostBase = batteryCostBase, onBatteryCostBaseChange = { batteryCostBase = it },
-                        batteryLife = batteryLife, onBatteryLifeChange = { batteryLife = it },
-                        batteryCostDecrease = batteryCostDecrease, onBatteryCostDecreaseChange = { batteryCostDecrease = it },
-                        unavoidableUtilityPercent = unavoidableUtilityPercent, onUnavoidableUtilityPercentChange = { unavoidableUtilityPercent = it }
+                        inputs = inputs,
+                        onInputsChange = { newInputs ->
+                            inputs = newInputs
+                        }
                     )
                 }
                 item { Spacer(modifier = Modifier.height(16.dp)) }
-                item { ActionButtons() }
+                item { ActionButtons(onRestoreDefaults = { inputs = FinancialInputs() }) }
             }
         }
     }
@@ -108,7 +102,7 @@ fun Header() {
 }
 
 @Composable
-fun MainContent() {
+fun MainContent(result: CalculationResult) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -132,15 +126,36 @@ fun MainContent() {
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Cost Summary & Assumptions", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+                Text("Cost Summary", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(16.dp))
-                CostSummaryItem("Total Utility Cost", "$0", "($0 direct cost + $0 opportunity cost)", MaterialTheme.colorScheme.tertiary)
+                CostSummaryItem(
+                    title = "Total Utility Cost",
+                    amount = formatCurrency(result.totalUtilityCost),
+                    breakdown = "(${formatCurrency(result.nominalUtilityCost)} direct + ${formatCurrency(result.opportunityCostUtility)} opportunity)",
+                    color = MaterialTheme.colorScheme.tertiary
+                )
                 Spacer(modifier = Modifier.height(16.dp))
-                CostSummaryItem("Total Solar + Battery Cost", "$0", "($0 direct cost + $0 opportunity cost)", MaterialTheme.colorScheme.primary)
+                CostSummaryItem(
+                    title = "Total Solar + Battery Cost",
+                    amount = formatCurrency(result.totalSolarCost),
+                    breakdown = "(${formatCurrency(result.nominalSolarCost)} direct + ${formatCurrency(result.opportunityCostSolar)} opportunity)",
+                    color = MaterialTheme.colorScheme.primary
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
-                Text("Total Savings", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.secondary)
-                Text("$0", style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.secondary)
+
+                val savingsColor = if (result.savings >= 0) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
+                Text(
+                    text = if (result.savings >= 0) "Total Savings" else "Extra Cost",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = savingsColor
+                )
+                Text(
+                    text = formatCurrency(abs(result.savings)),
+                    style = MaterialTheme.typography.displaySmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = savingsColor
+                )
             }
         }
     }
@@ -149,25 +164,17 @@ fun MainContent() {
 @Composable
 fun CostSummaryItem(title: String, amount: String, breakdown: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = title, style = MaterialTheme.typography.titleMedium, color = color)
+        Text(text = title, style = MaterialTheme.typography.titleMedium, color = color, textAlign = TextAlign.Center)
         Text(text = amount, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold, color = color)
-        Text(text = breakdown, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(text = breakdown, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FinancialAssumptions(
-    duration: String, onDurationChange: (String) -> Unit,
-    opportunityCostRate: String, onOpportunityCostRateChange: (String) -> Unit,
-    initialUtilityCost: String, onInitialUtilityCostChange: (String) -> Unit,
-    utilityCostIncrease: String, onUtilityCostIncreaseChange: (String) -> Unit,
-    solarCostBase: String, onSolarCostBaseChange: (String) -> Unit,
-    solarLife: String, onSolarLifeChange: (String) -> Unit,
-    batteryCostBase: String, onBatteryCostBaseChange: (String) -> Unit,
-    batteryLife: String, onBatteryLifeChange: (String) -> Unit,
-    batteryCostDecrease: String, onBatteryCostDecreaseChange: (String) -> Unit,
-    unavoidableUtilityPercent: String, onUnavoidableUtilityPercentChange: (String) -> Unit
+    inputs: FinancialInputs,
+    onInputsChange: (FinancialInputs) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -182,20 +189,20 @@ fun FinancialAssumptions(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 AssumptionGroup(title = "General", color = MaterialTheme.colorScheme.secondary, modifier = Modifier.weight(1f)) {
-                    InputField(label = "Analysis Duration (Years)", value = duration, onValueChange = onDurationChange, description = "Length of the cost comparison.")
-                    InputField(label = "Investment Opportunity Cost (%)", value = opportunityCostRate, onValueChange = onOpportunityCostRateChange, description = "Expected return if you invested the money instead.")
+                    InputField(label = "Analysis Duration (Years)", value = inputs.duration.toString(), onValueChange = { onInputsChange(inputs.copy(duration = it.toIntOrNull() ?: 0)) }, description = "Length of the cost comparison.")
+                    InputField(label = "Investment Opportunity Cost (%)", value = inputs.opportunityCostRate.toString(), onValueChange = { onInputsChange(inputs.copy(opportunityCostRate = it.toDoubleOrNull() ?: 0.0)) }, description = "Expected return if you invested the money instead.")
                 }
                 AssumptionGroup(title = "Utility Settings", color = MaterialTheme.colorScheme.tertiary, modifier = Modifier.weight(1f)) {
-                    InputField(label = "Current Annual Utility Bill ($)", value = initialUtilityCost, onValueChange = onInitialUtilityCostChange, description = "Your total electricity cost for the last 12 months.")
-                    InputField(label = "Annual Cost Increase (%)", value = utilityCostIncrease, onValueChange = onUtilityCostIncreaseChange, description = "The average yearly rate increase from your utility.")
+                    InputField(label = "Current Annual Utility Bill ($)", value = inputs.initialUtilityCost.toString(), onValueChange = { onInputsChange(inputs.copy(initialUtilityCost = it.toDoubleOrNull() ?: 0.0)) }, description = "Your total electricity cost for the last 12 months.")
+                    InputField(label = "Annual Cost Increase (%)", value = inputs.utilityCostIncrease.toString(), onValueChange = { onInputsChange(inputs.copy(utilityCostIncrease = it.toDoubleOrNull() ?: 0.0)) }, description = "The average yearly rate increase from your utility.")
                 }
                 AssumptionGroup(title = "Solar + Battery Settings", color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f)) {
-                    InputField(label = "Upfront Solar System Cost ($)", value = solarCostBase, onValueChange = onSolarCostBaseChange, description = "Initial cost to purchase and install solar panels.")
-                    InputField(label = "Solar System Lifespan (Years)", value = solarLife, onValueChange = onSolarLifeChange, description = "How long the solar panels are expected to last.")
-                    InputField(label = "Battery Cost ($)", value = batteryCostBase, onValueChange = onBatteryCostBaseChange, description = "Initial cost to purchase and install a home battery.")
-                    InputField(label = "Battery Lifespan (Years)", value = batteryLife, onValueChange = onBatteryLifeChange, description = "How long the battery is expected to last before replacement.")
-                    InputField(label = "Battery Cost Decrease per 10 years (%)", value = batteryCostDecrease, onValueChange = onBatteryCostDecreaseChange, description = "Projected price drop for batteries at each replacement.")
-                    InputField(label = "Ongoing Grid Connection Fee (%)", value = unavoidableUtilityPercent, onValueChange = onUnavoidableUtilityPercentChange, description = "Percentage of utility bill for grid access, even with solar.")
+                    InputField(label = "Upfront Solar System Cost ($)", value = inputs.solarCostBase.toString(), onValueChange = { onInputsChange(inputs.copy(solarCostBase = it.toDoubleOrNull() ?: 0.0)) }, description = "Initial cost to purchase and install solar panels.")
+                    InputField(label = "Solar System Lifespan (Years)", value = inputs.solarLife.toString(), onValueChange = { onInputsChange(inputs.copy(solarLife = it.toIntOrNull() ?: 0)) }, description = "How long the solar panels are expected to last.")
+                    InputField(label = "Battery Cost ($)", value = inputs.batteryCostBase.toString(), onValueChange = { onInputsChange(inputs.copy(batteryCostBase = it.toDoubleOrNull() ?: 0.0)) }, description = "Initial cost to purchase and install a home battery.")
+                    InputField(label = "Battery Lifespan (Years)", value = inputs.batteryLife.toString(), onValueChange = { onInputsChange(inputs.copy(batteryLife = it.toIntOrNull() ?: 0)) }, description = "How long the battery is expected to last before replacement.")
+                    InputField(label = "Battery Cost Decrease per ${inputs.batteryLife} years (%)", value = inputs.batteryCostDecrease.toString(), onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it.toDoubleOrNull() ?: 0.0)) }, description = "Projected price drop for batteries at each replacement.")
+                    InputField(label = "Ongoing Grid Connection Fee (%)", value = inputs.unavoidableUtilityPercent.toString(), onValueChange = { onInputsChange(inputs.copy(unavoidableUtilityPercent = it.toDoubleOrNull() ?: 0.0)) }, description = "Percentage of utility bill for grid access, even with solar.")
                 }
             }
         }
@@ -232,20 +239,26 @@ fun InputField(label: String, value: String, onValueChange: (String) -> Unit, de
 }
 
 @Composable
-fun ActionButtons() {
+fun ActionButtons(onRestoreDefaults: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { /*TODO: Share*/ }) {
             Text("Share")
         }
         Spacer(modifier = Modifier.width(16.dp))
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = onRestoreDefaults) {
             Text("Restore Defaults")
         }
     }
+}
+
+fun formatCurrency(value: Double): String {
+    val format = NumberFormat.getCurrencyInstance(Locale.US)
+    format.maximumFractionDigits = 0
+    return format.format(value)
 }
 
 @Preview
