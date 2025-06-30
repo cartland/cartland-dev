@@ -7,7 +7,7 @@ fun main() =
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Blanket",
+            title = "Solar Battery",
         ) {
             App()
         }
