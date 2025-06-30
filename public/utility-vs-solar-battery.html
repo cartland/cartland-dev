@@ -127,11 +127,21 @@
             </div>
             <div class="mt-8 text-center">
                 <button 
+                    id="share"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+                >
+                    Share
+                </button>
+                <button 
                     id="restoreDefaults"
-                    class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+                    class="ml-4 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
                 >
                     Restore Defaults
                 </button>
+            </div>
+            <div id="shareableLinkContainer" class="mt-4 text-center" style="display: none;">
+                <p class="text-gray-400">Shareable Link:</p>
+                <input id="shareableLink" type="text" readonly class="w-full max-w-md mx-auto bg-gray-700 border border-gray-600 rounded-md p-2 mt-1 text-center text-white">
             </div>
         </section>
       </div>
@@ -188,6 +198,42 @@
             };
 
             const restoreBtn = document.getElementById('restoreDefaults');
+            const shareBtn = document.getElementById('share');
+            const shareableLinkContainer = document.getElementById('shareableLinkContainer');
+            const shareableLinkInput = document.getElementById('shareableLink');
+
+            const paramAliases = {
+                duration: 'd',
+                opportunityCostRate: 'ocr',
+                initialUtilityCost: 'iuc',
+                utilityCostIncrease: 'uci',
+                solarCostBase: 'scb',
+                solarLife: 'sl',
+                batteryCostBase: 'bcb',
+                batteryLife: 'bl',
+                batteryCostDecrease: 'bcd',
+                unavoidableUtilityPercent: 'uup',
+            };
+            const reverseParamAliases = Object.fromEntries(Object.entries(paramAliases).map(a => a.reverse()));
+
+            const updateShareableLink = () => {
+                const params = new URLSearchParams();
+                for (const key in inputs) {
+                    params.set(paramAliases[key] || key, inputs[key].value);
+                }
+                const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+                shareableLinkInput.value = shareUrl;
+            };
+
+            const loadParamsFromURL = () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                for (const [key, value] of urlParams.entries()) {
+                    const fullKey = reverseParamAliases[key] || key;
+                    if (inputs[fullKey]) {
+                        inputs[fullKey].value = value;
+                    }
+                }
+            };
 
             // --- CHART SETUP ---
             const ctx = document.getElementById('costChart').getContext('2d');
@@ -334,7 +380,12 @@
 
             // --- EVENT LISTENERS ---
             Object.values(inputs).forEach(input => {
-                input.addEventListener('input', runAnalysis);
+                input.addEventListener('input', () => {
+                    runAnalysis();
+                    if (shareableLinkContainer.style.display !== 'none') {
+                        updateShareableLink();
+                    }
+                });
             });
 
             restoreBtn.addEventListener('click', () => {
@@ -344,7 +395,23 @@
                 runAnalysis();
             });
 
+            shareBtn.addEventListener('click', () => {
+                updateShareableLink();
+                shareableLinkContainer.style.display = 'block';
+                navigator.clipboard.writeText(shareableLinkInput.value).then(() => {
+                    const originalText = shareBtn.textContent;
+                    shareBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        shareBtn.textContent = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy URL to clipboard.');
+                });
+            });
+
             // --- INITIAL RUN ---
+            loadParamsFromURL();
             runAnalysis();
         });
     </script>
