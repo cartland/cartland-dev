@@ -1,0 +1,257 @@
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+// Helper function to format numbers as currency
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+};
+
+// Custom Tooltip for the chart
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="p-4 bg-gray-700 bg-opacity-90 border border-gray-600 rounded-lg shadow-lg text-white">
+        <p className="font-bold text-lg mb-2">{label}</p>
+        <p className="text-indigo-300">{`Utility Cost (Nominal): ${formatCurrency(payload[0].value)}`}</p>
+        <p className="text-green-300">{`Solar + Battery Cost (Nominal): ${formatCurrency(payload[1].value)}`}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+// Main Application Component
+export default function App() {
+  // --- STATE MANAGEMENT ---
+  // Global Settings
+  const [duration, setDuration] = React.useState(30);
+  const [opportunityCostRate, setOpportunityCostRate] = React.useState(0);
+
+  // Utility Settings
+  const [initialUtilityCost, setInitialUtilityCost] = React.useState(2400);
+  const [utilityCostIncrease, setUtilityCostIncrease] = React.useState(2);
+
+  // Solar + Battery Settings
+  const [solarCostBase, setSolarCostBase] = React.useState(10200);
+  const [solarLife, setSolarLife] = React.useState(30);
+  const [batteryCostBase, setBatteryCostBase] = React.useState(14500);
+  const [batteryLife, setBatteryLife] = React.useState(10);
+  const [batteryCostDecrease, setBatteryCostDecrease] = React.useState(30);
+  const [unavoidableUtilityPercent, setUnavoidableUtilityPercent] = React.useState(20);
+
+  // Derived state for chart data and all cost components
+  const [analysisResult, setAnalysisResult] = React.useState({
+    chartData: [],
+    cumulative: { utility: 0, solarAndBattery: 0 },
+    nominal: { utility: 0, solarAndBattery: 0 },
+    opportunityCost: { utility: 0, solarAndBattery: 0 },
+  });
+
+  // --- CALCULATION LOGIC ---
+  React.useEffect(() => {
+    const calculateCosts = () => {
+      let utilityAnnualCosts = [];
+      let solarAndBatteryAnnualCosts = [];
+      
+      let nominalCumulativeUtility = 0;
+      let nominalCumulativeSolarAndBattery = 0;
+      let opportunityCostUtility = 0;
+      let opportunityCostSolarAndBattery = 0;
+      
+      const costScalingFactor = initialUtilityCost / 2400;
+      const rate = opportunityCostRate / 100;
+
+      for (let year = 1; year <= duration; year++) {
+        const currentUtilityCost = initialUtilityCost * Math.pow(1 + utilityCostIncrease / 100, year - 1);
+        utilityAnnualCosts.push(currentUtilityCost);
+        nominalCumulativeUtility += currentUtilityCost;
+        
+        let currentSolarAndBatteryYearCost = 0;
+        if ((year - 1) % solarLife === 0) {
+          currentSolarAndBatteryYearCost += solarCostBase * costScalingFactor;
+        }
+        if ((year - 1) % batteryLife === 0) {
+          const numBatteriesPreviouslyPurchased = Math.floor((year - 1) / batteryLife);
+          currentSolarAndBatteryYearCost += (batteryCostBase * costScalingFactor) * Math.pow(1 - batteryCostDecrease / 100, numBatteriesPreviouslyPurchased);
+        }
+        const unavoidableCost = currentUtilityCost * (unavoidableUtilityPercent / 100);
+        currentSolarAndBatteryYearCost += unavoidableCost;
+        
+        solarAndBatteryAnnualCosts.push(currentSolarAndBatteryYearCost);
+        nominalCumulativeSolarAndBattery += currentSolarAndBatteryYearCost;
+        
+        if (rate > 0) {
+            const yearsToGrow = duration - year;
+            opportunityCostUtility += currentUtilityCost * (Math.pow(1 + rate, yearsToGrow) - 1);
+            opportunityCostSolarAndBattery += currentSolarAndBatteryYearCost * (Math.pow(1 + rate, yearsToGrow) - 1);
+        }
+      }
+      
+      const newChartData = Array.from({ length: duration }, (_, i) => ({
+        year: `Year ${i + 1}`,
+        utility: utilityAnnualCosts[i],
+        solarAndBattery: solarAndBatteryAnnualCosts[i],
+      }));
+
+      setAnalysisResult({
+        chartData: newChartData,
+        cumulative: {
+          utility: nominalCumulativeUtility + opportunityCostUtility,
+          solarAndBattery: nominalCumulativeSolarAndBattery + opportunityCostSolarAndBattery,
+        },
+        nominal: {
+            utility: nominalCumulativeUtility,
+            solarAndBattery: nominalCumulativeSolarAndBattery
+        },
+        opportunityCost: {
+            utility: opportunityCostUtility,
+            solarAndBattery: opportunityCostSolarAndBattery
+        }
+      });
+    };
+
+    calculateCosts();
+  }, [
+    duration,
+    opportunityCostRate,
+    initialUtilityCost, 
+    utilityCostIncrease, 
+    solarCostBase, 
+    solarLife, 
+    batteryCostBase, 
+    batteryLife, 
+    batteryCostDecrease, 
+    unavoidableUtilityPercent
+  ]);
+
+  // --- RENDER ---
+  const { chartData, cumulative, nominal, opportunityCost } = analysisResult;
+  const savings = cumulative.utility - cumulative.solarAndBattery;
+
+  return (
+    <div className="bg-gray-900 text-white min-h-screen font-sans p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+            Electricity Cost Analysis
+          </h1>
+          <p className="mt-2 text-lg text-gray-400">Utility vs. Solar + Battery</p>
+        </header>
+
+        <main className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-700">
+            <h2 className="text-2xl font-bold mb-4 text-center">Annual Nominal Cost Comparison</h2>
+            <div style={{ width: '100%', height: 400 }}>
+              <ResponsiveContainer>
+                <BarChart data={chartData} margin={{ top: 5, right: 20, left: 50, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
+                  <XAxis dataKey="year" stroke="#A0AEC0" tick={{ fontSize: 12 }} />
+                  <YAxis stroke="#A0AEC0" tickFormatter={(value) => formatCurrency(value)} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(113, 128, 150, 0.1)' }} />
+                  <Legend wrapperStyle={{ color: '#E2E8F0' }} />
+                  <Bar dataKey="utility" fill="#6366F1" name="Utility (Nominal)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="solarAndBattery" fill="#34D399" name="Solar + Battery (Nominal)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          
+          <div className="bg-gray-800 p-6 rounded-2xl shadow-2xl flex flex-col justify-between border border-gray-700">
+            <div className="flex-grow">
+                <h2 className="text-2xl font-bold mb-4 text-center">Totals & Assumptions</h2>
+                <div className="space-y-4 w-full text-center">
+                  <div>
+                    <p className="text-lg text-indigo-300">Total Utility Cost</p>
+                    <p className="text-4xl font-extrabold text-indigo-400">{formatCurrency(cumulative.utility)}</p>
+                    <p className="text-sm text-gray-400">({formatCurrency(nominal.utility)} cost + {formatCurrency(opportunityCost.utility)} OC)</p>
+                  </div>
+                  <div>
+                    <p className="text-lg text-green-300">Total Solar + Battery Cost</p>
+                    <p className="text-4xl font-extrabold text-green-400">{formatCurrency(cumulative.solarAndBattery)}</p>
+                    <p className="text-sm text-gray-400">({formatCurrency(nominal.solarAndBattery)} cost + {formatCurrency(opportunityCost.solarAndBattery)} OC)</p>
+                  </div>
+                </div>
+            </div>
+            
+            <div className="pt-4 mt-4 border-t border-gray-700 w-full text-center">
+                 <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+                    <span className="font-semibold text-gray-400">Assumptions:</span> {duration} yrs duration • {opportunityCostRate}% Opp. Cost • {formatCurrency(initialUtilityCost)} initial utility • {utilityCostIncrease}%/yr increase • {unavoidableUtilityPercent}% grid cost • {solarLife}yr solar life • {batteryLife}yr battery life • {batteryCostDecrease}% battery cost drop.
+                </p>
+                <p className={`text-lg ${savings >= 0 ? 'text-cyan-300' : 'text-red-400'}`}>
+                    {savings >= 0 ? "Total Savings" : "Total Extra Cost"}
+                </p>
+                <p className={`text-5xl font-extrabold ${savings >= 0 ? 'text-cyan-400' : 'text-red-500'}`}>
+                    {formatCurrency(Math.abs(savings))}
+                </p>
+            </div>
+          </div>
+        </main>
+        
+        <section className="mt-10 bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-700">
+            <h2 className="text-2xl font-bold mb-6 text-center">Configuration</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+              <div className="space-y-4 p-4 bg-gray-900 rounded-lg">
+                <h3 className="text-xl font-semibold text-cyan-400 border-b border-cyan-500/30 pb-2">Global Settings</h3>
+                <div className="flex flex-col">
+                  <label htmlFor="duration" className="mb-1 text-gray-300">Analysis Duration (Years)</label>
+                  <input id="duration" type="number" value={duration} onChange={e => setDuration(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none"/>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="opportunityCostRate" className="mb-1 text-gray-300">Opportunity Cost (%)</label>
+                  <input id="opportunityCostRate" type="number" value={opportunityCostRate} onChange={e => setOpportunityCostRate(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none"/>
+                </div>
+              </div>
+
+              <div className="space-y-4 p-4 bg-gray-900 rounded-lg">
+                <h3 className="text-xl font-semibold text-indigo-400 border-b border-indigo-500/30 pb-2">Utility Settings</h3>
+                <div className="flex flex-col">
+                  <label htmlFor="initialUtilityCost" className="mb-1 text-gray-300">Utility Cost at Year 1 ($)</label>
+                  <input id="initialUtilityCost" type="number" value={initialUtilityCost} onChange={e => setInitialUtilityCost(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="utilityCostIncrease" className="mb-1 text-gray-300">Annual Cost Increase (%)</label>
+                  <input id="utilityCostIncrease" type="number" value={utilityCostIncrease} onChange={e => setUtilityCostIncrease(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
+                </div>
+              </div>
+
+              <div className="space-y-4 p-4 bg-gray-900 rounded-lg">
+                <h3 className="text-xl font-semibold text-green-400 border-b border-green-500/30 pb-2">Solar + Battery Settings</h3>
+                <div className="flex flex-col">
+                  <label htmlFor="solarCostBase" className="mb-1 text-gray-300">Solar System Cost ($)</label>
+                  <input id="solarCostBase" type="number" value={solarCostBase} onChange={e => setSolarCostBase(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
+                  <small className="text-gray-500 mt-1">Note: Scales with Year 1 Utility Cost.</small>
+                </div>
+                 <div className="flex flex-col">
+                  <label htmlFor="solarLife" className="mb-1 text-gray-300">Solar System Life (Years)</label>
+                  <input id="solarLife" type="number" value={solarLife} onChange={e => setSolarLife(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="batteryCostBase" className="mb-1 text-gray-300">Battery Cost ($)</label>
+                  <input id="batteryCostBase" type="number" value={batteryCostBase} onChange={e => setBatteryCostBase(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
+                   <small className="text-gray-500 mt-1">Note: Scales with Year 1 Utility Cost.</small>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="batteryLife" className="mb-1 text-gray-300">Battery Life (Years)</label>
+                  <input id="batteryLife" type="number" value={batteryLife} onChange={e => setBatteryLife(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="batteryCostDecrease" className="mb-1 text-gray-300">Battery Cost Decrease per {batteryLife} years (%)</label>
+                  <input id="batteryCostDecrease" type="number" value={batteryCostDecrease} onChange={e => setBatteryCostDecrease(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
+                </div>
+                 <div className="flex flex-col">
+                  <label htmlFor="unavoidableUtilityPercent" className="mb-1 text-gray-300">Unavoidable Utility Cost (%)</label>
+                  <input id="unavoidableUtilityPercent" type="number" value={unavoidableUtilityPercent} onChange={e => setUnavoidableUtilityPercent(Number(e.target.value))} className="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
+                </div>
+              </div>
+
+            </div>
+        </section>
+      </div>
+    </div>
+  );
+}
