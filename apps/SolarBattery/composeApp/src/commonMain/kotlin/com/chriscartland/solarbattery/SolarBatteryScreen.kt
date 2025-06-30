@@ -123,8 +123,10 @@ fun MainContent(result: CalculationResult) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text("Annual Cost Comparison", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.height(16.dp))
-                // Placeholder for chart
-                Box(modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.DarkGray))
+                AnnualCostChart(
+                    utilityAnnualCosts = result.utilityAnnualCosts,
+                    solarAndBatteryAnnualCosts = result.solarAndBatteryAnnualCosts
+                )
             }
         }
         Card(
