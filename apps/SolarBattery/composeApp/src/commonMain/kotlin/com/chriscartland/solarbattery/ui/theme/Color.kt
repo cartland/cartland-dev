@@ -9,7 +9,7 @@ val DarkGray700 = Color(0xFF374151) // border-gray-700
 val DarkGray400 = Color(0xFF9CA3AF) // text-gray-400
 
 val DarkGreen400 = Color(0xFF34D399) // text-green-400
-val DarkCyan400 = Color(0xFF22D3EE)  // text-cyan-400
+val DarkCyan400 = Color(0xFF22D3EE) // text-cyan-400
 val DarkIndigo400 = Color(0xFF818CF8) // text-indigo-400
 
 val DarkErrorRed = Color(0xFFF87171) // text-red-400

@@ -21,7 +21,7 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = DarkGray400,
     error = DarkErrorRed,
     onError = Color.Black,
-    outline = DarkGray700
+    outline = DarkGray700,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -38,13 +38,13 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = Color.Gray,
     error = LightErrorRed,
     onError = Color.White,
-    outline = LightGray100
+    outline = LightGray100,
 )
 
 @Composable
 fun SolarBatteryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) {
         DarkColorScheme
@@ -56,6 +56,6 @@ fun SolarBatteryTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

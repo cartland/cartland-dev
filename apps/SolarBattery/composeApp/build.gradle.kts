@@ -56,7 +56,21 @@ kotlin {
     }
 
     sourceSets {
+        val androidMain by getting
         val desktopMain by getting
+        val iosArm64Main by getting
+        val iosX64Main by getting
+        val iosSimulatorArm64Main by getting
+
+        val nonWasmMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        androidMain.dependsOn(nonWasmMain)
+        desktopMain.dependsOn(nonWasmMain)
+        iosArm64Main.dependsOn(nonWasmMain)
+        iosX64Main.dependsOn(nonWasmMain)
+        iosSimulatorArm64Main.dependsOn(nonWasmMain)
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -72,6 +86,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(projects.shared)
+        }
+        nonWasmMain.dependencies {
             implementation(libs.vico.multiplatform)
             implementation(libs.vico.multiplatform.m3)
         }

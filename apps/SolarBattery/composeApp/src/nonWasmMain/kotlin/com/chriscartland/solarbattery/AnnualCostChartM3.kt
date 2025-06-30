@@ -1,0 +1,94 @@
+package com.chriscartland.solarbattery
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
+import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.multiplatform.cartesian.data.columnSeries
+import com.patrykandpatrick.vico.multiplatform.cartesian.layer.ColumnCartesianLayer
+import com.patrykandpatrick.vico.multiplatform.cartesian.layer.rememberColumnCartesianLayer
+import com.patrykandpatrick.vico.multiplatform.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.multiplatform.common.Fill
+import com.patrykandpatrick.vico.multiplatform.common.Insets
+import com.patrykandpatrick.vico.multiplatform.common.LegendItem
+import com.patrykandpatrick.vico.multiplatform.common.component.ShapeComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.rememberLineComponent
+import com.patrykandpatrick.vico.multiplatform.common.component.rememberTextComponent
+import com.patrykandpatrick.vico.multiplatform.common.data.ExtraStore
+import com.patrykandpatrick.vico.multiplatform.common.rememberHorizontalLegend
+import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape
+import com.patrykandpatrick.vico.multiplatform.common.vicoTheme
+
+private val LegendLabelKey = ExtraStore.Key<List<String>>()
+
+@Composable
+fun AnnualCostChartM3(
+    utilityAnnualCosts: List<Double>,
+    solarAndBatteryAnnualCosts: List<Double>,
+) {
+    if (utilityAnnualCosts.isEmpty() || solarAndBatteryAnnualCosts.isEmpty()) {
+        // Display nothing if there is no data
+        return
+    }
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(utilityAnnualCosts, solarAndBatteryAnnualCosts) {
+        modelProducer.runTransaction {
+            columnSeries {
+                series(utilityAnnualCosts)
+                series(solarAndBatteryAnnualCosts)
+            }
+            extras { it[LegendLabelKey] = listOf("Utility", "Solar + Battery") }
+        }
+    }
+    val columnColors = listOf(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.primary)
+    val legendItemLabelComponent = rememberTextComponent(
+        androidx.compose.ui.text
+            .TextStyle(vicoTheme.textColor),
+    )
+    CartesianChartHost(
+        chart =
+            rememberCartesianChart(
+                rememberColumnCartesianLayer(
+                    columnProvider =
+                        ColumnCartesianLayer.ColumnProvider.series(
+                            columnColors.map { color ->
+                                rememberLineComponent(fill = Fill(color), thickness = 8.dp)
+                            },
+                        ),
+                    columnCollectionSpacing = 4.dp,
+                ),
+                startAxis = VerticalAxis.rememberStart(
+                    valueFormatter = CartesianValueFormatter { context, value, _ ->
+                        "$" + value.toInt().toString()
+                    },
+                ),
+                bottomAxis = HorizontalAxis.rememberBottom(
+                    valueFormatter = CartesianValueFormatter { context, value, _ ->
+                        "Year " + (value.toInt() + 1).toString()
+                    },
+                ),
+                legend =
+                    rememberHorizontalLegend(
+                        items = { extraStore ->
+                            extraStore[LegendLabelKey].forEachIndexed { index, label ->
+                                add(
+                                    LegendItem(
+                                        ShapeComponent(Fill(columnColors[index]), CorneredShape.Pill),
+                                        legendItemLabelComponent,
+                                        label,
+                                    ),
+                                )
+                            }
+                        },
+                        padding = Insets(top = 8.dp),
+                    ),
+            ),
+        modelProducer = modelProducer,
+    )
+}

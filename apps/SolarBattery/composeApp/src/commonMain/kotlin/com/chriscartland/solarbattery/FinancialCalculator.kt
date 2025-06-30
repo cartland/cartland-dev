@@ -12,7 +12,7 @@ data class FinancialInputs(
     val batteryCostBase: Double = 14500.0,
     val batteryLife: Int = 10,
     val batteryCostDecrease: Double = 30.0,
-    val unavoidableUtilityPercent: Double = 20.0
+    val unavoidableUtilityPercent: Double = 20.0,
 )
 
 data class CalculationResult(
@@ -24,7 +24,7 @@ data class CalculationResult(
     val opportunityCostSolar: Double = 0.0,
     val savings: Double = 0.0,
     val utilityAnnualCosts: List<Double> = emptyList(),
-    val solarAndBatteryAnnualCosts: List<Double> = emptyList()
+    val solarAndBatteryAnnualCosts: List<Double> = emptyList(),
 )
 
 object FinancialCalculator {
@@ -53,7 +53,9 @@ object FinancialCalculator {
             }
             if ((year - 1) % inputs.batteryLife == 0) {
                 val numBatteriesPreviouslyPurchased = ((year - 1) / inputs.batteryLife)
-                currentSolarAndBatteryYearCost += (inputs.batteryCostBase * costScalingFactor) * (1 - inputs.batteryCostDecrease / 100).pow(numBatteriesPreviouslyPurchased)
+                currentSolarAndBatteryYearCost +=
+                    (inputs.batteryCostBase * costScalingFactor) *
+                    (1 - inputs.batteryCostDecrease / 100).pow(numBatteriesPreviouslyPurchased)
             }
             val unavoidableCost = currentUtilityCost * (inputs.unavoidableUtilityPercent / 100)
             currentSolarAndBatteryYearCost += unavoidableCost
@@ -81,7 +83,7 @@ object FinancialCalculator {
             opportunityCostSolar = opportunityCostSolarAndBattery,
             savings = savings,
             utilityAnnualCosts = utilityAnnualCosts,
-            solarAndBatteryAnnualCosts = solarAndBatteryAnnualCosts
+            solarAndBatteryAnnualCosts = solarAndBatteryAnnualCosts,
         )
     }
 }

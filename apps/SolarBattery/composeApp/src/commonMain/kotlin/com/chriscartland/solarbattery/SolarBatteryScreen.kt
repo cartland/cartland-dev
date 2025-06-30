@@ -40,10 +40,8 @@ import androidx.compose.ui.unit.dp
 import com.chriscartland.solarbattery.ui.theme.GradientBlue500
 import com.chriscartland.solarbattery.ui.theme.GradientGreen400
 import com.chriscartland.solarbattery.ui.theme.SolarBatteryTheme
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import java.text.NumberFormat
-import java.util.Locale
 import kotlin.math.abs
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SolarBatteryScreen() {
@@ -212,7 +210,12 @@ fun FinancialAssumptions(
                     InputField(label = "Solar System Lifespan (Years)", value = inputs.solarLife.toString(), onValueChange = { onInputsChange(inputs.copy(solarLife = it.toIntOrNull() ?: 0)) }, description = "How long the solar panels are expected to last.")
                     InputField(label = "Battery Cost ($)", value = inputs.batteryCostBase.toString(), onValueChange = { onInputsChange(inputs.copy(batteryCostBase = it.toDoubleOrNull() ?: 0.0)) }, description = "Initial cost to purchase and install a home battery.")
                     InputField(label = "Battery Lifespan (Years)", value = inputs.batteryLife.toString(), onValueChange = { onInputsChange(inputs.copy(batteryLife = it.toIntOrNull() ?: 0)) }, description = "How long the battery is expected to last before replacement.")
-                    InputField(label = "Battery Cost Decrease per ${inputs.batteryLife} years (%)", value = inputs.batteryCostDecrease.toString(), onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it.toDoubleOrNull() ?: 0.0)) }, description = "Projected price drop for batteries at each replacement.")
+                    InputField(
+                        label = "Battery Cost Decrease per ${inputs.batteryLife} years (%)",
+                        value = inputs.batteryCostDecrease.toString(),
+                        onValueChange = { onInputsChange(inputs.copy(batteryCostDecrease = it.toDoubleOrNull() ?: 0.0)) },
+                        description = "Projected price drop for batteries at each replacement."
+                    )
                     InputField(label = "Ongoing Grid Connection Fee (%)", value = inputs.unavoidableUtilityPercent.toString(), onValueChange = { onInputsChange(inputs.copy(unavoidableUtilityPercent = it.toDoubleOrNull() ?: 0.0)) }, description = "Percentage of utility bill for grid access, even with solar.")
                 }
             }
@@ -241,11 +244,11 @@ fun InputField(label: String, value: String, onValueChange: (String) -> Unit, de
         Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+            )
     }
 }
 
@@ -267,9 +270,7 @@ fun ActionButtons(onRestoreDefaults: () -> Unit) {
 }
 
 fun formatCurrency(value: Double): String {
-    val format = NumberFormat.getCurrencyInstance(Locale.US)
-    format.maximumFractionDigits = 0
-    return format.format(value)
+    return formatNumber(value)
 }
 
 @Preview
