@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.chriscartland.blanket.shared"
+        namespace = "com.chriscartland.solarbattery.shared"
         compileSdk = libs.versions.android.compileSdk
             .get()
             .toInt()

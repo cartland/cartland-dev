@@ -2,7 +2,7 @@
 set -ex
 
 # Simulator details
-BUNDLE_IDENTIFIER="com.chriscartland.blanket.Blanket"
+BUNDLE_IDENTIFIER="com.chriscartland.solarbattery.SolarBattery"
 
 # Find a running simulator
 SIMULATOR_UDID=$(xcrun simctl list devices | grep -E 'Booted' | grep -E '(iPhone)' | sed -nE 's/.*\(([-0-9A-F]+)\).*$/\1/p' | head -n 1)
@@ -50,7 +50,7 @@ xcrun simctl uninstall booted "${BUNDLE_IDENTIFIER}" || true # '|| true' to prev
 
 # 4. Install the application
 echo "Installing application ${BUNDLE_IDENTIFIER} on simulator..."
-xcrun simctl install booted "build/ios/Build/Products/Debug-iphonesimulator/Blanket.app"
+xcrun simctl install booted "build/ios/Build/Products/Debug-iphonesimulator/SolarBattery.app"
 
 # 4. Launch the application
 echo "Launching application ${BUNDLE_IDENTIFIER} on simulator..."

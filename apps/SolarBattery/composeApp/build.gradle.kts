@@ -84,14 +84,14 @@ kotlin {
 }
 
 android {
-    namespace = "com.chriscartland.blanket"
+    namespace = "com.chriscartland.solarbattery"
     compileSdk =
         libs.versions.android.compileSdk
             .get()
             .toInt()
 
     defaultConfig {
-        applicationId = "com.chriscartland.blanket"
+        applicationId = "com.chriscartland.solarbattery"
         minSdk =
             libs.versions.android.minSdk
                 .get()
@@ -128,11 +128,11 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "com.chriscartland.blanket.MainKt"
+        mainClass = "com.chriscartland.solarbattery.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.chriscartland.blanket"
+            packageName = "com.chriscartland.solarbattery"
             packageVersion = "1.0.0"
         }
     }

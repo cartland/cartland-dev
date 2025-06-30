@@ -1,6 +1,6 @@
-# Blanket: Application Architecture Specification
+# SolarBattery: Application Architecture Specification
 
-This document outlines the architectural guidelines for the "Blanket" Kotlin Multiplatform (KMP) application, adapted from a standard KMP template.
+This document outlines the architectural guidelines for the "SolarBattery" Kotlin Multiplatform (KMP) application, adapted from a standard KMP template.
 
 ## 1. Core Philosophy
 
@@ -28,9 +28,9 @@ The project uses a **granular, feature-based modularization** strategy, replacin
 ├── composeApp/
 │   ├── build.gradle.kts
 │   └── src/
-│       ├── androidMain/kotlin/com/blanket/MainActivity.kt
-│       ├── commonMain/kotlin/com/blanket/App.kt
-│       └── desktopMain/kotlin/com/blanket/main.kt
+│       ├── androidMain/kotlin/com/solarbattery/MainActivity.kt
+│       ├── commonMain/kotlin/com/solarbattery/App.kt
+│       └── desktopMain/kotlin/com/solarbattery/main.kt
 ├── core/
 │   ├── data/
 │   ├── di/
@@ -63,7 +63,7 @@ The project uses a **granular, feature-based modularization** strategy, replacin
 ## 5. Navigation
 
 A hybrid navigation model is used to support the hybrid UI.
-* **Compose Targets (in `:composeApp`)**: **Jetpack Navigation 3** is the primary navigation library. The `NavDisplay`, `rememberNavBackStack` call, and `entryProvider` are implemented in `composeApp/src/commonMain/kotlin/com/blanket/App.kt`.
+* **Compose Targets (in `:composeApp`)**: **Jetpack Navigation 3** is the primary navigation library. The `NavDisplay`, `rememberNavBackStack` call, and `entryProvider` are implemented in `composeApp/src/commonMain/kotlin/com/solarbattery/App.kt`.
 * **iOS Target (in `:iosApp`)**: **SwiftUI `NavigationStack`** is used for the native UI.
 * **Abstraction (`:core:navigation`)**: An `expect interface Navigator` is defined in `commonMain` and injected into ViewModels. This allows shared logic to trigger navigation events, which are then handled natively by either Navigation 3 or `NavigationStack`.
 
