@@ -216,6 +216,14 @@
             };
             const reverseParamAliases = Object.fromEntries(Object.entries(paramAliases).map(a => a.reverse()));
 
+            const clearURLParams = () => {
+                const url = new URL(window.location);
+                if (url.search) {
+                    url.search = '';
+                    window.history.pushState({}, '', url);
+                }
+            };
+
             const updateShareableLink = () => {
                 const params = new URLSearchParams();
                 for (const key in inputs) {
@@ -385,6 +393,7 @@
                     if (shareableLinkContainer.style.display !== 'none') {
                         updateShareableLink();
                     }
+                    clearURLParams();
                 });
             });
 
