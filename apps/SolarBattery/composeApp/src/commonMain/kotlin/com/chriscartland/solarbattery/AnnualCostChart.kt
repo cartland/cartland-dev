@@ -1,5 +1,6 @@
 package com.chriscartland.solarbattery
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -14,6 +15,7 @@ import com.patrykandpatrick.vico.compose.dimensions.dimensionsOf
 import com.patrykandpatrick.vico.compose.legend.horizontal.horizontalLegend
 import com.patrykandpatrick.vico.compose.legend.legendItem
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
+import com.patrykandpatrick.vico.compose.style.currentChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.chart.legend.Legend
 import com.patrykandpatrick.vico.core.component.shape.Shapes
@@ -27,24 +29,20 @@ fun AnnualCostChart(
 ) {
     val chartEntryModelProducer = remember(utilityAnnualCosts, solarAndBatteryAnnualCosts) {
         ChartEntryModelProducer(
-            (utilityAnnualCosts.indices).map { i ->
-                entryOf(i, utilityAnnualCosts[i])
-            },
-            (solarAndBatteryAnnualCosts.indices).map { i ->
-                entryOf(i, solarAndBatteryAnnualCosts[i])
-            }
+            utilityAnnualCosts.mapIndexed { index, value -> entryOf(index, value) },
+            solarAndBatteryAnnualCosts.mapIndexed { index, value -> entryOf(index, value) }
         )
     }
 
-    ProvideChartStyle {
+    ProvideChartStyle(rememberChartStyle()) {
         Chart(
             chart = columnChart(
                 columns = listOf(
-                    com.patrykandpatrick.vico.compose.style.currentChartStyle.columnChart.columns[0].copy(
-                        color = Color.Blue
+                    currentChartStyle.columnChart.columns[0].copy(
+                        color = MaterialTheme.colorScheme.tertiary
                     ),
-                    com.patrykandpatrick.vico.compose.style.currentChartStyle.columnChart.columns[1].copy(
-                        color = Color.Green
+                    currentChartStyle.columnChart.columns[1].copy(
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
             ),
@@ -70,17 +68,17 @@ private fun rememberLegend(): Legend {
     return horizontalLegend(
         items = listOf(
             legendItem(
-                icon = com.patrykandpatrick.vico.compose.component.shape.shader.fromColor(Color.Blue),
+                icon = com.patrykandpatrick.vico.compose.component.shape.shader.fromColor(MaterialTheme.colorScheme.tertiary),
                 label = textComponent(
-                    color = com.patrykandpatrick.vico.compose.style.currentChartStyle.axis.axisLabelColor,
+                    color = currentChartStyle.axis.axisLabelColor,
                     textSize = 12.dp,
                 ),
                 labelText = "Utility"
             ),
             legendItem(
-                icon = com.patrykandpatrick.vico.compose.component.shape.shader.fromColor(Color.Green),
+                icon = com.patrykandpatrick.vico.compose.component.shape.shader.fromColor(MaterialTheme.colorScheme.primary),
                 label = textComponent(
-                    color = com.patrykandpatrick.vico.compose.style.currentChartStyle.axis.axisLabelColor,
+                    color = currentChartStyle.axis.axisLabelColor,
                     textSize = 12.dp,
                 ),
                 labelText = "Solar + Battery"

@@ -40,7 +40,7 @@ private val LightColorScheme = lightColorScheme(
     onError = Color.White,
     outline = LightGray100
 )
-    
+
 @Composable
 fun SolarBatteryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

@@ -21,7 +21,7 @@ spotless = "7.0.4"
 kotlinStdlib = "2.2.0"
 runner = "1.5.2"
 core = "1.5.0"
-vico = "2.0.0-alpha.19"
+vico = "2.1.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
