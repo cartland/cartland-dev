@@ -23,7 +23,6 @@ import com.patrykandpatrick.vico.multiplatform.common.component.rememberTextComp
 import com.patrykandpatrick.vico.multiplatform.common.data.ExtraStore
 import com.patrykandpatrick.vico.multiplatform.common.rememberHorizontalLegend
 import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape
-import com.patrykandpatrick.vico.multiplatform.common.vicoTheme
 
 private val LegendLabelKey = ExtraStore.Key<List<String>>()
 
@@ -47,9 +46,10 @@ fun AnnualCostChartM3(
         }
     }
     val columnColors = listOf(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.primary)
-    val legendItemLabelComponent = rememberTextComponent(
-        androidx.compose.ui.text
-            .TextStyle(vicoTheme.textColor),
+    val textComponent = rememberTextComponent(
+        style = androidx.compose.ui.text.TextStyle(
+            color = MaterialTheme.colorScheme.onBackground,
+        ),
     )
     CartesianChartHost(
         chart =
@@ -67,11 +67,13 @@ fun AnnualCostChartM3(
                     valueFormatter = CartesianValueFormatter { context, value, _ ->
                         "$" + value.toInt().toString()
                     },
+                    label = textComponent,
                 ),
                 bottomAxis = HorizontalAxis.rememberBottom(
                     valueFormatter = CartesianValueFormatter { context, value, _ ->
                         "Year " + (value.toInt() + 1).toString()
                     },
+                    label = textComponent,
                 ),
                 legend =
                     rememberHorizontalLegend(
@@ -80,7 +82,7 @@ fun AnnualCostChartM3(
                                 add(
                                     LegendItem(
                                         ShapeComponent(Fill(columnColors[index]), CorneredShape.Pill),
-                                        legendItemLabelComponent,
+                                        textComponent,
                                         label,
                                     ),
                                 )
