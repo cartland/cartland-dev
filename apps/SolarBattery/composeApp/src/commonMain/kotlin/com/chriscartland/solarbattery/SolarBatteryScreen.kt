@@ -14,21 +14,23 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -50,7 +52,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.chriscartland.solarbattery.ui.components.TextWithAutoSize
 import com.chriscartland.solarbattery.ui.theme.GradientBlue500
 import com.chriscartland.solarbattery.ui.theme.GradientGreen400
 import com.chriscartland.solarbattery.ui.theme.SolarBatteryTheme
@@ -91,7 +95,7 @@ fun SolarBatteryScreen() {
             ) {
                 item { Spacer(Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing)) }
                 item { Header() }
-                item { MainContent(result) }
+                item { MainContent(result = result, modifier = Modifier.fillMaxWidth()) }
                 item {
                     FinancialAssumptions(
                         inputs = inputs,
@@ -135,9 +139,12 @@ fun Header() {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun MainContent(result: CalculationResult) {
+fun MainContent(
+    result: CalculationResult,
+    modifier: Modifier = Modifier,
+) {
     FlowRow(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -161,11 +168,11 @@ fun MainContent(result: CalculationResult) {
             }
         }
         Card(
-            modifier = Modifier.weight(1f).fillMaxRowHeight(),
+            modifier = Modifier.sizeIn(minWidth = 300.dp, minHeight = 300.dp).weight(1f).fillMaxRowHeight(),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp).height(IntrinsicSize.Min),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text("Cost Summary", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
@@ -188,7 +195,7 @@ fun MainContent(result: CalculationResult) {
                     color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
                 val savingsColor = if (result.savings >= 0) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
                 Text(
@@ -196,11 +203,12 @@ fun MainContent(result: CalculationResult) {
                     style = MaterialTheme.typography.titleMedium,
                     color = savingsColor,
                 )
-                Text(
+                TextWithAutoSize(
                     text = formatCurrency(abs(result.savings)),
                     style = MaterialTheme.typography.displaySmall,
                     fontWeight = FontWeight.ExtraBold,
                     color = savingsColor,
+                    autoSize = TextAutoSize.StepBased()
                 )
             }
         }
@@ -216,7 +224,7 @@ fun CostSummaryItem(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = title, style = MaterialTheme.typography.titleMedium, color = color, textAlign = TextAlign.Center)
-        Text(text = amount, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold, color = color)
+        TextWithAutoSize(text = amount, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold, color = color)
         Text(
             text = breakdown,
             style = MaterialTheme.typography.bodySmall,
@@ -348,7 +356,7 @@ fun AssumptionGroup(
             .padding(12.dp),
     ) {
         Text(text = title, style = MaterialTheme.typography.titleMedium, color = color)
-        Divider(color = color.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
+        HorizontalDivider(color = color.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
         content()
     }
 }
@@ -382,7 +390,7 @@ fun InputField(
                 .onFocusChanged { focusState ->
                     if (focusState.isFocused && !hasFocus) {
                         textFieldValue = textFieldValue.copy(
-                            selection = TextRange(0, textFieldValue.text.length)
+                            selection = TextRange(0, textFieldValue.text.length),
                         )
                     }
                     hasFocus = focusState.isFocused
