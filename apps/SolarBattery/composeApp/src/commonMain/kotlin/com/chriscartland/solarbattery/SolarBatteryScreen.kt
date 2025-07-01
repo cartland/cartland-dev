@@ -133,14 +133,16 @@ fun Header() {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MainContent(result: CalculationResult) {
-    Row(
-        modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Card(
-            modifier = Modifier.weight(2f),
+            modifier = Modifier.weight(2f).fillMaxRowHeight(),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -152,14 +154,14 @@ fun MainContent(result: CalculationResult) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 AnnualCostChart(
-                    modifier = Modifier.fillMaxHeight(),
+                    modifier = Modifier,
                     utilityAnnualCosts = result.utilityAnnualCosts,
                     solarAndBatteryAnnualCosts = result.solarAndBatteryAnnualCosts,
                 )
             }
         }
         Card(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).fillMaxRowHeight(),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         ) {
             Column(
