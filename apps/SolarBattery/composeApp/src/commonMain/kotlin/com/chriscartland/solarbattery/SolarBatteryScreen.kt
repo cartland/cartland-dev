@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -134,7 +136,7 @@ fun Header() {
 @Composable
 fun MainContent(result: CalculationResult) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Card(
@@ -150,6 +152,7 @@ fun MainContent(result: CalculationResult) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 AnnualCostChart(
+                    modifier = Modifier.fillMaxHeight(),
                     utilityAnnualCosts = result.utilityAnnualCosts,
                     solarAndBatteryAnnualCosts = result.solarAndBatteryAnnualCosts,
                 )

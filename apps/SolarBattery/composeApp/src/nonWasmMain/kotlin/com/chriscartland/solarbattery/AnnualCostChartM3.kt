@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
@@ -31,6 +32,7 @@ private val LegendLabelKey = ExtraStore.Key<List<String>>()
 
 @Composable
 fun AnnualCostChartM3(
+    modifier: Modifier = Modifier,
     utilityAnnualCosts: List<Double>,
     solarAndBatteryAnnualCosts: List<Double>,
 ) {
@@ -57,6 +59,7 @@ fun AnnualCostChartM3(
         lineCount = 2,
     )
     CartesianChartHost(
+        modifier = modifier,
         chart =
             rememberCartesianChart(
                 rememberColumnCartesianLayer(
