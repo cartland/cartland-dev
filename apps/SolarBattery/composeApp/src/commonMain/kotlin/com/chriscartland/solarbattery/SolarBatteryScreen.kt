@@ -154,7 +154,7 @@ fun MainContent(result: CalculationResult) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 AnnualCostChart(
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxSize(),
                     utilityAnnualCosts = result.utilityAnnualCosts,
                     solarAndBatteryAnnualCosts = result.solarAndBatteryAnnualCosts,
                 )
