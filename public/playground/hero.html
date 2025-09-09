@@ -14,16 +14,16 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
     :root {
-      --color: #ffffff;
-      --color-link: #cccccc;
+      --color: #fff;
+      --color-link: #ccc;
       --background-color: #263551;
-      --background-color-overlay: rgba(0, 0, 0, 0.5);
-      --color-overlay: #000000;
+      --background-color-overlay: rgb(0 0 0 / 50%);
+      --color-overlay: #000;
     }
 
     body {
       background-color: var(--background-color);
-      font-family: 'Roboto', sans-serif;
+      font-family: Roboto, sans-serif;
       font-size: 18px;
       color: var(--color);
       margin: 0;
@@ -54,7 +54,7 @@
     }
 
     .header h1 {
-      margin: 0px;
+      margin: 0;
       font-size: 24px;
     }
 
@@ -140,6 +140,7 @@
 
     .menu-button-container {
       --menu-icon-size: 36px;
+
       /* Renamed from --icon-size */
       width: var(--menu-icon-size);
       height: var(--menu-icon-size);
@@ -202,12 +203,12 @@
 
     #hero-text {
       text-align: left;
-      margin-top: 0px;
+      margin-top: 0;
     }
 
     #hero-text p {
-      margin-top: 0px;
-      margin-bottom: 0px;
+      margin-top: 0;
+      margin-bottom: 0;
       min-height: 148px;
     }
 
@@ -252,7 +253,7 @@
       border-radius: 16px;
       object-fit: cover;
       display: block;
-      margin: 0 auto 0px auto;
+      margin: 0 auto;
     }
 
     .card h2 {
@@ -261,13 +262,13 @@
     }
 
     .card p {
-      margin-top: 0px;
+      margin-top: 0;
       margin-bottom: 12px;
     }
 
     .card a {
       display: inline-block;
-      padding: 16px 16px;
+      padding: 16px;
       color: var(--color-link);
       text-decoration: none;
       border: 1px solid var(--color-link);
@@ -303,14 +304,14 @@
     }
 
     /* Small Window */
-    @media (max-width: 600px) {
+    @media (width <= 600px) {
       .social-container {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
     /* Small Window */
-    @media (max-width: 600px) {
+    @media (width <= 600px) {
       .nav-links {
         display: none;
       }
@@ -384,38 +385,39 @@
     </div>
 
     <script>
-      function toggleMenu() {
-        const overlay = document.getElementById("overlay");
-        const headerContent = document.querySelectorAll(".header-content");
+      /* eslint-disable no-unused-vars */
+      function toggleMenu () {
+        const overlay = document.getElementById('overlay');
+        const headerContent = document.querySelectorAll('.header-content');
 
-        overlay.classList.toggle("show");
+        overlay.classList.toggle('show');
 
-        const menuButton = document.querySelectorAll(".menu-button-container");
+        const menuButton = document.querySelectorAll('.menu-button-container');
         menuButton.forEach(element => {
-          element.classList.toggle("menu-mode");
+          element.classList.toggle('menu-mode');
         });
 
-        if (overlay.classList.contains("show")) {
+        if (overlay.classList.contains('show')) {
           headerContent.forEach(element => {
-            element.style.color = "var(--color-overlay)";
-            element.querySelectorAll('.line').forEach(line => line.style.backgroundColor = "var(--color-overlay)");
+            element.style.color = 'var(--color-overlay)';
+            element.querySelectorAll('.line').forEach(line => { line.style.backgroundColor = 'var(--color-overlay)'; });
           });
         } else {
           headerContent.forEach(element => {
-            element.style.color = "";
-            element.querySelectorAll('.line').forEach(line => line.style.backgroundColor = "");
+            element.style.color = '';
+            element.querySelectorAll('.line').forEach(line => { line.style.backgroundColor = ''; });
           });
         }
       }
 
       window.addEventListener('click', function (event) {
-        var overlay = document.getElementById("overlay");
-        if (event.target == overlay) {
-          overlay.style.display = "none";
+        const overlay = document.getElementById('overlay');
+        if (event.target === overlay) {
+          overlay.style.display = 'none';
         }
       });
 
-      function underlineActiveLink() {
+      function underlineActiveLink () {
         const pathname = window.location.pathname.split('/');
         const windowPathAfterSlash = pathname[pathname.length - 1];
         console.log(windowPathAfterSlash);
@@ -447,7 +449,7 @@
       <div id="hero-img" class="hero"><img src="bridge.jpg" alt="Bridge"></div>
     </div>
     <script>
-      function adjustHeroImgHeight() {
+      function adjustHeroImgHeight () {
         const textDiv = document.getElementById('hero-text');
         const imageDiv = document.getElementById('hero-img');
         if (window.innerWidth >= 600) {
