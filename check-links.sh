@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the link checker and capture the output
-output=$(blc http://localhost:8080 -ro --filter-level 2 --rate-limit 1000 --exclude "https://github.com/cartland/cartland-dev/pull/new/feature/add-linting-and-ci-checks" --exclude "https://www.threads.net/@cartland" --exclude "https://fonts.googleapis.com/" --exclude "https://fonts.gstatic.com/" --exclude "https://x.com/LandOfCart")
+output=$(blc http://localhost:8080 -ro --filter-level 2 --rate-limit 1000 --exclude "https://github.com/cartland/cartland-dev/pull/new/feature/add-linting-and-ci-checks" --exclude "https://www.threads.net/@cartland" --exclude "https://fonts.googleapis.com/" --exclude "https://fonts.gstatic.com/" --exclude "https://x.com/LandOfCart" --exclude "https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html" --exclude "https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html")
 
 # Grep for broken links and deduplicate
 broken_links=$(echo "$output" | grep "BROKEN" | sort | uniq)

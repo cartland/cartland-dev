@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "runners": [
+      "axe"
+    ],
+    "standard": "WCAG2AA",
+    "puppeteer": {
+      "args": [
+        "no-sandbox"
+      ]
+    }
+  }
+}
