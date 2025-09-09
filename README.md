@@ -29,22 +29,32 @@ A minimalist, responsive personal website built with HTML, CSS, and vanilla Java
 
 ## Development
 
-1. Install Firebase CLI:
+1. Install dependencies:
 ```bash
-npm install -g firebase-tools
+npm install
 ```
 
-2. Login to Firebase:
-```bash
-firebase login
-```
-
-3. Start local development server:
+2. Start local development server:
 ```bash
 firebase serve
 ```
 
 The site will be available at `http://localhost:5000`
+
+## Testing
+
+This project uses linting to enforce code quality and catch errors. The following checks are run:
+
+- `npm run test:html`: Validates HTML files using `html-validate`.
+- `npm run test:css`: Lints CSS files using `stylelint`.
+- `npm run test:js`: Lints JavaScript files using `eslint`.
+
+To run all tests, use:
+```bash
+npm test
+```
+
+The tests are automatically run on every pull request and before deployment.
 
 ## Deployment
 

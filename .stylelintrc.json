@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-standard",
+  "customSyntax": "postcss-html",
+  "rules": {
+    "no-descending-specificity": null
+  }
+}
