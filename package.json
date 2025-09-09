@@ -4,21 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "http-server public -p 8080",
     "build": "",
-    "test": "npm run test:html && npm run test:css && npm run test:js",
+    "test": "npm run test:html && npm run test:css && npm run test:js && npm run test:links",
     "test:html": "html-validate public/**/*.html",
     "test:css": "stylelint public/**/*.html",
-    "test:js": "eslint public/**/*.html"
+    "test:js": "eslint public/**/*.html",
+    "test:links": "start-server-and-test start http://localhost:8080 './check-links.sh'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "broken-link-checker": "^0.7.8",
     "eslint": "^8.57.1",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-html": "^8.1.3",
     "html-validate": "^10.0.0",
+    "http-server": "^14.1.1",
     "postcss-html": "^1.8.0",
+    "start-server-and-test": "^2.1.0",
     "stylelint": "^16.24.0",
     "stylelint-config-standard": "^39.0.0"
   }
