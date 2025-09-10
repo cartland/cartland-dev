@@ -4,514 +4,547 @@
   Copyright (c) 2024, Christopher Cartland
 -->
 <html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#263551" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Responsive Layout Examples</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#263551">
-  <link rel="manifest" href="/manifest.json">
-  <title>Responsive Layout Examples</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
-
-    :root {
-      --color: #fff;
-      --color-link: #ccc;
-      --background-color: #263551;
-      --background-color-overlay: rgb(0 0 0 / 50%);
-      --color-overlay: #000;
-    }
-
-    body {
-      background-color: var(--background-color);
-      font-family: Roboto, sans-serif;
-      font-size: 18px;
-      color: var(--color);
-      margin: 0;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      justify-content: center;
-      padding: 32px;
-    }
-
-    .header {
-      width: 100%;
-      padding-bottom: 32px;
-      position: relative;
-      z-index: 2;
-    }
-
-    h1 {
-      font-weight: normal;
-      margin-top: 8px;
-      margin-bottom: 8px;
-      font-size: 3em;
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .header h1 a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .header-content {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: color 0.3s ease;
-      color: var(--color);
-      z-index: inherit;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .nav-links a.active {
-      text-decoration: underline;
-    }
-
-    .nav-links h2 {
-      margin: 0;
-    }
-
-    .menu-icon {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--background-color-overlay);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .overlay.show {
-      display: block;
-      opacity: 1;
-      transition: opacity 0.3s ease;
-      transition: block 0.3s ease;
-    }
-
-    .overlay-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      background-color: white;
-      padding-top: 88px;
-      z-index: 1;
-    }
-
-    .overlay .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .overlay .nav-links a {
-      color: var(--color-overlay);
-    }
-
-    .menu-button-container {
-      --menu-icon-size: 36px;
-
-      /* Renamed from --icon-size */
-      width: var(--menu-icon-size);
-      height: var(--menu-icon-size);
-      cursor: pointer;
-      position: relative;
-    }
-
-    .line {
-      background-color: var(--color);
-      height: calc(var(--menu-icon-size) * 3 / 40);
-      width: 100%;
-      position: absolute;
-      left: 0;
-      transition: transform 0.3s ease, top 0.3s ease;
-    }
-
-    .hamburger-top {
-      top: calc(50% - (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .hamburger-bottom {
-      top: calc(50% + (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .menu-button-container.menu-mode .hamburger-top {
-      transform: rotate(135deg);
-      top: 50%;
-    }
-
-    .menu-button-container.menu-mode .hamburger-bottom {
-      transform: rotate(-135deg);
-      top: 50%;
-    }
-
-    .hero-container {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 50%;
-    }
-
-    #hero-img {
-      height: 50%;
-    }
-
-    .hero-container img {
-      border-radius: 64px;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    #hero-text {
-      text-align: left;
-      margin-top: 0;
-    }
-
-    #hero-text p {
-      margin-top: 0;
-      margin-bottom: 0;
-      min-height: 148px;
-    }
-
-    .spacer {
-      height: 16px;
-      width: 16px;
-    }
-
-    .project-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .project-container .section-header {
-      grid-column: 1 / -1;
-      margin-top: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .project-container .section-header h2 {
-      width: 50%;
-    }
-
-    .project-container .section-header p {
-      width: 50%;
-    }
-
-    .card {
-      width: 100%;
-      box-sizing: border-box;
-      flex-direction: column;
-      padding-bottom: 16px;
-    }
-
-    .card img {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 16px;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .card h2 {
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      margin-top: 0;
-      margin-bottom: 12px;
-    }
-
-    .card a {
-      display: inline-block;
-      padding: 16px;
-      color: var(--color-link);
-      text-decoration: none;
-      border: 1px solid var(--color-link);
-      border-radius: 32px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
-    .social-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-top: 32px;
-    }
-
-    .social-header {
-      width: 100%;
-      grid-column: 1 / -1;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .social-item {
-      aspect-ratio: 1;
-      overflow: hidden;
-    }
-
-    .social-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 16px;
-    }
-
-    /* Small Window */
-    @media (width <= 600px) {
-      .social-container {
-        grid-template-columns: repeat(2, 1fr);
+      :root {
+        --color: #fff;
+        --color-link: #ccc;
+        --background-color: #263551;
+        --background-color-overlay: rgb(0 0 0 / 50%);
+        --color-overlay: #000;
       }
-    }
 
-    /* Small Window */
-    @media (width <= 600px) {
+      body {
+        background-color: var(--background-color);
+        font-family: Roboto, sans-serif;
+        font-size: 18px;
+        color: var(--color);
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        justify-content: center;
+        padding: 32px;
+      }
+
+      .header {
+        width: 100%;
+        padding-bottom: 32px;
+        position: relative;
+        z-index: 2;
+      }
+
+      h1 {
+        font-weight: normal;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-size: 3em;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .header h1 a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .header-content {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: color 0.3s ease;
+        color: var(--color);
+        z-index: inherit;
+      }
+
       .nav-links {
-        display: none;
+        display: flex;
+        gap: 24px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .nav-links a.active {
+        text-decoration: underline;
+      }
+
+      .nav-links h2 {
+        margin: 0;
       }
 
       .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--background-color-overlay);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .overlay.show {
         display: block;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        transition: block 0.3s ease;
+      }
+
+      .overlay-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-color: white;
+        padding-top: 88px;
+        z-index: 1;
+      }
+
+      .overlay .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .overlay .nav-links a {
+        color: var(--color-overlay);
+      }
+
+      .menu-button-container {
+        --menu-icon-size: 36px;
+
+        /* Renamed from --icon-size */
+        width: var(--menu-icon-size);
+        height: var(--menu-icon-size);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .line {
+        background-color: var(--color);
+        height: calc(var(--menu-icon-size) * 3 / 40);
+        width: 100%;
+        position: absolute;
+        left: 0;
+        transition:
+          transform 0.3s ease,
+          top 0.3s ease;
+      }
+
+      .hamburger-top {
+        top: calc(50% - (var(--menu-icon-size) * 4 / 40));
+      }
+
+      .hamburger-bottom {
+        top: calc(50% + (var(--menu-icon-size) * 4 / 40));
+      }
+
+      .menu-button-container.menu-mode .hamburger-top {
+        transform: rotate(135deg);
+        top: 50%;
+      }
+
+      .menu-button-container.menu-mode .hamburger-bottom {
+        transform: rotate(-135deg);
+        top: 50%;
       }
 
       .hero-container {
-        flex-direction: column;
         width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
       }
 
       .hero {
-        width: 100%;
-      }
-
-      #hero-text {
-        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 50%;
       }
 
       #hero-img {
-        width: 100%;
+        height: 50%;
       }
 
       .hero-container img {
-        height: auto;
-        object-fit: contain;
+        border-radius: 64px;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      #hero-text {
+        text-align: left;
+        margin-top: 0;
+      }
+
+      #hero-text p {
+        margin-top: 0;
+        margin-bottom: 0;
+        min-height: 148px;
+      }
+
+      .spacer {
+        height: 16px;
+        width: 16px;
       }
 
       .project-container {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+        gap: 16px;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="header-content">
-        <h1><a href="">My Website</a></h1>
-        <div class="nav-links">
-          <a href="hero.html">
-            <h2>About</h2>
-          </a>
-          <a href="#">
-            <h2>Projects</h2>
-          </a>
-        </div>
-        <div class="menu-icon" onclick="toggleMenu()">
-          <div class="menu-button-container">
-            <div class="line hamburger-top"></div>
-            <div class="line hamburger-bottom"></div>
+      .project-container .section-header {
+        grid-column: 1 / -1;
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .project-container .section-header h2 {
+        width: 50%;
+      }
+
+      .project-container .section-header p {
+        width: 50%;
+      }
+
+      .card {
+        width: 100%;
+        box-sizing: border-box;
+        flex-direction: column;
+        padding-bottom: 16px;
+      }
+
+      .card img {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 16px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .card h2 {
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+
+      .card p {
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+
+      .card a {
+        display: inline-block;
+        padding: 16px;
+        color: var(--color-link);
+        text-decoration: none;
+        border: 1px solid var(--color-link);
+        border-radius: 32px;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .social-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-top: 32px;
+      }
+
+      .social-header {
+        width: 100%;
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .social-item {
+        aspect-ratio: 1;
+        overflow: hidden;
+      }
+
+      .social-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+      }
+
+      /* Small Window */
+      @media (width <= 600px) {
+        .social-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Small Window */
+      @media (width <= 600px) {
+        .nav-links {
+          display: none;
+        }
+
+        .menu-icon {
+          display: block;
+        }
+
+        .hero-container {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .hero {
+          width: 100%;
+        }
+
+        #hero-text {
+          width: 100%;
+        }
+
+        #hero-img {
+          width: 100%;
+        }
+
+        .hero-container img {
+          height: auto;
+          object-fit: contain;
+        }
+
+        .project-container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-content">
+          <h1><a href="">My Website</a></h1>
+          <div class="nav-links">
+            <a href="hero.html">
+              <h2>About</h2>
+            </a>
+            <a href="#">
+              <h2>Projects</h2>
+            </a>
+          </div>
+          <div class="menu-icon" onclick="toggleMenu()">
+            <div class="menu-button-container">
+              <div class="line hamburger-top"></div>
+              <div class="line hamburger-bottom"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="overlay" id="overlay" onclick="toggleMenu()">
-      <div class="overlay-content">
-        <div class="nav-links">
-          <a href="hero.html" onclick="toggleMenu()">
-            <h2>About</h2>
-          </a>
-          <a href="#" onclick="toggleMenu()">
-            <h2>Projects</h2>
-          </a>
+      <div class="overlay" id="overlay" onclick="toggleMenu()">
+        <div class="overlay-content">
+          <div class="nav-links">
+            <a href="hero.html" onclick="toggleMenu()">
+              <h2>About</h2>
+            </a>
+            <a href="#" onclick="toggleMenu()">
+              <h2>Projects</h2>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <script>
-      /* eslint-disable no-unused-vars */
-      function toggleMenu () {
-        const overlay = document.getElementById('overlay');
-        const headerContent = document.querySelectorAll('.header-content');
+      <script>
+        /* eslint-disable no-unused-vars */
+        function toggleMenu() {
+          const overlay = document.getElementById('overlay')
+          const headerContent = document.querySelectorAll('.header-content')
 
-        overlay.classList.toggle('show');
+          overlay.classList.toggle('show')
 
-        const menuButton = document.querySelectorAll('.menu-button-container');
-        menuButton.forEach(element => {
-          element.classList.toggle('menu-mode');
-        });
+          const menuButton = document.querySelectorAll('.menu-button-container')
+          menuButton.forEach((element) => {
+            element.classList.toggle('menu-mode')
+          })
 
-        if (overlay.classList.contains('show')) {
-          headerContent.forEach(element => {
-            element.style.color = 'var(--color-overlay)';
-            element.querySelectorAll('.line').forEach(line => { line.style.backgroundColor = 'var(--color-overlay)'; });
-          });
-        } else {
-          headerContent.forEach(element => {
-            element.style.color = '';
-            element.querySelectorAll('.line').forEach(line => { line.style.backgroundColor = ''; });
-          });
-        }
-      }
-
-      window.addEventListener('click', function (event) {
-        const overlay = document.getElementById('overlay');
-        if (event.target === overlay) {
-          overlay.style.display = 'none';
-        }
-      });
-
-      function underlineActiveLink () {
-        const pathname = window.location.pathname.split('/');
-        const windowPathAfterSlash = pathname[pathname.length - 1];
-        console.log(windowPathAfterSlash);
-        const navLinks = document.querySelectorAll('.nav-links a');
-
-        navLinks.forEach(link => {
-          // Construct the expected path based on the link's href
-          const linkPath = `${link.getAttribute('href')}`;
-          if (windowPathAfterSlash === linkPath) {
-            link.classList.add('active');
+          if (overlay.classList.contains('show')) {
+            headerContent.forEach((element) => {
+              element.style.color = 'var(--color-overlay)'
+              element.querySelectorAll('.line').forEach((line) => {
+                line.style.backgroundColor = 'var(--color-overlay)'
+              })
+            })
           } else {
-            link.classList.remove('active');
+            headerContent.forEach((element) => {
+              element.style.color = ''
+              element.querySelectorAll('.line').forEach((line) => {
+                line.style.backgroundColor = ''
+              })
+            })
           }
-        });
-      }
-      window.addEventListener('load', underlineActiveLink);
-    </script>
-    <div class="hero-container">
-      <div id="hero-text" class="hero">
-        <h1>Responsive Paragraph and Image</h1>
-        <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the
-          content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and
-          image
-          are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid
-          white
-          space.</p>
-      </div>
-      <div class="spacer"></div>
-      <div id="hero-img" class="hero"><img src="bridge.jpg" alt="Bridge"></div>
-    </div>
-    <script>
-      function adjustHeroImgHeight () {
-        const textDiv = document.getElementById('hero-text');
-        const imageDiv = document.getElementById('hero-img');
-        if (window.innerWidth >= 600) {
-          imageDiv.style.height = textDiv.offsetHeight + 'px';
-        } else {
-          imageDiv.style.height = 'auto';
         }
-      }
-      window.addEventListener('load', adjustHeroImgHeight);
-      window.addEventListener('resize', adjustHeroImgHeight);
-    </script>
-    <div class="project-container">
-      <div class="section-header">
-        <h2>Projects</h2>
-        <div class="spacer"></div>
-        <p>This is a section header. It spans the full row. This contains a paragraph of text that might
-          span multiple lines.</p>
-      </div>
-      <div class="card"><img src="bridge.jpg" alt="Bridge">
-        <h2>Card Title 1</h2>
-        <p>Short text.</p><a href="#" target="_blank">Blog Post</a>
-      </div>
-      <div class="card"><img src="bridge_tall.jpg" alt="Tall Bridge">
-        <h2>Card Title 2</h2>
-        <p>This is a paragraph with a bit more text. It might wrap to a second line within the card.</p><a href="#"
-          target="_blank">GitHub</a>
-      </div>
-      <div class="card"><img src="bridge_wide.jpg" alt="Wide Bridge">
-        <h2>Card Title 3</h2>
-        <p>This is a longer paragraph of text. It will definitely wrap to multiple lines within the card. It might even
-          fill up the entire height of the card, depending on the card's size and the font size.</p><a href="#"
-          target="_blank">Podcast</a>
-      </div>
-      <div class="card"><img src="bridge.jpg" alt="Bridge">
-        <h2>Card Title 4</h2>
-        <p>A sentence with a few words.</p><a href="#" target="_blank">Documentation</a>
-      </div>
-      <div class="card"><img src="bridge_tall.jpg" alt="Tall Bridge">
-        <h2>Card Title 5</h2>
-        <p>This text has medium length. It might wrap, it might not.</p><a href="#" target="_blank">Case Study</a>
-      </div>
-      <div class="card"><img src="bridge_wide.jpg" alt="Wide Bridge">
-        <h2>Card Title 6</h2>
-        <p>This is another long paragraph. It should wrap to several lines, demonstrating how the card's height adjusts
-          to
-          accommodate the content.</p><a href="#" target="_blank">Register</a>
-      </div>
-      <div class="card"><img src="bridge.jpg" alt="Bridge">
-        <h2>Card Title 7</h2>
-        <p>Just a tiny bit of text here.</p><a href="#" target="_blank">Download</a>
-      </div>
-    </div>
-    <div class="social-container">
-      <div class="social-header">
-        <h1>Find me on the Internet</h1>
-      </div>
-      <div class="social-item"><img src="bridge.jpg" alt="Bridge"></div>
-      <div class="social-item"><img src="bridge_tall.jpg" alt="Tall Bridge"></div>
-      <div class="social-item"><img src="bridge_wide.jpg" alt="Wide Bridge"></div>
-      <div class="social-item"><img src="bridge.jpg" alt="Bridge"></div>
-    </div>
-  </div>
-</body>
 
+        window.addEventListener('click', function (event) {
+          const overlay = document.getElementById('overlay')
+          if (event.target === overlay) {
+            overlay.style.display = 'none'
+          }
+        })
+
+        function underlineActiveLink() {
+          const pathname = window.location.pathname.split('/')
+          const windowPathAfterSlash = pathname[pathname.length - 1]
+          console.log(windowPathAfterSlash)
+          const navLinks = document.querySelectorAll('.nav-links a')
+
+          navLinks.forEach((link) => {
+            // Construct the expected path based on the link's href
+            const linkPath = `${link.getAttribute('href')}`
+            if (windowPathAfterSlash === linkPath) {
+              link.classList.add('active')
+            } else {
+              link.classList.remove('active')
+            }
+          })
+        }
+        window.addEventListener('load', underlineActiveLink)
+      </script>
+      <div class="hero-container">
+        <div id="hero-text" class="hero">
+          <h1>Responsive Paragraph and Image</h1>
+          <p>
+            This page demonstrates a responsive layout with a paragraph of text
+            and an image. On narrow screens, the content is stacked vertically,
+            with the image maintaining its aspect ratio. On wider screens, the
+            text and image are displayed side-by-side, with the image filling
+            the height of the text box and center-cropped to avoid white space.
+          </p>
+        </div>
+        <div class="spacer"></div>
+        <div id="hero-img" class="hero">
+          <img src="bridge.jpg" alt="Bridge" />
+        </div>
+      </div>
+      <script>
+        function adjustHeroImgHeight() {
+          const textDiv = document.getElementById('hero-text')
+          const imageDiv = document.getElementById('hero-img')
+          if (window.innerWidth >= 600) {
+            imageDiv.style.height = textDiv.offsetHeight + 'px'
+          } else {
+            imageDiv.style.height = 'auto'
+          }
+        }
+        window.addEventListener('load', adjustHeroImgHeight)
+        window.addEventListener('resize', adjustHeroImgHeight)
+      </script>
+      <div class="project-container">
+        <div class="section-header">
+          <h2>Projects</h2>
+          <div class="spacer"></div>
+          <p>
+            This is a section header. It spans the full row. This contains a
+            paragraph of text that might span multiple lines.
+          </p>
+        </div>
+        <div class="card">
+          <img src="bridge.jpg" alt="Bridge" />
+          <h2>Card Title 1</h2>
+          <p>Short text.</p>
+          <a href="#" target="_blank">Blog Post</a>
+        </div>
+        <div class="card">
+          <img src="bridge_tall.jpg" alt="Tall Bridge" />
+          <h2>Card Title 2</h2>
+          <p>
+            This is a paragraph with a bit more text. It might wrap to a second
+            line within the card.
+          </p>
+          <a href="#" target="_blank">GitHub</a>
+        </div>
+        <div class="card">
+          <img src="bridge_wide.jpg" alt="Wide Bridge" />
+          <h2>Card Title 3</h2>
+          <p>
+            This is a longer paragraph of text. It will definitely wrap to
+            multiple lines within the card. It might even fill up the entire
+            height of the card, depending on the card's size and the font size.
+          </p>
+          <a href="#" target="_blank">Podcast</a>
+        </div>
+        <div class="card">
+          <img src="bridge.jpg" alt="Bridge" />
+          <h2>Card Title 4</h2>
+          <p>A sentence with a few words.</p>
+          <a href="#" target="_blank">Documentation</a>
+        </div>
+        <div class="card">
+          <img src="bridge_tall.jpg" alt="Tall Bridge" />
+          <h2>Card Title 5</h2>
+          <p>This text has medium length. It might wrap, it might not.</p>
+          <a href="#" target="_blank">Case Study</a>
+        </div>
+        <div class="card">
+          <img src="bridge_wide.jpg" alt="Wide Bridge" />
+          <h2>Card Title 6</h2>
+          <p>
+            This is another long paragraph. It should wrap to several lines,
+            demonstrating how the card's height adjusts to accommodate the
+            content.
+          </p>
+          <a href="#" target="_blank">Register</a>
+        </div>
+        <div class="card">
+          <img src="bridge.jpg" alt="Bridge" />
+          <h2>Card Title 7</h2>
+          <p>Just a tiny bit of text here.</p>
+          <a href="#" target="_blank">Download</a>
+        </div>
+      </div>
+      <div class="social-container">
+        <div class="social-header">
+          <h1>Find me on the Internet</h1>
+        </div>
+        <div class="social-item"><img src="bridge.jpg" alt="Bridge" /></div>
+        <div class="social-item">
+          <img src="bridge_tall.jpg" alt="Tall Bridge" />
+        </div>
+        <div class="social-item">
+          <img src="bridge_wide.jpg" alt="Wide Bridge" />
+        </div>
+        <div class="social-item"><img src="bridge.jpg" alt="Bridge" /></div>
+      </div>
+    </div>
+  </body>
 </html>

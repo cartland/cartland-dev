@@ -4,122 +4,126 @@
   Copyright (c) 2024, Christopher Cartland
 -->
 <html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Responsive Paragraph and Image</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Paragraph and Image</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-:root {
-  --color: #fff;
-  --background-color: #263551;
-}
+      :root {
+        --color: #fff;
+        --background-color: #263551;
+      }
 
-body {
-  background-color: var(--background-color);
-}
+      body {
+        background-color: var(--background-color);
+      }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  justify-content: center;
-  font-family: Roboto, sans-serif;
-  font-size: 18px;
-  color: var(--color);
-  padding: 8px;
-}
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        justify-content: center;
+        font-family: Roboto, sans-serif;
+        font-size: 18px;
+        color: var(--color);
+        padding: 8px;
+      }
 
-.hero {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+      .hero {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
 
-.container img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 4px;
-}
+      .container img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+        border-radius: 4px;
+      }
 
-#text-div {
-  text-align: left;
-  margin-top: 0;
-}
+      #text-div {
+        text-align: left;
+        margin-top: 0;
+      }
 
-#text-div h1 {
-    margin-top: 8px;
-    margin-bottom: 32px;
-    font-size: 3em;
-}
+      #text-div h1 {
+        margin-top: 8px;
+        margin-bottom: 32px;
+        font-size: 3em;
+      }
 
-#text-div p {
-  margin-top: 0;
-  margin-bottom: 0;
-  min-height: 148px;
-}
+      #text-div p {
+        margin-top: 0;
+        margin-bottom: 0;
+        min-height: 148px;
+      }
 
-.spacer {
-  height: 16px;
-  width: 16px;
-}
+      .spacer {
+        height: 16px;
+        width: 16px;
+      }
 
-@media (width >= 600px) {
-  .container {
-    flex-direction: row;
-  }
+      @media (width >= 600px) {
+        .container {
+          flex-direction: row;
+        }
 
-  .hero {
-    width: 50%;
-  }
+        .hero {
+          width: 50%;
+        }
 
-  #image-div {
-    height: 100%;
-    padding-inline: 4px;
-  }
+        #image-div {
+          height: 100%;
+          padding-inline: 4px;
+        }
 
-  #text-div {
-    padding-inline: 4px;
-  }
+        #text-div {
+          padding-inline: 4px;
+        }
 
-  .container img {
-    height: 100%;
-    object-fit: cover;
-  }
-}
-</style>
-</head>
-<body>
+        .container img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="text-div" class="hero">
+        <h1>Responsive Paragraph and Image</h1>
+        <p>
+          This page demonstrates a responsive layout with a paragraph of text
+          and an image. On narrow screens, the content is stacked vertically,
+          with the image maintaining its aspect ratio. On wider screens, the
+          text and image are displayed side-by-side, with the image filling the
+          height of the text box and center-cropped to avoid white space.
+        </p>
+      </div>
+      <div class="spacer"></div>
+      <div id="image-div" class="hero">
+        <img src="bridge.jpg" alt="Hero Image" />
+      </div>
+    </div>
 
-<div class="container">
-  <div id="text-div" class="hero">
-    <h1>Responsive Paragraph and Image</h1>
-    <p>This page demonstrates a responsive layout with a paragraph of text and an image. On narrow screens, the content is stacked vertically, with the image maintaining its aspect ratio. On wider screens, the text and image are displayed side-by-side, with the image filling the height of the text box and center-cropped to avoid white space.</p>
-  </div>
-  <div class="spacer"></div>
-  <div id="image-div" class="hero">
-    <img src="bridge.jpg" alt="Hero Image">
-  </div>
-</div>
+    <script>
+      function adjustImageDivHeight() {
+        const textDiv = document.getElementById('text-div')
+        const imageDiv = document.getElementById('image-div')
+        if (window.innerWidth >= 600) {
+          imageDiv.style.height = textDiv.offsetHeight + 'px'
+        } else {
+          imageDiv.style.height = 'auto'
+        }
+      }
 
-<script>
-  function adjustImageDivHeight () {
-    const textDiv = document.getElementById('text-div');
-    const imageDiv = document.getElementById('image-div');
-    if (window.innerWidth >= 600) {
-      imageDiv.style.height = textDiv.offsetHeight + 'px';
-    } else {
-      imageDiv.style.height = 'auto';
-    }
-  }
-
-  adjustImageDivHeight();
-  window.addEventListener('resize', adjustImageDivHeight);
-</script>
-
-</body>
+      adjustImageDivHeight()
+      window.addEventListener('resize', adjustImageDivHeight)
+    </script>
+  </body>
 </html>

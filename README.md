@@ -30,11 +30,13 @@ A minimalist, responsive personal website built with HTML, CSS, and vanilla Java
 ## Development
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Start local development server:
+
 ```bash
 firebase serve
 ```
@@ -50,6 +52,7 @@ This project uses linting to enforce code quality and catch errors. The followin
 - `npm run test:js`: Lints JavaScript files using `eslint`.
 
 To run all tests, use:
+
 ```bash
 npm test
 ```
@@ -64,6 +67,7 @@ The site automatically deploys to Firebase Hosting through GitHub Actions:
 - Merges to main branch trigger production deployments
 
 Manual deployment can be done with:
+
 ```bash
 firebase deploy
 ```
@@ -73,11 +77,13 @@ firebase deploy
 A workflow is configured for automated deployments:
 
 **Merge Workflow** (.github/workflows/firebase-hosting-merge.yml)
-   - Triggers on merges to main branch
-   - Deploys to production
-   - Updates the live site at chriscart.land
+
+- Triggers on merges to main branch
+- Deploys to production
+- Updates the live site at chriscart.land
 
 Workflows require the following GitHub Actions secrets:
+
 - `FIREBASE_SERVICE_ACCOUNT_CARTLAND_DEV`
 - `GITHUB_TOKEN`
 

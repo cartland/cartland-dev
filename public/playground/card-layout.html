@@ -4,129 +4,138 @@
   Copyright (c) 2024, Christopher Cartland
 -->
 <html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Card Layout</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Layout</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-:root {
-  --color: #000;
-  --background-color:   #eee;
-}
+      :root {
+        --color: #000;
+        --background-color: #eee;
+      }
 
-body {
-  background-color: var(--background-color);
-}
+      body {
+        background-color: var(--background-color);
+      }
 
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  justify-content: center;
-  max-width: 1600px;
-  margin: 0 auto;
-  gap: 10px;
-  padding: 8px;
-}
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        justify-content: center;
+        max-width: 1600px;
+        margin: 0 auto;
+        gap: 10px;
+        padding: 8px;
+      }
 
-.card {
-  width: 100%;
-  box-sizing: border-box;
-  flex-direction: column;
-  font-family: Roboto, sans-serif; 
-  font-size: 18px;
-  color: var(--color);
-  padding-bottom: 16px;
-}
+      .card {
+        width: 100%;
+        box-sizing: border-box;
+        flex-direction: column;
+        font-family: Roboto, sans-serif;
+        font-size: 18px;
+        color: var(--color);
+        padding-bottom: 16px;
+      }
 
-.card img {
-  width: 100%; 
-  aspect-ratio: 3/4;
-  border-radius: 8px;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto; 
-}
+      .card img {
+        width: 100%;
+        aspect-ratio: 3/4;
+        border-radius: 8px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+      }
 
-.card h2 {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
+      .card h2 {
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
 
-.card p {
-  margin-top: 0;
-  margin-bottom: 12px;
-}
+      .card p {
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
 
-.card a { 
-  display: inline-block;
-  padding: 16px;
-  color: #808080;
-  text-decoration: none;
-  border: 1px solid #808080;
-  border-radius: 32px; 
-  text-align: center;
-  text-transform: uppercase;
-}
+      .card a {
+        display: inline-block;
+        padding: 16px;
+        color: #808080;
+        text-decoration: none;
+        border: 1px solid #808080;
+        border-radius: 32px;
+        text-align: center;
+        text-transform: uppercase;
+      }
 
-@media (width <= 300px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
+      @media (width <= 300px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
 
-  .card {
-    aspect-ratio: 0;
-    height: auto;
-  }
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-  <div class="card">
-    <img src="bridge.jpg" alt="Bridge">
-    <h2>Card Title 1</h2>
-    <p>Short text.</p>
-    <a href="#">Blog Post</a>
-  </div>
-  <div class="card">
-    <img src="bridge_tall.jpg" alt="Tall Bridge">
-    <h2>Card Title 2</h2>
-    <p>This is a paragraph with a bit more text. It might wrap to a second line within the card.</p>
-    <a href="#">GitHub</a>
-  </div>
-  <div class="card">
-    <img src="bridge_wide.jpg" alt="Wide Bridge">
-    <h2>Card Title 3</h2>
-    <p>This is a longer paragraph of text. It will definitely wrap to multiple lines within the card. It might even fill up the entire height of the card, depending on the card's size and the font size.</p>
-    <a href="#">Podcast</a>
-  </div>
-  <div class="card">
-    <img src="bridge.jpg" alt="Bridge">
-    <h2>Card Title 4</h2>
-    <p>A sentence with a few words.</p>
-    <a href="#">Documentation</a>
-  </div>
-  <div class="card">
-    <img src="bridge_tall.jpg" alt="Tall Bridge">
-    <h2>Card Title 5</h2>
-    <p>This text has medium length. It might wrap, it might not.</p>
-    <a href="#">Case Study</a>
-  </div>
-  <div class="card">
-    <img src="bridge_wide.jpg" alt="Wide Bridge">
-    <h2>Card Title 6</h2>
-    <p>This is another long paragraph. It should wrap to several lines, demonstrating how the card's height adjusts to accommodate the content.</p>
-    <a href="#">Register</a>
-  </div>
-  <div class="card">
-    <img src="bridge.jpg" alt="Bridge">
-    <h2>Card Title 7</h2>
-    <p>Just a tiny bit of text here.</p>
-    <a href="#">Download</a>
-  </div>
-</div>
-
-</body>
+        .card {
+          aspect-ratio: 0;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <img src="bridge.jpg" alt="Bridge" />
+        <h2>Card Title 1</h2>
+        <p>Short text.</p>
+        <a href="#">Blog Post</a>
+      </div>
+      <div class="card">
+        <img src="bridge_tall.jpg" alt="Tall Bridge" />
+        <h2>Card Title 2</h2>
+        <p>
+          This is a paragraph with a bit more text. It might wrap to a second
+          line within the card.
+        </p>
+        <a href="#">GitHub</a>
+      </div>
+      <div class="card">
+        <img src="bridge_wide.jpg" alt="Wide Bridge" />
+        <h2>Card Title 3</h2>
+        <p>
+          This is a longer paragraph of text. It will definitely wrap to
+          multiple lines within the card. It might even fill up the entire
+          height of the card, depending on the card's size and the font size.
+        </p>
+        <a href="#">Podcast</a>
+      </div>
+      <div class="card">
+        <img src="bridge.jpg" alt="Bridge" />
+        <h2>Card Title 4</h2>
+        <p>A sentence with a few words.</p>
+        <a href="#">Documentation</a>
+      </div>
+      <div class="card">
+        <img src="bridge_tall.jpg" alt="Tall Bridge" />
+        <h2>Card Title 5</h2>
+        <p>This text has medium length. It might wrap, it might not.</p>
+        <a href="#">Case Study</a>
+      </div>
+      <div class="card">
+        <img src="bridge_wide.jpg" alt="Wide Bridge" />
+        <h2>Card Title 6</h2>
+        <p>
+          This is another long paragraph. It should wrap to several lines,
+          demonstrating how the card's height adjusts to accommodate the
+          content.
+        </p>
+        <a href="#">Register</a>
+      </div>
+      <div class="card">
+        <img src="bridge.jpg" alt="Bridge" />
+        <h2>Card Title 7</h2>
+        <p>Just a tiny bit of text here.</p>
+        <a href="#">Download</a>
+      </div>
+    </div>
+  </body>
 </html>

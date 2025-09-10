@@ -1,18 +1,121 @@
 {
   "basePeriod": "1901-2020",
   "monthlyAverages": [
-    {"month": "January", "landAndOceanC": 12.0, "landF": 53.6, "landC": 2.8, "oceanF": 37.0, "oceanC": 15.8, "oceanF": 60.5},
-    {"month": "February", "landAndOceanC": 12.1, "landF": 53.9, "landC": 3.2, "oceanF": 37.8, "oceanC": 15.9, "oceanF": 60.6},
-    {"month": "March", "landAndOceanC": 12.7, "landF": 54.9, "landC": 5.0, "oceanF": 40.8, "oceanC": 15.9, "oceanF": 60.7},
-    {"month": "April", "landAndOceanC": 13.7, "landF": 56.7, "landC": 8.1, "oceanF": 46.5, "oceanC": 16.0, "oceanF": 60.9},
-    {"month": "May", "landAndOceanC": 14.8, "landF": 58.6, "landC": 11.1, "oceanF": 52.0, "oceanC": 16.3, "oceanF": 61.3},
-    {"month": "June", "landAndOceanC": 15.5, "landF": 59.9, "landC": 13.3, "oceanF": 55.9, "oceanC": 16.4, "oceanF": 61.5},
-    {"month": "July", "landAndOceanC": 15.8, "landF": 60.4, "landC": 14.3, "oceanF": 57.8, "oceanC": 16.4, "oceanF": 61.5},
-    {"month": "August", "landAndOceanC": 15.6, "landF": 60.1, "landC": 13.8, "oceanF": 56.9, "oceanC": 16.4, "oceanF": 61.4},
-    {"month": "September", "landAndOceanC": 15.0, "landF": 59.0, "landC": 12.0, "oceanF": 53.6, "oceanC": 16.2, "oceanF": 61.1},
-    {"month": "October", "landAndOceanC": 14.0, "landF": 57.1, "landC": 9.3, "oceanF": 48.7, "oceanC": 15.9, "oceanF": 60.6},
-    {"month": "November", "landAndOceanC": 12.9, "landF": 55.2, "landC": 5.9, "oceanF": 42.6, "oceanC": 15.8, "oceanF": 60.4},
-    {"month": "December", "landAndOceanC": 12.2, "landF": 54.0, "landC": 3.7, "oceanF": 38.7, "oceanC": 15.7, "oceanF": 60.4}
+    {
+      "month": "January",
+      "landAndOceanC": 12.0,
+      "landF": 53.6,
+      "landC": 2.8,
+      "oceanF": 37.0,
+      "oceanC": 15.8,
+      "oceanF": 60.5
+    },
+    {
+      "month": "February",
+      "landAndOceanC": 12.1,
+      "landF": 53.9,
+      "landC": 3.2,
+      "oceanF": 37.8,
+      "oceanC": 15.9,
+      "oceanF": 60.6
+    },
+    {
+      "month": "March",
+      "landAndOceanC": 12.7,
+      "landF": 54.9,
+      "landC": 5.0,
+      "oceanF": 40.8,
+      "oceanC": 15.9,
+      "oceanF": 60.7
+    },
+    {
+      "month": "April",
+      "landAndOceanC": 13.7,
+      "landF": 56.7,
+      "landC": 8.1,
+      "oceanF": 46.5,
+      "oceanC": 16.0,
+      "oceanF": 60.9
+    },
+    {
+      "month": "May",
+      "landAndOceanC": 14.8,
+      "landF": 58.6,
+      "landC": 11.1,
+      "oceanF": 52.0,
+      "oceanC": 16.3,
+      "oceanF": 61.3
+    },
+    {
+      "month": "June",
+      "landAndOceanC": 15.5,
+      "landF": 59.9,
+      "landC": 13.3,
+      "oceanF": 55.9,
+      "oceanC": 16.4,
+      "oceanF": 61.5
+    },
+    {
+      "month": "July",
+      "landAndOceanC": 15.8,
+      "landF": 60.4,
+      "landC": 14.3,
+      "oceanF": 57.8,
+      "oceanC": 16.4,
+      "oceanF": 61.5
+    },
+    {
+      "month": "August",
+      "landAndOceanC": 15.6,
+      "landF": 60.1,
+      "landC": 13.8,
+      "oceanF": 56.9,
+      "oceanC": 16.4,
+      "oceanF": 61.4
+    },
+    {
+      "month": "September",
+      "landAndOceanC": 15.0,
+      "landF": 59.0,
+      "landC": 12.0,
+      "oceanF": 53.6,
+      "oceanC": 16.2,
+      "oceanF": 61.1
+    },
+    {
+      "month": "October",
+      "landAndOceanC": 14.0,
+      "landF": 57.1,
+      "landC": 9.3,
+      "oceanF": 48.7,
+      "oceanC": 15.9,
+      "oceanF": 60.6
+    },
+    {
+      "month": "November",
+      "landAndOceanC": 12.9,
+      "landF": 55.2,
+      "landC": 5.9,
+      "oceanF": 42.6,
+      "oceanC": 15.8,
+      "oceanF": 60.4
+    },
+    {
+      "month": "December",
+      "landAndOceanC": 12.2,
+      "landF": 54.0,
+      "landC": 3.7,
+      "oceanF": 38.7,
+      "oceanC": 15.7,
+      "oceanF": 60.4
+    }
   ],
-  "annualAverage": {"landAndOceanC": 13.9, "landF": 57.0, "landC": 8.5, "oceanF": 47.3, "oceanC": 16.1, "oceanF": 60.9}
+  "annualAverage": {
+    "landAndOceanC": 13.9,
+    "landF": 57.0,
+    "landC": 8.5,
+    "oceanF": 47.3,
+    "oceanC": 16.1,
+    "oceanF": 60.9
+  }
 }
