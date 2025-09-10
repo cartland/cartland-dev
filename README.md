@@ -1,4 +1,4 @@
-# Personal Website: cartland.dev
+# Personal Website
 
 This repository contains the source code for my personal website, [chriscart.land](https://chriscart.land). It's a minimalist, responsive site built with vanilla HTML, CSS, and JavaScript, and deployed on Firebase Hosting.
 
