@@ -1,669 +1,741 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--
   ISC License
   Copyright (c) 2024, Christopher Cartland
 -->
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Software Engineer specializing in Android, Mobile, Embedded, and Serverless technologies"
+    />
+    <meta name="theme-color" content="#263551" />
+    <title>Christopher Cartland</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="canonical" href="https://chriscart.land/" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="Software Engineer specializing in Android, Mobile, Embedded, and Serverless technologies">
-  <meta name="theme-color" content="#263551">
-  <title>Christopher Cartland</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="canonical" href="https://chriscart.land/">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
-
-    /* Root Variables */
-    :root {
-      --color: #ffffff;
-      --color-link: #cccccc;
-      --background-color: #130830;
-      --background-color-overlay: rgba(0, 0, 0, 0.5);
-      --color-overlay: #000000;
-    }
-
-    /* Skip Link */
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      z-index: 999;
-      padding: 1em;
-      background-color: white;
-      color: black;
-      text-decoration: none;
-    }
-
-    .skip-link:focus {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    /* Base Styles */
-    body {
-      background-color: var(--background-color);
-      font-family: 'Roboto', sans-serif;
-      font-size: 0.9em;
-      color: var(--color);
-      margin: 0;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 800px;
-      margin: 0 auto;
-      justify-content: center;
-      padding-inline: 32px;
-    }
-
-    #main-content {
-      width: 100%;
-    }
-
-    /* Typography */
-    h1 {
-      font-weight: normal;
-      margin-top: 8px;
-      margin-bottom: 8px;
-      font-size: 3em;
-    }
-
-    a {
-      color: var(--color-link);
-    }
-
-    header {
-      width: 100%;
-    }
-
-    .image-gradient-container {
-      position: relative;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .image-gradient-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
-      z-index: 1;
-    }
-
-    .image-gradient-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      position: relative;
-      border-radius: 8px;
-    }
-
-    /* Header and Navigation */
-    .header-container {
-      width: 100%;
-      padding-top: 32px;
-      padding-bottom: 32px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .header-container h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .header-container h1 a {
-      text-decoration: none;
-      color: inherit;
-      padding-right: 16px;
-    }
-
-    .header-content {
-      width: 100%;
-      height: 36px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: color 0.3s ease;
-      color: var(--color);
-      z-index: inherit;
-    }
-
-    .logo-container {
-      height: 48px;
-      position: relative;
-    }
-
-    .logo-container img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .logo-container .primary {
-      opacity: 1;
-    }
-
-    .logo-container .primary.menu-active-mode {
-      opacity: 0;
-    }
-
-    .logo-container .secondary {
-      opacity: 0;
-    }
-
-    .logo-container .secondary.menu-active-mode {
-      opacity: 1;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .nav-links a.active {
-      text-decoration: underline;
-    }
-
-    .nav-links h2 {
-      margin: 0;
-    }
-
-    /* Menu and Overlay */
-    .menu-icon {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .menu-button-container {
-      --menu-icon-size: 36px;
-      width: var(--menu-icon-size);
-      height: var(--menu-icon-size);
-      cursor: pointer;
-      position: relative;
-    }
-
-    .line {
-      background-color: var(--color);
-      height: calc(var(--menu-icon-size) * 3 / 40);
-      width: 100%;
-      position: absolute;
-      left: 0;
-      transition: transform 0.3s ease, top 0.3s ease;
-    }
-
-    .hamburger-top {
-      top: calc(50% - (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .hamburger-bottom {
-      top: calc(50% + (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .menu-button-container.menu-active-mode .hamburger-top {
-      transform: rotate(135deg);
-      top: 50%;
-    }
-
-    .menu-button-container.menu-active-mode .hamburger-bottom {
-      transform: rotate(-135deg);
-      top: 50%;
-    }
-
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--background-color-overlay);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .overlay.menu-active-mode {
-      display: block;
-      opacity: 1;
-      transition: opacity 0.3s ease, display 0.3s ease;
-    }
-
-    .overlay-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      background-color: white;
-      padding-top: 100px;
-      z-index: 1;
-    }
-
-    .overlay .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0px;
-    }
-
-    .overlay .nav-links a {
-      color: var(--color-overlay);
-      padding: 16px;
-    }
-
-    /* Menu State */
-    .header-content.menu-active-mode {
-      color: var(--color-overlay);
-    }
-
-    .header-content.menu-active-mode .line {
-      background-color: var(--color-overlay);
-    }
-
-    /* Hero Section */
-    .hero-container {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 50%;
-    }
-
-    #hero-text {
-      text-align: left;
-      margin: 0;
-      min-height: 148px;
-    }
-
-    #hero-text p {
-      margin-top: 0;
-      margin-bottom: 16px;
-    }
-
-    #hero-img {
-      height: 50%;
-    }
-
-    .hero-container img {
-      border-radius: 32px;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .big-image-container {
-      width: 100%;
-    }
-
-    .big-image-container img {
-      width: 100%;
-      border-radius: 32px;
-      object-fit: cover;
-    }
-
-    /* Social Section */
-    .social-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-
-    .social-header {
-      width: 100%;
-      text-align: center;
-    }
-
-    .social-items-row {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .social-item {
-      width: 66px;
-    }
-
-    .social-item img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-    }
-
-    .social-item a {
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .social-item p {
-      margin: 2px 0 0 0;
-    }
-
-    .spacer {
-      height: 16px;
-      width: 32px;
-    }
-
-    /* Focus Styles */
-    a:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
-    }
-
-    .menu-icon:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
-    }
-
-    footer {
-      width: 100%;
-    }
-
-    footer p {
-      text-align: center;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      .nav-links {
-        display: none;
+      /* Root Variables */
+      :root {
+        --color: #ffffff;
+        --color-link: #cccccc;
+        --background-color: #130830;
+        --background-color-overlay: rgba(0, 0, 0, 0.5);
+        --color-overlay: #000000;
       }
 
-      .menu-icon {
-        display: block;
+      /* Skip Link */
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        z-index: 999;
+        padding: 1em;
+        background-color: white;
+        color: black;
+        text-decoration: none;
       }
 
-      .hero-container {
+      .skip-link:focus {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* Base Styles */
+      body {
+        background-color: var(--background-color);
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.9em;
+        color: var(--color);
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
         flex-direction: column;
+        align-items: center;
+        max-width: 800px;
+        margin: 0 auto;
+        justify-content: center;
+        padding-inline: 32px;
+      }
+
+      #main-content {
         width: 100%;
       }
 
-      .hero {
+      /* Typography */
+      h1 {
+        font-weight: normal;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-size: 3em;
+      }
+
+      a {
+        color: var(--color-link);
+      }
+
+      header {
         width: 100%;
       }
 
-      #hero-text {
-        width: 100%;
+      .image-gradient-container {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
       }
 
-      #hero-img {
+      .image-gradient-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.5)
+        );
+        z-index: 1;
       }
 
-      .hero-container img {
-        height: auto;
+      .image-gradient-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        position: relative;
+        border-radius: 8px;
+      }
+
+      /* Header and Navigation */
+      .header-container {
+        width: 100%;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .header-container h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .header-container h1 a {
+        text-decoration: none;
+        color: inherit;
+        padding-right: 16px;
+      }
+
+      .header-content {
+        width: 100%;
+        height: 36px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: color 0.3s ease;
+        color: var(--color);
+        z-index: inherit;
+      }
+
+      .logo-container {
+        height: 48px;
+        position: relative;
+      }
+
+      .logo-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
         object-fit: contain;
       }
 
+      .logo-container .primary {
+        opacity: 1;
+      }
+
+      .logo-container .primary.menu-active-mode {
+        opacity: 0;
+      }
+
+      .logo-container .secondary {
+        opacity: 0;
+      }
+
+      .logo-container .secondary.menu-active-mode {
+        opacity: 1;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .nav-links a.active {
+        text-decoration: underline;
+      }
+
+      .nav-links h2 {
+        margin: 0;
+      }
+
+      /* Menu and Overlay */
+      .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .menu-button-container {
+        --menu-icon-size: 36px;
+        width: var(--menu-icon-size);
+        height: var(--menu-icon-size);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .line {
+        background-color: var(--color);
+        height: calc(var(--menu-icon-size) * 3 / 40);
+        width: 100%;
+        position: absolute;
+        left: 0;
+        transition:
+          transform 0.3s ease,
+          top 0.3s ease;
+      }
+
+      .hamburger-top {
+        top: calc(50% - (var(--menu-icon-size) * 4 / 40));
+      }
+
+      .hamburger-bottom {
+        top: calc(50% + (var(--menu-icon-size) * 4 / 40));
+      }
+
+      .menu-button-container.menu-active-mode .hamburger-top {
+        transform: rotate(135deg);
+        top: 50%;
+      }
+
+      .menu-button-container.menu-active-mode .hamburger-bottom {
+        transform: rotate(-135deg);
+        top: 50%;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--background-color-overlay);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .overlay.menu-active-mode {
+        display: block;
+        opacity: 1;
+        transition:
+          opacity 0.3s ease,
+          display 0.3s ease;
+      }
+
+      .overlay-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-color: white;
+        padding-top: 100px;
+        z-index: 1;
+      }
+
+      .overlay .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+      }
+
+      .overlay .nav-links a {
+        color: var(--color-overlay);
+        padding: 16px;
+      }
+
+      /* Menu State */
+      .header-content.menu-active-mode {
+        color: var(--color-overlay);
+      }
+
+      .header-content.menu-active-mode .line {
+        background-color: var(--color-overlay);
+      }
+
+      /* Hero Section */
+      .hero-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 50%;
+      }
+
+      #hero-text {
+        text-align: left;
+        margin: 0;
+        min-height: 148px;
+      }
+
+      #hero-text p {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+
+      #hero-img {
+        height: 50%;
+      }
+
+      .hero-container img {
+        border-radius: 32px;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .big-image-container {
+        width: 100%;
+      }
+
+      .big-image-container img {
+        width: 100%;
+        border-radius: 32px;
+        object-fit: cover;
+      }
+
+      /* Social Section */
+      .social-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .social-header {
+        width: 100%;
+        text-align: center;
+      }
+
       .social-items-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         gap: 16px;
-        padding: 0 16px;
+        flex-wrap: wrap;
       }
 
       .social-item {
-        width: 48px;
+        width: 66px;
+      }
+
+      .social-item img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+
+      .social-item a {
+        text-decoration: none;
+        text-align: center;
       }
 
       .social-item p {
-        font-size: 0.7em;
+        margin: 2px 0 0 0;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="container">
-    <header>
-      <div id="header-container" class="header-container">
-        <div class="header-content menu-aware">
-          <a href="/" aria-label="Home - Christopher Cartland">
-            <div class="logo-container">
-              <div class="primary menu-aware">
-                <img src="i/ChristopherCartlandLogo.jpg" alt="Christopher Cartland Logo">
+      .spacer {
+        height: 16px;
+        width: 32px;
+      }
+
+      /* Focus Styles */
+      a:focus-visible {
+        outline: 2px solid var(--color-link);
+        outline-offset: 2px;
+      }
+
+      .menu-icon:focus-visible {
+        outline: 2px solid var(--color-link);
+        outline-offset: 2px;
+      }
+
+      footer {
+        width: 100%;
+      }
+
+      footer p {
+        text-align: center;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .nav-links {
+          display: none;
+        }
+
+        .menu-icon {
+          display: block;
+        }
+
+        .hero-container {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .hero {
+          width: 100%;
+        }
+
+        #hero-text {
+          width: 100%;
+        }
+
+        #hero-img {
+          width: 100%;
+        }
+
+        .hero-container img {
+          height: auto;
+          object-fit: contain;
+        }
+
+        .social-items-row {
+          gap: 16px;
+          padding: 0 16px;
+        }
+
+        .social-item {
+          width: 48px;
+        }
+
+        .social-item p {
+          font-size: 0.7em;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="container">
+      <header>
+        <div id="header-container" class="header-container">
+          <div class="header-content menu-aware">
+            <a href="/" aria-label="Home - Christopher Cartland">
+              <div class="logo-container">
+                <div class="primary menu-aware">
+                  <img
+                    src="i/ChristopherCartlandLogo.jpg"
+                    alt="Christopher Cartland Logo"
+                  />
+                </div>
+                <div class="secondary menu-aware">
+                  <img
+                    src="i/ChristopherCartlandLogoLight.jpg"
+                    alt="Christopher Cartland Logo"
+                  />
+                </div>
               </div>
-              <div class="secondary menu-aware">
-                <img src="i/ChristopherCartlandLogoLight.jpg" alt="Christopher Cartland Logo">
+            </a>
+            <nav class="nav-links" aria-label="Main navigation">
+              <a
+                href="/"
+                aria-label="About - Learn more about Christopher Cartland"
+              >
+                <h2>About</h2>
+              </a>
+              <a
+                href="projects"
+                aria-label="Projects - View Christopher Cartland's work"
+              >
+                <h2>Projects</h2>
+              </a>
+            </nav>
+            <div
+              class="menu-icon"
+              onclick="toggleMenu()"
+              role="button"
+              tabindex="0"
+              aria-label="Toggle navigation menu"
+              aria-expanded="false"
+            >
+              <div class="menu-button-container menu-aware">
+                <div class="line hamburger-top"></div>
+                <div class="line hamburger-bottom"></div>
               </div>
             </div>
-          </a>
-          <nav class="nav-links" aria-label="Main navigation">
-            <a href="/" aria-label="About - Learn more about Christopher Cartland">
-              <h2>About</h2>
-            </a>
-            <a href="projects" aria-label="Projects - View Christopher Cartland's work">
-              <h2>Projects</h2>
-            </a>
+          </div>
+        </div>
+        <div id="overlay" class="overlay menu-aware" onclick="toggleMenu()">
+          <nav class="overlay-content" aria-label="Mobile navigation">
+            <div class="nav-links">
+              <a
+                href="/"
+                onclick="toggleMenu()"
+                aria-label="About - Learn more about Christopher Cartland"
+              >
+                <h2>About</h2>
+              </a>
+              <a
+                href="projects"
+                onclick="toggleMenu()"
+                aria-label="Projects - View Christopher Cartland's work"
+              >
+                <h2>Projects</h2>
+              </a>
+            </div>
           </nav>
-          <div class="menu-icon" onclick="toggleMenu()" role="button" tabindex="0" aria-label="Toggle navigation menu"
-            aria-expanded="false">
-            <div class="menu-button-container menu-aware">
-              <div class="line hamburger-top"></div>
-              <div class="line hamburger-bottom"></div>
+        </div>
+      </header>
+
+      <main id="main-content">
+        <div class="hero-container">
+          <div id="hero-text" class="hero">
+            <h1>Software Engineer and Tech Maker</h1>
+            <p>Mobile / Android / Embedded / Serverless</p>
+          </div>
+          <div class="spacer"></div>
+          <div id="hero-img" class="hero">
+            <img
+              src="/i/GoldenGateBridge.jpg"
+              alt="Golden Gate Bridge"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="intro-container">
+          <p>
+            As an engineer with 12 years of experience with Developer Relations
+            at Google, I've built software for Android mobile devices,
+            serverless applications, and internet-connected cars and TVs. My
+            focus has been on developer APIs that enable professionals to create
+            innovative Android experiences.
+          </p>
+
+          <p>
+            Beyond my work at Google, I'm driven by a passion for sustainable
+            technology. In college, I led a team that built a solar-powered car
+            for the World Solar Challenge, where we raced a street-legal vehicle
+            across Australia.
+          </p>
+
+          <p>
+            I continue to explore my passion for software by building projects
+            in my free time, such as interactive art, and a smart garage door
+            with Internet-connected microcontrollers and a companion Android
+            app.
+          </p>
+
+          <p>Learn more about some of my <a href="projects">Projects</a>.</p>
+        </div>
+
+        <div class="big-image-container">
+          <img
+            src="/i/CalSolFirstPlaceFormulaSun2017.jpg"
+            alt="CalSol crossing the finish line for first place at Formula Sun Grand Prix 2017"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="social-container">
+          <div class="social-header">
+            <h2>Find me on the Internet</h2>
+          </div>
+          <div class="social-items-row">
+            <div class="social-item">
+              <a
+                href="https://www.linkedin.com/in/cartland"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Christopher Cartland's LinkedIn profile"
+              >
+                <div class="image-gradient-container">
+                  <img src="/i/LinkedIn.jpg" alt="LinkedIn" loading="lazy" />
+                </div>
+                <p>LinkedIn</p>
+              </a>
+            </div>
+            <div class="social-item">
+              <a
+                href="https://github.com/cartland"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Christopher Cartland's GitHub profile"
+              >
+                <div class="image-gradient-container">
+                  <img src="/i/GitHub.jpg" alt="GitHub" loading="lazy" />
+                </div>
+                <p>GitHub</p>
+              </a>
+            </div>
+            <div class="social-item">
+              <a
+                href="https://x.com/LandOfCart"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Christopher Cartland's X profile"
+              >
+                <div class="image-gradient-container">
+                  <img src="/i/X.jpg" alt="X" loading="lazy" />
+                </div>
+                <p>X</p>
+              </a>
+            </div>
+            <div class="social-item">
+              <a
+                href="https://www.threads.net/@LandOfCart"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Christopher Cartland's Threads profile"
+              >
+                <div class="image-gradient-container">
+                  <img src="/i/Threads.jpg" alt="Threads" loading="lazy" />
+                </div>
+                <p>Threads</p>
+              </a>
             </div>
           </div>
         </div>
-      </div>
-      <div id="overlay" class="overlay menu-aware" onclick="toggleMenu()">
-        <nav class="overlay-content" aria-label="Mobile navigation">
-          <div class="nav-links">
-            <a href="/" onclick="toggleMenu()" aria-label="About - Learn more about Christopher Cartland">
-              <h2>About</h2>
-            </a>
-            <a href="projects" onclick="toggleMenu()" aria-label="Projects - View Christopher Cartland's work">
-              <h2>Projects</h2>
-            </a>
-          </div>
-        </nav>
-      </div>
-    </header>
+      </main>
 
-    <main id="main-content">
-      <div class="hero-container">
-        <div id="hero-text" class="hero">
-          <h1>Software Engineer and Tech Maker</h1>
-          <p>Mobile / Android / Embedded / Serverless</p>
-        </div>
-        <div class="spacer"></div>
-        <div id="hero-img" class="hero">
-          <img src="/i/GoldenGateBridge.jpg" alt="Golden Gate Bridge" loading="lazy">
-        </div>
-      </div>
+      <footer>
+        <p>
+          © 2024 Christopher Cartland |
+          <a href="https://chriscart.land">chriscart.land</a>
+        </p>
+      </footer>
+    </div>
 
-      <div class="intro-container">
-        <p>As an engineer with 12 years of experience with Developer Relations at Google, I've built software for
-          Android mobile devices,
-          serverless applications, and internet-connected cars and TVs. My focus has been on developer APIs that
-          enable
-          professionals to create innovative Android experiences.</p>
-
-        <p>Beyond my work at Google, I'm driven by a passion for sustainable technology. In college, I led a team that
-          built a solar-powered car for the World Solar Challenge, where we raced a street-legal vehicle across
-          Australia.</p>
-
-        <p>I continue to explore my passion for software by building projects in my free time, such as interactive
-          art,
-          and a smart garage door with Internet-connected microcontrollers and a companion Android app.</p>
-
-        <p>Learn more about some of my <a href="projects">Projects</a>.</p>
-      </div>
-
-      <div class="big-image-container">
-        <img src="/i/CalSolFirstPlaceFormulaSun2017.jpg"
-          alt="CalSol crossing the finish line for first place at Formula Sun Grand Prix 2017" loading="lazy">
-      </div>
-
-      <div class="social-container">
-        <div class="social-header">
-          <h2>Find me on the Internet</h2>
-        </div>
-        <div class="social-items-row">
-          <div class="social-item">
-            <a href="https://www.linkedin.com/in/cartland" target="_blank" rel="noopener noreferrer"
-              aria-label="Visit Christopher Cartland's LinkedIn profile">
-              <div class="image-gradient-container">
-                <img src="/i/LinkedIn.jpg" alt="LinkedIn" loading="lazy">
-              </div>
-              <p>LinkedIn</p>
-            </a>
-          </div>
-          <div class="social-item">
-            <a href="https://github.com/cartland" target="_blank" rel="noopener noreferrer"
-              aria-label="Visit Christopher Cartland's GitHub profile">
-              <div class="image-gradient-container">
-                <img src="/i/GitHub.jpg" alt="GitHub" loading="lazy">
-              </div>
-              <p>GitHub</p>
-            </a>
-          </div>
-          <div class="social-item">
-            <a href="https://x.com/LandOfCart" target="_blank" rel="noopener noreferrer"
-              aria-label="Visit Christopher Cartland's X profile">
-              <div class="image-gradient-container">
-                <img src="/i/X.jpg" alt="X" loading="lazy">
-              </div>
-              <p>X</p>
-            </a>
-          </div>
-          <div class="social-item">
-            <a href="https://www.threads.net/@LandOfCart" target="_blank" rel="noopener noreferrer"
-              aria-label="Visit Christopher Cartland's Threads profile">
-              <div class="image-gradient-container">
-                <img src="/i/Threads.jpg" alt="Threads" loading="lazy">
-              </div>
-              <p>Threads</p>
-            </a>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer>
-      <p>© 2024 Christopher Cartland | <a href="https://chriscart.land">chriscart.land</a></p>
-    </footer>
-  </div>
-
-  <script>
-    function toggleMenu() {
-      const menuAwareElements = document.querySelectorAll(".menu-aware");
-      const menuIcon = document.querySelector('.menu-icon');
-      const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true';
-      menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
-      menuIcon.setAttribute('aria-expanded', !isExpanded);
-      document.body.style.overflow = isExpanded ? '' : 'hidden';
-      overlay.style.pointerEvents = isExpanded ? 'none' : 'all';
-      if (!isExpanded) {
-        document.addEventListener('keydown', trapFocus);
-      } else {
-        document.removeEventListener('keydown', trapFocus);
-      }
-    }
-
-    function trapFocus(e) {
-      const overlay = document.getElementById("overlay");
-      const menuIcon = document.querySelector('.menu-icon');
-      const overlayElements = overlay.querySelectorAll(
-        'a[href], button, [tabindex]:not([tabindex="-1"])'
-      );
-      const focusableElements = [menuIcon, ...Array.from(overlayElements)];
-      const firstFocusable = focusableElements[0];
-      const lastFocusable = focusableElements[focusableElements.length - 1];
-
-      if (e.key === 'Tab' && e.shiftKey) {
-        if (document.activeElement === firstFocusable) {
-          e.preventDefault();
-          lastFocusable.focus();
-        }
-      } else if (e.key === 'Tab') {
-        if (document.activeElement === lastFocusable) {
-          e.preventDefault();
-          firstFocusable.focus();
-        }
-      } else if (e.key === 'Escape') {
-        toggleMenu();
-      }
-    }
-
-    // Close the menu when clicking on the overlay
-    window.addEventListener('click', function (event) {
-      if (event.target.matches('#overlay')) {
-        toggleMenu();
-      }
-    });
-
-    function markCurrentNavLinkAsActive() {
-      const pathname = window.location.pathname.split('/');
-      const windowPathAfterSlash = pathname[pathname.length - 1];
-      const navLinks = document.querySelectorAll('.nav-links a');
-      navLinks.forEach(link => {
-        const linkHref = `${link.getAttribute('href')}`;
-        const matchPath = (windowPathAfterSlash === linkHref);
-        const matchRoot = (windowPathAfterSlash === '' && linkHref === '/');
-        if (matchPath || matchRoot) {
-          link.classList.add('active');
-          link.setAttribute('aria-current', 'page');
+    <script>
+      function toggleMenu() {
+        const menuAwareElements = document.querySelectorAll('.menu-aware')
+        const menuIcon = document.querySelector('.menu-icon')
+        const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true'
+        menuAwareElements.forEach((element) =>
+          element.classList.toggle('menu-active-mode')
+        )
+        menuIcon.setAttribute('aria-expanded', !isExpanded)
+        document.body.style.overflow = isExpanded ? '' : 'hidden'
+        overlay.style.pointerEvents = isExpanded ? 'none' : 'all'
+        if (!isExpanded) {
+          document.addEventListener('keydown', trapFocus)
         } else {
-          link.classList.remove('active');
-          link.removeAttribute('aria-current');
+          document.removeEventListener('keydown', trapFocus)
         }
-      });
-    }
-    window.addEventListener('load', markCurrentNavLinkAsActive);
-
-    function adjustHeroImgHeight() {
-      const textDiv = document.getElementById('hero-text');
-      const imageDiv = document.getElementById('hero-img');
-      if (!textDiv || !imageDiv) {
-        return;
       }
-      if (window.innerWidth >= 600) {
-        imageDiv.style.height = textDiv.offsetHeight + 'px';
-      } else {
-        imageDiv.style.height = 'auto';
-      }
-    }
-    window.addEventListener('load', adjustHeroImgHeight);
-    window.addEventListener('resize', adjustHeroImgHeight);
 
-    // Add keyboard support for menu
-    document.querySelector('.menu-icon').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        toggleMenu();
-      }
-    });
-  </script>
-</body>
+      function trapFocus(e) {
+        const overlay = document.getElementById('overlay')
+        const menuIcon = document.querySelector('.menu-icon')
+        const overlayElements = overlay.querySelectorAll(
+          'a[href], button, [tabindex]:not([tabindex="-1"])'
+        )
+        const focusableElements = [menuIcon, ...Array.from(overlayElements)]
+        const firstFocusable = focusableElements[0]
+        const lastFocusable = focusableElements[focusableElements.length - 1]
 
+        if (e.key === 'Tab' && e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault()
+            lastFocusable.focus()
+          }
+        } else if (e.key === 'Tab') {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault()
+            firstFocusable.focus()
+          }
+        } else if (e.key === 'Escape') {
+          toggleMenu()
+        }
+      }
+
+      // Close the menu when clicking on the overlay
+      window.addEventListener('click', function (event) {
+        if (event.target.matches('#overlay')) {
+          toggleMenu()
+        }
+      })
+
+      function markCurrentNavLinkAsActive() {
+        const pathname = window.location.pathname.split('/')
+        const windowPathAfterSlash = pathname[pathname.length - 1]
+        const navLinks = document.querySelectorAll('.nav-links a')
+        navLinks.forEach((link) => {
+          const linkHref = `${link.getAttribute('href')}`
+          const matchPath = windowPathAfterSlash === linkHref
+          const matchRoot = windowPathAfterSlash === '' && linkHref === '/'
+          if (matchPath || matchRoot) {
+            link.classList.add('active')
+            link.setAttribute('aria-current', 'page')
+          } else {
+            link.classList.remove('active')
+            link.removeAttribute('aria-current')
+          }
+        })
+      }
+      window.addEventListener('load', markCurrentNavLinkAsActive)
+
+      function adjustHeroImgHeight() {
+        const textDiv = document.getElementById('hero-text')
+        const imageDiv = document.getElementById('hero-img')
+        if (!textDiv || !imageDiv) {
+          return
+        }
+        if (window.innerWidth >= 600) {
+          imageDiv.style.height = textDiv.offsetHeight + 'px'
+        } else {
+          imageDiv.style.height = 'auto'
+        }
+      }
+      window.addEventListener('load', adjustHeroImgHeight)
+      window.addEventListener('resize', adjustHeroImgHeight)
+
+      // Add keyboard support for menu
+      document
+        .querySelector('.menu-icon')
+        .addEventListener('keypress', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            toggleMenu()
+          }
+        })
+    </script>
+  </body>
 </html>

@@ -1,481 +1,700 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Electricity Cost Analysis</title>
-    
+
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Chart.js for data visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Using Inter font as the base font */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white">
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Using Inter font as the base font */
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
     <div class="p-4 sm:p-6 lg:p-8">
       <div class="max-w-7xl mx-auto">
         <header class="mb-8 text-center">
-          <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500" style="line-height: 1.3;">
+          <h1
+            class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500"
+            style="line-height: 1.3"
+          >
             Utility vs. Solar + Battery: A Cost Analysis
           </h1>
-          <p class="mt-2 text-lg text-gray-400">An interactive calculator to compare the long-term costs</p>
+          <p class="mt-2 text-lg text-gray-400">
+            An interactive calculator to compare the long-term costs
+          </p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div class="lg:col-span-2 bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-700">
-            <h2 class="text-2xl font-bold mb-4 text-center">Annual Cost Comparison</h2>
+          <div
+            class="lg:col-span-2 bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-700"
+          >
+            <h2 class="text-2xl font-bold mb-4 text-center">
+              Annual Cost Comparison
+            </h2>
             <div class="w-full h-[400px]">
               <canvas id="costChart"></canvas>
             </div>
           </div>
-          
-          <div class="bg-gray-800 p-6 rounded-2xl shadow-2xl flex flex-col justify-between border border-gray-700">
+
+          <div
+            class="bg-gray-800 p-6 rounded-2xl shadow-2xl flex flex-col justify-between border border-gray-700"
+          >
             <div class="flex-grow">
-                <h2 class="text-2xl font-bold mb-4 text-center">Cost Summary & Assumptions</h2>
-                <div class="space-y-4 w-full text-center">
-                  <div>
-                    <p class="text-lg text-indigo-300">Total Utility Cost</p>
-                    <p id="totalUtilityCost" class="text-4xl font-extrabold text-indigo-400">$0</p>
-                    <p id="utilityBreakdown" class="text-sm text-gray-400">($0 direct cost + $0 opportunity cost)</p>
-                  </div>
-                  <div>
-                    <p class="text-lg text-green-300">Total Solar + Battery Cost</p>
-                    <p id="totalSolarCost" class="text-4xl font-extrabold text-green-400">$0</p>
-                    <p id="solarBreakdown" class="text-sm text-gray-400">($0 direct cost + $0 opportunity cost)</p>
-                  </div>
+              <h2 class="text-2xl font-bold mb-4 text-center">
+                Cost Summary & Assumptions
+              </h2>
+              <div class="space-y-4 w-full text-center">
+                <div>
+                  <p class="text-lg text-indigo-300">Total Utility Cost</p>
+                  <p
+                    id="totalUtilityCost"
+                    class="text-4xl font-extrabold text-indigo-400"
+                  >
+                    $0
+                  </p>
+                  <p id="utilityBreakdown" class="text-sm text-gray-400">
+                    ($0 direct cost + $0 opportunity cost)
+                  </p>
                 </div>
+                <div>
+                  <p class="text-lg text-green-300">
+                    Total Solar + Battery Cost
+                  </p>
+                  <p
+                    id="totalSolarCost"
+                    class="text-4xl font-extrabold text-green-400"
+                  >
+                    $0
+                  </p>
+                  <p id="solarBreakdown" class="text-sm text-gray-400">
+                    ($0 direct cost + $0 opportunity cost)
+                  </p>
+                </div>
+              </div>
             </div>
-            
+
             <div class="pt-4 mt-4 border-t border-gray-700 w-full text-center">
-                 <p id="assumptionsText" class="text-xs text-gray-500 mb-4 leading-relaxed">
-                 </p>
-                <p id="savingsLabel" class="text-lg text-cyan-300">Total Savings</p>
-                <p id="totalSavings" class="text-5xl font-extrabold text-cyan-400">$0</p>
+              <p
+                id="assumptionsText"
+                class="text-xs text-gray-500 mb-4 leading-relaxed"
+              ></p>
+              <p id="savingsLabel" class="text-lg text-cyan-300">
+                Total Savings
+              </p>
+              <p
+                id="totalSavings"
+                class="text-5xl font-extrabold text-cyan-400"
+              >
+                $0
+              </p>
             </div>
           </div>
         </main>
-        
-        <section class="mt-10 bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-700">
-            <h2 class="text-2xl font-bold mb-6 text-center">Financial Assumptions</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
-              <div class="space-y-4 p-4 bg-gray-900 rounded-lg">
-                <h3 class="text-xl font-semibold text-cyan-400 border-b border-cyan-500/30 pb-2">General</h3>
-                <div class="flex flex-col">
-                  <label for="duration" class="mb-1 text-gray-300">Analysis Duration (Years)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Length of the cost comparison.</small>
-                  <input id="duration" type="number" value="30" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none"/>
-                </div>
-                <div class="flex flex-col">
-                  <label for="opportunityCostRate" class="mb-1 text-gray-300">Investment Opportunity Cost (%)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Expected return if you invested the money instead.</small>
-                  <input id="opportunityCostRate" type="number" value="4" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none"/>
-                </div>
-              </div>
 
-              <div class="space-y-4 p-4 bg-gray-900 rounded-lg">
-                <h3 class="text-xl font-semibold text-indigo-400 border-b border-indigo-500/30 pb-2">Utility Settings</h3>
-                <div class="flex flex-col">
-                  <label for="initialUtilityCost" class="mb-1 text-gray-300">Current Annual Utility Bill ($)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Your total electricity cost for the last 12 months.</small>
-                  <input id="initialUtilityCost" type="number" value="2400" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
-                </div>
-                <div class="flex flex-col">
-                  <label for="utilityCostIncrease" class="mb-1 text-gray-300">Annual Cost Increase (%)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">The average yearly rate increase from your utility.</small>
-                  <input id="utilityCostIncrease" type="number" value="2" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
-                </div>
+        <section
+          class="mt-10 bg-gray-800 p-6 rounded-2xl shadow-2xl border border-gray-700"
+        >
+          <h2 class="text-2xl font-bold mb-6 text-center">
+            Financial Assumptions
+          </h2>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6"
+          >
+            <div class="space-y-4 p-4 bg-gray-900 rounded-lg">
+              <h3
+                class="text-xl font-semibold text-cyan-400 border-b border-cyan-500/30 pb-2"
+              >
+                General
+              </h3>
+              <div class="flex flex-col">
+                <label for="duration" class="mb-1 text-gray-300"
+                  >Analysis Duration (Years)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Length of the cost comparison.</small
+                >
+                <input
+                  id="duration"
+                  type="number"
+                  value="30"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+                />
               </div>
+              <div class="flex flex-col">
+                <label for="opportunityCostRate" class="mb-1 text-gray-300"
+                  >Investment Opportunity Cost (%)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Expected return if you invested the money instead.</small
+                >
+                <input
+                  id="opportunityCostRate"
+                  type="number"
+                  value="4"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+                />
+              </div>
+            </div>
 
-              <div class="space-y-4 p-4 bg-gray-900 rounded-lg">
-                <h3 class="text-xl font-semibold text-green-400 border-b border-green-500/30 pb-2">Solar + Battery Settings</h3>
-                <div class="flex flex-col">
-                  <label for="solarCostBase" class="mb-1 text-gray-300">Upfront Solar System Cost ($)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Initial cost to purchase and install solar panels.</small>
-                  <input id="solarCostBase" type="number" value="10200" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
-                  <small class="text-gray-500 mt-1">Cost is estimated based on your annual utility bill.</small>
-                </div>
-                 <div class="flex flex-col">
-                  <label for="solarLife" class="mb-1 text-gray-300">Solar System Lifespan (Years)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">How long the solar panels are expected to last.</small>
-                  <input id="solarLife" type="number" value="30" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
-                </div>
-                <div class="flex flex-col">
-                  <label for="batteryCostBase" class="mb-1 text-gray-300">Battery Cost ($)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Initial cost to purchase and install a home battery.</small>
-                  <input id="batteryCostBase" type="number" value="14500" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
-                   <small class="text-gray-500 mt-1">Cost is estimated based on your annual utility bill.</small>
-                </div>
-                <div class="flex flex-col">
-                  <label for="batteryLife" class="mb-1 text-gray-300">Battery Lifespan (Years)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">How long the battery is expected to last before replacement.</small>
-                  <input id="batteryLife" type="number" value="10" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
-                </div>
-                <div class="flex flex-col">
-                  <label for="batteryCostDecrease" class="mb-1 text-gray-300">Battery Cost Decrease per <span id="batteryCostDecreaseLabel">10</span> years (%)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Projected price drop for batteries at each replacement.</small>
-                  <input id="batteryCostDecrease" type="number" value="30" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
-                </div>
-                 <div class="flex flex-col">
-                  <label for="unavoidableUtilityPercent" class="mb-1 text-gray-300">Ongoing Grid Connection Fee (%)</label>
-                  <small class="text-gray-500 -mt-1 mb-2">Percentage of utility bill for grid access, even with solar.</small>
-                  <input id="unavoidableUtilityPercent" type="number" value="20" class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"/>
-                </div>
+            <div class="space-y-4 p-4 bg-gray-900 rounded-lg">
+              <h3
+                class="text-xl font-semibold text-indigo-400 border-b border-indigo-500/30 pb-2"
+              >
+                Utility Settings
+              </h3>
+              <div class="flex flex-col">
+                <label for="initialUtilityCost" class="mb-1 text-gray-300"
+                  >Current Annual Utility Bill ($)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Your total electricity cost for the last 12 months.</small
+                >
+                <input
+                  id="initialUtilityCost"
+                  type="number"
+                  value="2400"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+              <div class="flex flex-col">
+                <label for="utilityCostIncrease" class="mb-1 text-gray-300"
+                  >Annual Cost Increase (%)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >The average yearly rate increase from your utility.</small
+                >
+                <input
+                  id="utilityCostIncrease"
+                  type="number"
+                  value="2"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
               </div>
             </div>
-            <div class="mt-8 text-center">
-                <button 
-                    id="share"
-                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+
+            <div class="space-y-4 p-4 bg-gray-900 rounded-lg">
+              <h3
+                class="text-xl font-semibold text-green-400 border-b border-green-500/30 pb-2"
+              >
+                Solar + Battery Settings
+              </h3>
+              <div class="flex flex-col">
+                <label for="solarCostBase" class="mb-1 text-gray-300"
+                  >Upfront Solar System Cost ($)</label
                 >
-                    Share
-                </button>
-                <button 
-                    id="restoreDefaults"
-                    class="ml-4 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Initial cost to purchase and install solar panels.</small
                 >
-                    Restore Defaults
-                </button>
+                <input
+                  id="solarCostBase"
+                  type="number"
+                  value="10200"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+                <small class="text-gray-500 mt-1"
+                  >Cost is estimated based on your annual utility bill.</small
+                >
+              </div>
+              <div class="flex flex-col">
+                <label for="solarLife" class="mb-1 text-gray-300"
+                  >Solar System Lifespan (Years)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >How long the solar panels are expected to last.</small
+                >
+                <input
+                  id="solarLife"
+                  type="number"
+                  value="30"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+              </div>
+              <div class="flex flex-col">
+                <label for="batteryCostBase" class="mb-1 text-gray-300"
+                  >Battery Cost ($)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Initial cost to purchase and install a home battery.</small
+                >
+                <input
+                  id="batteryCostBase"
+                  type="number"
+                  value="14500"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+                <small class="text-gray-500 mt-1"
+                  >Cost is estimated based on your annual utility bill.</small
+                >
+              </div>
+              <div class="flex flex-col">
+                <label for="batteryLife" class="mb-1 text-gray-300"
+                  >Battery Lifespan (Years)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >How long the battery is expected to last before
+                  replacement.</small
+                >
+                <input
+                  id="batteryLife"
+                  type="number"
+                  value="10"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+              </div>
+              <div class="flex flex-col">
+                <label for="batteryCostDecrease" class="mb-1 text-gray-300"
+                  >Battery Cost Decrease per
+                  <span id="batteryCostDecreaseLabel">10</span> years (%)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Projected price drop for batteries at each
+                  replacement.</small
+                >
+                <input
+                  id="batteryCostDecrease"
+                  type="number"
+                  value="30"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+              </div>
+              <div class="flex flex-col">
+                <label
+                  for="unavoidableUtilityPercent"
+                  class="mb-1 text-gray-300"
+                  >Ongoing Grid Connection Fee (%)</label
+                >
+                <small class="text-gray-500 -mt-1 mb-2"
+                  >Percentage of utility bill for grid access, even with
+                  solar.</small
+                >
+                <input
+                  id="unavoidableUtilityPercent"
+                  type="number"
+                  value="20"
+                  class="bg-gray-700 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                />
+              </div>
             </div>
-            <div id="shareableLinkContainer" class="mt-4 text-center" style="display: none;">
-                <p class="text-gray-400">Shareable Link:</p>
-                <input id="shareableLink" type="text" readonly class="w-full max-w-md mx-auto bg-gray-700 border border-gray-600 rounded-md p-2 mt-1 text-center text-white">
-            </div>
+          </div>
+          <div class="mt-8 text-center">
+            <button
+              id="share"
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+            >
+              Share
+            </button>
+            <button
+              id="restoreDefaults"
+              class="ml-4 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+            >
+              Restore Defaults
+            </button>
+          </div>
+          <div
+            id="shareableLinkContainer"
+            class="mt-4 text-center"
+            style="display: none"
+          >
+            <p class="text-gray-400">Shareable Link:</p>
+            <input
+              id="shareableLink"
+              type="text"
+              readonly
+              class="w-full max-w-md mx-auto bg-gray-700 border border-gray-600 rounded-md p-2 mt-1 text-center text-white"
+            />
+          </div>
         </section>
       </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- HELPER FUNCTIONS ---
-            const formatCurrency = (value) => {
-                return new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                }).format(value);
-            };
-            
-            // --- DEFAULT VALUES & ELEMENT REFERENCES ---
-            const defaultValues = {
-                duration: 30,
-                opportunityCostRate: 4,
-                initialUtilityCost: 2400,
-                utilityCostIncrease: 2,
-                solarCostBase: 10200,
-                solarLife: 30,
-                batteryCostBase: 14500,
-                batteryLife: 10,
-                batteryCostDecrease: 30,
-                unavoidableUtilityPercent: 20,
-            };
+      document.addEventListener('DOMContentLoaded', () => {
+        // --- HELPER FUNCTIONS ---
+        const formatCurrency = (value) => {
+          return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(value)
+        }
 
-            const inputs = {
-                duration: document.getElementById('duration'),
-                opportunityCostRate: document.getElementById('opportunityCostRate'),
-                initialUtilityCost: document.getElementById('initialUtilityCost'),
-                utilityCostIncrease: document.getElementById('utilityCostIncrease'),
-                solarCostBase: document.getElementById('solarCostBase'),
-                solarLife: document.getElementById('solarLife'),
-                batteryCostBase: document.getElementById('batteryCostBase'),
-                batteryLife: document.getElementById('batteryLife'),
-                batteryCostDecrease: document.getElementById('batteryCostDecrease'),
-                unavoidableUtilityPercent: document.getElementById('unavoidableUtilityPercent'),
-            };
+        // --- DEFAULT VALUES & ELEMENT REFERENCES ---
+        const defaultValues = {
+          duration: 30,
+          opportunityCostRate: 4,
+          initialUtilityCost: 2400,
+          utilityCostIncrease: 2,
+          solarCostBase: 10200,
+          solarLife: 30,
+          batteryCostBase: 14500,
+          batteryLife: 10,
+          batteryCostDecrease: 30,
+          unavoidableUtilityPercent: 20,
+        }
 
-            const outputs = {
-                totalUtilityCost: document.getElementById('totalUtilityCost'),
-                utilityBreakdown: document.getElementById('utilityBreakdown'),
-                totalSolarCost: document.getElementById('totalSolarCost'),
-                solarBreakdown: document.getElementById('solarBreakdown'),
-                savingsLabel: document.getElementById('savingsLabel'),
-                totalSavings: document.getElementById('totalSavings'),
-                assumptionsText: document.getElementById('assumptionsText'),
-                batteryCostDecreaseLabel: document.getElementById('batteryCostDecreaseLabel'),
-            };
+        const inputs = {
+          duration: document.getElementById('duration'),
+          opportunityCostRate: document.getElementById('opportunityCostRate'),
+          initialUtilityCost: document.getElementById('initialUtilityCost'),
+          utilityCostIncrease: document.getElementById('utilityCostIncrease'),
+          solarCostBase: document.getElementById('solarCostBase'),
+          solarLife: document.getElementById('solarLife'),
+          batteryCostBase: document.getElementById('batteryCostBase'),
+          batteryLife: document.getElementById('batteryLife'),
+          batteryCostDecrease: document.getElementById('batteryCostDecrease'),
+          unavoidableUtilityPercent: document.getElementById(
+            'unavoidableUtilityPercent'
+          ),
+        }
 
-            const restoreBtn = document.getElementById('restoreDefaults');
-            const shareBtn = document.getElementById('share');
-            const shareableLinkContainer = document.getElementById('shareableLinkContainer');
-            const shareableLinkInput = document.getElementById('shareableLink');
+        const outputs = {
+          totalUtilityCost: document.getElementById('totalUtilityCost'),
+          utilityBreakdown: document.getElementById('utilityBreakdown'),
+          totalSolarCost: document.getElementById('totalSolarCost'),
+          solarBreakdown: document.getElementById('solarBreakdown'),
+          savingsLabel: document.getElementById('savingsLabel'),
+          totalSavings: document.getElementById('totalSavings'),
+          assumptionsText: document.getElementById('assumptionsText'),
+          batteryCostDecreaseLabel: document.getElementById(
+            'batteryCostDecreaseLabel'
+          ),
+        }
 
-            // --- URL PARAMETER CONFIGURATION ---
-            // DO NOT CHANGE EXISTING URL PARAMETERS.
-            // Changing them will break existing shared links.
-            // Consider adding new parameters instead to avoid unexpected behavior.
-            const urlParamsConfig = {
-                duration: {
-                    abbr: 'd',
-                    description: 'The total duration of the financial analysis in years.'
-                },
-                opportunityCostRate: {
-                    abbr: 'ocr',
-                    description: 'The annual rate of return (%) that could be earned on an investment with similar risk. This is used to calculate the opportunity cost of spending money on the solar/battery system instead of investing it.'
-                },
-                initialUtilityCost: {
-                    abbr: 'iuc',
-                    description: 'The total cost of electricity from the utility for the first year of the analysis ($).'
-                },
-                utilityCostIncrease: {
-                    abbr: 'uci',
-                    description: 'The projected annual percentage increase in utility electricity costs (%).'
-                },
-                solarCostBase: {
-                    abbr: 'scb',
-                    description: 'The initial, upfront cost of the solar panel system, including installation ($). This cost is scaled based on the initial utility cost.'
-                },
-                solarLife: {
-                    abbr: 'sl',
-                    description: 'The expected operational lifespan of the solar panels in years before they need replacement.'
-                },
-                batteryCostBase: {
-                    abbr: 'bcb',
-                    description: 'The initial, upfront cost of the battery storage system, including installation ($). This cost is also scaled.'
-                },
-                batteryLife: {
-                    abbr: 'bl',
-                    description: 'The expected operational lifespan of the battery in years before it needs replacement.'
-                },
-                batteryCostDecrease: {
-                    abbr: 'bcd',
-                    description: 'The projected percentage decrease in the cost of batteries for each subsequent replacement, reflecting expected technological improvements and market changes (%).'
-                },
-                unavoidableUtilityPercent: {
-                    abbr: 'uup',
-                    description: 'The percentage of the utility bill that remains even with a solar and battery system, representing fixed connection fees or charges for grid services (%).'
-                }
-            };
+        const restoreBtn = document.getElementById('restoreDefaults')
+        const shareBtn = document.getElementById('share')
+        const shareableLinkContainer = document.getElementById(
+          'shareableLinkContainer'
+        )
+        const shareableLinkInput = document.getElementById('shareableLink')
 
-            // --- DERIVED PARAMETER MAPPINGS ---
-            const paramAliases = Object.fromEntries(
-                Object.entries(urlParamsConfig).map(([key, config]) => [key, config.abbr])
-            );
-            const reverseParamAliases = Object.fromEntries(
-                Object.entries(urlParamsConfig).map(([key, config]) => [config.abbr, key])
-            );
+        // --- URL PARAMETER CONFIGURATION ---
+        // DO NOT CHANGE EXISTING URL PARAMETERS.
+        // Changing them will break existing shared links.
+        // Consider adding new parameters instead to avoid unexpected behavior.
+        const urlParamsConfig = {
+          duration: {
+            abbr: 'd',
+            description:
+              'The total duration of the financial analysis in years.',
+          },
+          opportunityCostRate: {
+            abbr: 'ocr',
+            description:
+              'The annual rate of return (%) that could be earned on an investment with similar risk. This is used to calculate the opportunity cost of spending money on the solar/battery system instead of investing it.',
+          },
+          initialUtilityCost: {
+            abbr: 'iuc',
+            description:
+              'The total cost of electricity from the utility for the first year of the analysis ($).',
+          },
+          utilityCostIncrease: {
+            abbr: 'uci',
+            description:
+              'The projected annual percentage increase in utility electricity costs (%).',
+          },
+          solarCostBase: {
+            abbr: 'scb',
+            description:
+              'The initial, upfront cost of the solar panel system, including installation ($). This cost is scaled based on the initial utility cost.',
+          },
+          solarLife: {
+            abbr: 'sl',
+            description:
+              'The expected operational lifespan of the solar panels in years before they need replacement.',
+          },
+          batteryCostBase: {
+            abbr: 'bcb',
+            description:
+              'The initial, upfront cost of the battery storage system, including installation ($). This cost is also scaled.',
+          },
+          batteryLife: {
+            abbr: 'bl',
+            description:
+              'The expected operational lifespan of the battery in years before it needs replacement.',
+          },
+          batteryCostDecrease: {
+            abbr: 'bcd',
+            description:
+              'The projected percentage decrease in the cost of batteries for each subsequent replacement, reflecting expected technological improvements and market changes (%).',
+          },
+          unavoidableUtilityPercent: {
+            abbr: 'uup',
+            description:
+              'The percentage of the utility bill that remains even with a solar and battery system, representing fixed connection fees or charges for grid services (%).',
+          },
+        }
 
-            const clearURLParams = () => {
-                const url = new URL(window.location);
-                if (url.search) {
-                    url.search = '';
-                    window.history.pushState({}, '', url);
-                }
-            };
+        // --- DERIVED PARAMETER MAPPINGS ---
+        const paramAliases = Object.fromEntries(
+          Object.entries(urlParamsConfig).map(([key, config]) => [
+            key,
+            config.abbr,
+          ])
+        )
+        const reverseParamAliases = Object.fromEntries(
+          Object.entries(urlParamsConfig).map(([key, config]) => [
+            config.abbr,
+            key,
+          ])
+        )
 
-            const updateShareableLink = () => {
-                const params = new URLSearchParams();
-                for (const key in inputs) {
-                    params.set(paramAliases[key] || key, inputs[key].value);
-                }
-                const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-                shareableLinkInput.value = shareUrl;
-            };
+        const clearURLParams = () => {
+          const url = new URL(window.location)
+          if (url.search) {
+            url.search = ''
+            window.history.pushState({}, '', url)
+          }
+        }
 
-            const loadParamsFromURL = () => {
-                const urlParams = new URLSearchParams(window.location.search);
-                for (const [key, value] of urlParams.entries()) {
-                    const fullKey = reverseParamAliases[key] || key;
-                    if (inputs[fullKey]) {
-                        inputs[fullKey].value = value;
+        const updateShareableLink = () => {
+          const params = new URLSearchParams()
+          for (const key in inputs) {
+            params.set(paramAliases[key] || key, inputs[key].value)
+          }
+          const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`
+          shareableLinkInput.value = shareUrl
+        }
+
+        const loadParamsFromURL = () => {
+          const urlParams = new URLSearchParams(window.location.search)
+          for (const [key, value] of urlParams.entries()) {
+            const fullKey = reverseParamAliases[key] || key
+            if (inputs[fullKey]) {
+              inputs[fullKey].value = value
+            }
+          }
+        }
+
+        // --- CHART SETUP ---
+        const ctx = document.getElementById('costChart').getContext('2d')
+        const costChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: 'Utility (Nominal)',
+                data: [],
+                backgroundColor: '#6366F1',
+                borderRadius: 4,
+              },
+              {
+                label: 'Solar + Battery (Nominal)',
+                data: [],
+                backgroundColor: '#34D399',
+                borderRadius: 4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#E2E8F0',
+                },
+              },
+              tooltip: {
+                backgroundColor: 'rgb(31 41 55 / 0.9)',
+                titleFont: { size: 16, weight: 'bold' },
+                bodyFont: { size: 14 },
+                callbacks: {
+                  label: function (context) {
+                    let label = context.dataset.label || ''
+                    if (label) {
+                      label = label.replace(' (Nominal)', '')
+                      label += ': '
                     }
-                }
-            };
-
-            // --- CHART SETUP ---
-            const ctx = document.getElementById('costChart').getContext('2d');
-            const costChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Utility (Nominal)',
-                        data: [],
-                        backgroundColor: '#6366F1',
-                        borderRadius: 4,
-                    }, {
-                        label: 'Solar + Battery (Nominal)',
-                        data: [],
-                        backgroundColor: '#34D399',
-                        borderRadius: 4,
-                    }]
+                    if (context.parsed.y !== null) {
+                      label += formatCurrency(context.parsed.y)
+                    }
+                    return label
+                  },
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#E2E8F0'
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgb(31 41 55 / 0.9)',
-                            titleFont: { size: 16, weight: 'bold' },
-                            bodyFont: { size: 14 },
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label = label.replace(' (Nominal)', '');
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += formatCurrency(context.parsed.y);
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: '#4A5568' },
-                            ticks: { color: '#A0AEC0' }
-                        },
-                        y: {
-                            grid: { color: '#4A5568' },
-                            ticks: { 
-                                color: '#A0AEC0',
-                                callback: value => formatCurrency(value)
-                            }
-                        }
-                    }
-                }
-            });
+              },
+            },
+            scales: {
+              x: {
+                grid: { color: '#4A5568' },
+                ticks: { color: '#A0AEC0' },
+              },
+              y: {
+                grid: { color: '#4A5568' },
+                ticks: {
+                  color: '#A0AEC0',
+                  callback: (value) => formatCurrency(value),
+                },
+              },
+            },
+          },
+        })
 
-            // --- CORE CALCULATION LOGIC ---
-            const runAnalysis = () => {
-                const vals = {};
-                for (const key in inputs) {
-                    vals[key] = Number(inputs[key].value);
-                }
+        // --- CORE CALCULATION LOGIC ---
+        const runAnalysis = () => {
+          const vals = {}
+          for (const key in inputs) {
+            vals[key] = Number(inputs[key].value)
+          }
 
-                let utilityAnnualCosts = [];
-                let solarAndBatteryAnnualCosts = [];
-                
-                let nominalCumulativeUtility = 0;
-                let nominalCumulativeSolarAndBattery = 0;
-                let opportunityCostUtility = 0;
-                let opportunityCostSolarAndBattery = 0;
-                
-                const costScalingFactor = vals.initialUtilityCost / 2400;
-                const rate = vals.opportunityCostRate / 100;
+          let utilityAnnualCosts = []
+          let solarAndBatteryAnnualCosts = []
 
-                for (let year = 1; year <= vals.duration; year++) {
-                    const currentUtilityCost = vals.initialUtilityCost * Math.pow(1 + vals.utilityCostIncrease / 100, year - 1);
-                    utilityAnnualCosts.push(currentUtilityCost);
-                    nominalCumulativeUtility += currentUtilityCost;
-                    
-                    let currentSolarAndBatteryYearCost = 0;
-                    if ((year - 1) % vals.solarLife === 0) {
-                        currentSolarAndBatteryYearCost += vals.solarCostBase * costScalingFactor;
-                    }
-                    if ((year - 1) % vals.batteryLife === 0) {
-                        const numBatteriesPreviouslyPurchased = Math.floor((year - 1) / vals.batteryLife);
-                        currentSolarAndBatteryYearCost += (vals.batteryCostBase * costScalingFactor) * Math.pow(1 - vals.batteryCostDecrease / 100, numBatteriesPreviouslyPurchased);
-                    }
-                    const unavoidableCost = currentUtilityCost * (vals.unavoidableUtilityPercent / 100);
-                    currentSolarAndBatteryYearCost += unavoidableCost;
-                    
-                    solarAndBatteryAnnualCosts.push(currentSolarAndBatteryYearCost);
-                    nominalCumulativeSolarAndBattery += currentSolarAndBatteryYearCost;
-                    
-                    if (rate > 0) {
-                        const yearsToGrow = vals.duration - year;
-                        opportunityCostUtility += currentUtilityCost * (Math.pow(1 + rate, yearsToGrow) - 1);
-                        opportunityCostSolarAndBattery += currentSolarAndBatteryYearCost * (Math.pow(1 + rate, yearsToGrow) - 1);
-                    }
-                }
-                
-                const cumulativeUtility = nominalCumulativeUtility + opportunityCostUtility;
-                const cumulativeSolarAndBattery = nominalCumulativeSolarAndBattery + opportunityCostSolarAndBattery;
-                const savings = cumulativeUtility - cumulativeSolarAndBattery;
+          let nominalCumulativeUtility = 0
+          let nominalCumulativeSolarAndBattery = 0
+          let opportunityCostUtility = 0
+          let opportunityCostSolarAndBattery = 0
 
-                // --- UPDATE UI ---
-                // Update chart
-                costChart.data.labels = Array.from({ length: vals.duration }, (_, i) => `Year ${i + 1}`);
-                costChart.data.datasets[0].data = utilityAnnualCosts;
-                costChart.data.datasets[1].data = solarAndBatteryAnnualCosts;
-                costChart.update();
+          const costScalingFactor = vals.initialUtilityCost / 2400
+          const rate = vals.opportunityCostRate / 100
 
-                // Update totals
-                outputs.totalUtilityCost.textContent = formatCurrency(cumulativeUtility);
-                outputs.utilityBreakdown.textContent = `(${formatCurrency(nominalCumulativeUtility)} direct cost + ${formatCurrency(opportunityCostUtility)} opportunity cost)`;
-                
-                outputs.totalSolarCost.textContent = formatCurrency(cumulativeSolarAndBattery);
-                outputs.solarBreakdown.textContent = `(${formatCurrency(nominalCumulativeSolarAndBattery)} direct cost + ${formatCurrency(opportunityCostSolarAndBattery)} opportunity cost)`;
+          for (let year = 1; year <= vals.duration; year++) {
+            const currentUtilityCost =
+              vals.initialUtilityCost *
+              Math.pow(1 + vals.utilityCostIncrease / 100, year - 1)
+            utilityAnnualCosts.push(currentUtilityCost)
+            nominalCumulativeUtility += currentUtilityCost
 
-                // Update savings
-                if (savings >= 0) {
-                    outputs.savingsLabel.textContent = "Savings with Solar + Battery";
-                    outputs.savingsLabel.className = "text-lg text-cyan-300";
-                    outputs.totalSavings.textContent = formatCurrency(savings);
-                    outputs.totalSavings.className = "text-5xl font-extrabold text-cyan-400";
-                } else {
-                    outputs.savingsLabel.textContent = "Extra Cost with Solar + Battery";
-                    outputs.savingsLabel.className = "text-lg text-red-400";
-                    outputs.totalSavings.textContent = formatCurrency(Math.abs(savings));
-                    outputs.totalSavings.className = "text-5xl font-extrabold text-red-500";
-                }
-                
-                // Update assumptions summary
-                outputs.assumptionsText.innerHTML = `<span class="font-semibold text-gray-400">Assumptions:</span> Analysis over ${vals.duration} years, with a ${vals.opportunityCostRate}% investment opportunity cost. Starts with a ${formatCurrency(vals.initialUtilityCost)} annual utility bill, increasing ${vals.utilityCostIncrease}% annually. Assumes a ${vals.unavoidableUtilityPercent}% ongoing grid fee, a ${vals.solarLife}-year solar lifespan, and a ${vals.batteryLife}-year battery lifespan with a ${vals.batteryCostDecrease}% cost reduction each replacement.`;
-                
-                // Update dynamic label
-                outputs.batteryCostDecreaseLabel.textContent = vals.batteryLife;
-            };
+            let currentSolarAndBatteryYearCost = 0
+            if ((year - 1) % vals.solarLife === 0) {
+              currentSolarAndBatteryYearCost +=
+                vals.solarCostBase * costScalingFactor
+            }
+            if ((year - 1) % vals.batteryLife === 0) {
+              const numBatteriesPreviouslyPurchased = Math.floor(
+                (year - 1) / vals.batteryLife
+              )
+              currentSolarAndBatteryYearCost +=
+                vals.batteryCostBase *
+                costScalingFactor *
+                Math.pow(
+                  1 - vals.batteryCostDecrease / 100,
+                  numBatteriesPreviouslyPurchased
+                )
+            }
+            const unavoidableCost =
+              currentUtilityCost * (vals.unavoidableUtilityPercent / 100)
+            currentSolarAndBatteryYearCost += unavoidableCost
 
-            // --- EVENT LISTENERS ---
-            Object.values(inputs).forEach(input => {
-                input.addEventListener('input', () => {
-                    runAnalysis();
-                    if (shareableLinkContainer.style.display !== 'none') {
-                        updateShareableLink();
-                    }
-                    clearURLParams();
-                });
-            });
+            solarAndBatteryAnnualCosts.push(currentSolarAndBatteryYearCost)
+            nominalCumulativeSolarAndBattery += currentSolarAndBatteryYearCost
 
-            restoreBtn.addEventListener('click', () => {
-                for (const key in defaultValues) {
-                    inputs[key].value = defaultValues[key];
-                }
-                runAnalysis();
-            });
+            if (rate > 0) {
+              const yearsToGrow = vals.duration - year
+              opportunityCostUtility +=
+                currentUtilityCost * (Math.pow(1 + rate, yearsToGrow) - 1)
+              opportunityCostSolarAndBattery +=
+                currentSolarAndBatteryYearCost *
+                (Math.pow(1 + rate, yearsToGrow) - 1)
+            }
+          }
 
-            shareBtn.addEventListener('click', () => {
-                updateShareableLink();
-                shareableLinkContainer.style.display = 'block';
-                navigator.clipboard.writeText(shareableLinkInput.value).then(() => {
-                    const originalText = shareBtn.textContent;
-                    shareBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        shareBtn.textContent = originalText;
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                    alert('Failed to copy URL to clipboard.');
-                });
-            });
+          const cumulativeUtility =
+            nominalCumulativeUtility + opportunityCostUtility
+          const cumulativeSolarAndBattery =
+            nominalCumulativeSolarAndBattery + opportunityCostSolarAndBattery
+          const savings = cumulativeUtility - cumulativeSolarAndBattery
 
-            // --- INITIAL RUN ---
-            loadParamsFromURL();
-            runAnalysis();
-        });
+          // --- UPDATE UI ---
+          // Update chart
+          costChart.data.labels = Array.from(
+            { length: vals.duration },
+            (_, i) => `Year ${i + 1}`
+          )
+          costChart.data.datasets[0].data = utilityAnnualCosts
+          costChart.data.datasets[1].data = solarAndBatteryAnnualCosts
+          costChart.update()
+
+          // Update totals
+          outputs.totalUtilityCost.textContent =
+            formatCurrency(cumulativeUtility)
+          outputs.utilityBreakdown.textContent = `(${formatCurrency(nominalCumulativeUtility)} direct cost + ${formatCurrency(opportunityCostUtility)} opportunity cost)`
+
+          outputs.totalSolarCost.textContent = formatCurrency(
+            cumulativeSolarAndBattery
+          )
+          outputs.solarBreakdown.textContent = `(${formatCurrency(nominalCumulativeSolarAndBattery)} direct cost + ${formatCurrency(opportunityCostSolarAndBattery)} opportunity cost)`
+
+          // Update savings
+          if (savings >= 0) {
+            outputs.savingsLabel.textContent = 'Savings with Solar + Battery'
+            outputs.savingsLabel.className = 'text-lg text-cyan-300'
+            outputs.totalSavings.textContent = formatCurrency(savings)
+            outputs.totalSavings.className =
+              'text-5xl font-extrabold text-cyan-400'
+          } else {
+            outputs.savingsLabel.textContent = 'Extra Cost with Solar + Battery'
+            outputs.savingsLabel.className = 'text-lg text-red-400'
+            outputs.totalSavings.textContent = formatCurrency(Math.abs(savings))
+            outputs.totalSavings.className =
+              'text-5xl font-extrabold text-red-500'
+          }
+
+          // Update assumptions summary
+          outputs.assumptionsText.innerHTML = `<span class="font-semibold text-gray-400">Assumptions:</span> Analysis over ${vals.duration} years, with a ${vals.opportunityCostRate}% investment opportunity cost. Starts with a ${formatCurrency(vals.initialUtilityCost)} annual utility bill, increasing ${vals.utilityCostIncrease}% annually. Assumes a ${vals.unavoidableUtilityPercent}% ongoing grid fee, a ${vals.solarLife}-year solar lifespan, and a ${vals.batteryLife}-year battery lifespan with a ${vals.batteryCostDecrease}% cost reduction each replacement.`
+
+          // Update dynamic label
+          outputs.batteryCostDecreaseLabel.textContent = vals.batteryLife
+        }
+
+        // --- EVENT LISTENERS ---
+        Object.values(inputs).forEach((input) => {
+          input.addEventListener('input', () => {
+            runAnalysis()
+            if (shareableLinkContainer.style.display !== 'none') {
+              updateShareableLink()
+            }
+            clearURLParams()
+          })
+        })
+
+        restoreBtn.addEventListener('click', () => {
+          for (const key in defaultValues) {
+            inputs[key].value = defaultValues[key]
+          }
+          runAnalysis()
+        })
+
+        shareBtn.addEventListener('click', () => {
+          updateShareableLink()
+          shareableLinkContainer.style.display = 'block'
+          navigator.clipboard
+            .writeText(shareableLinkInput.value)
+            .then(() => {
+              const originalText = shareBtn.textContent
+              shareBtn.textContent = 'Copied!'
+              setTimeout(() => {
+                shareBtn.textContent = originalText
+              }, 2000)
+            })
+            .catch((err) => {
+              console.error('Failed to copy: ', err)
+              alert('Failed to copy URL to clipboard.')
+            })
+        })
+
+        // --- INITIAL RUN ---
+        loadParamsFromURL()
+        runAnalysis()
+      })
     </script>
-
-</body>
+  </body>
 </html>

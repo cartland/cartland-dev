@@ -1,1007 +1,1339 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--
   ISC License
   Copyright (c) 2024, Christopher Cartland
 -->
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Projects by Christopher Cartland - Android development, sustainable technology, and interactive art"
+    />
+    <meta name="theme-color" content="#263551" />
+    <title>Christopher Cartland</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="canonical" href="https://chriscart.land/projects" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="Projects by Christopher Cartland - Android development, sustainable technology, and interactive art">
-  <meta name="theme-color" content="#263551">
-  <title>Christopher Cartland</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="canonical" href="https://chriscart.land/projects">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700&display=swap');
-
-    /* Root  Variables */
-    :root {
-      --color: #ffffff;
-      --color-link: #c1c1c1;
-      --background-color: #130830;
-      --background-color-overlay: rgba(0, 0, 0, 0.5);
-      --color-overlay: #000000;
-      --color-card-background-selected: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Skip Link */
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      z-index: 999;
-      padding: 1em;
-      background-color: white;
-      color: black;
-      text-decoration: none;
-    }
-
-    .skip-link:focus {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    /* Base Styles */
-    body {
-      background-color: var(--background-color);
-      font-family: 'Roboto', sans-serif;
-      font-size: 0.9em;
-      color: var(--color);
-      margin: 0;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 800px;
-      margin: 0 auto;
-      justify-content: center;
-      padding-inline: 32px;
-    }
-
-    #main-content {
-      width: 100%;
-    }
-
-    /* Typography */
-    h1 {
-      font-weight: normal;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      font-size: 3em;
-    }
-
-    a {
-      color: var(--color-link);
-    }
-
-    header {
-      width: 100%;
-    }
-
-    .image-gradient-container {
-      position: relative;
-      border-radius: 32px;
-      overflow: hidden;
-    }
-
-    .image-gradient-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, .5));
-      z-index: 1
-    }
-
-    .image-gradient-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      position: relative;
-    }
-
-    .header-container {
-      width: 100%;
-      padding-top: 32px;
-      padding-bottom: 32px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .header-container h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .header-container h1 a {
-      text-decoration: none;
-      color: inherit;
-      padding-right: 16px;
-    }
-
-    .header-content {
-      width: 100%;
-      height: 36px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: color 0.3s ease;
-      color: var(--color);
-      z-index: inherit;
-    }
-
-    .logo-container {
-      height: 48px;
-      position: relative;
-    }
-
-    .logo-container img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .logo-container .primary {
-      opacity: 1;
-    }
-
-    .logo-container .primary.menu-active-mode {
-      opacity: 0;
-    }
-
-    .logo-container .secondary {
-      opacity: 0;
-    }
-
-    .logo-container .secondary.menu-active-mode {
-      opacity: 1;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .nav-links a.active {
-      text-decoration: underline;
-    }
-
-    .nav-links h2 {
-      margin: 0;
-    }
-
-    /* Menu and Overlay */
-    .menu-icon {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .menu-button-container {
-      --menu-icon-size: 36px;
-      width: var(--menu-icon-size);
-      height: var(--menu-icon-size);
-      cursor: pointer;
-      position: relative;
-    }
-
-    .line {
-      background-color: var(--color);
-      height: calc(var(--menu-icon-size) * 3 / 40);
-      width: 100%;
-      position: absolute;
-      left: 0;
-      transition: transform 0.3s ease, top 0.3s ease;
-    }
-
-    .hamburger-top {
-      top: calc(50% - (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .hamburger-bottom {
-      top: calc(50% + (var(--menu-icon-size) * 4 / 40));
-    }
-
-    .menu-button-container.menu-active-mode .hamburger-top {
-      transform: rotate(135deg);
-      top: 50%;
-    }
-
-    .menu-button-container.menu-active-mode .hamburger-bottom {
-      transform: rotate(-135deg);
-      top: 50%;
-    }
-
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--background-color-overlay);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .overlay.menu-active-mode {
-      display: block;
-      opacity: 1;
-      transition: opacity 0.3s ease, display 0.3s ease;
-    }
-
-    .overlay-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      background-color: white;
-      padding-top: 100px;
-      /* 32px + 36px + 32px */
-      z-index: 1;
-    }
-
-    .overlay .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0px;
-    }
-
-    .overlay .nav-links a {
-      color: var(--color-overlay);
-      padding: 16px;
-    }
-
-    /* Menu State */
-    .header-content.menu-active-mode {
-      color: var(--color-overlay);
-    }
-
-    .header-content.menu-active-mode .line {
-      background-color: var(--color-overlay);
-    }
-
-    .section-header {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* Project Cards */
-    .project-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      justify-content: center;
-      gap: 0px;
-    }
-
-    .toc {
-      padding-left: 16px;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      margin-top: 4px;
-      margin-bottom: 4px;
-      break-inside: avoid;
-      text-decoration: none;
-    }
-
-    .toc:hover {
-      text-decoration: underline;
-    }
-
-    .project-container .section-header {
-      grid-column: 1 / -1;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .project-container h1 {
-      grid-column: 1 / -1;
-      margin-top: 16px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .project-container .section-header .half {
-      width: 50%;
-    }
-
-    .card {
-      width: 100%;
-      box-sizing: border-box;
-      flex-direction: column;
-      margin-bottom: 32px;
-      transition: background-color 0.3s ease;
-      padding: 16px;
-    }
-
-    .card:target {
-      position: relative;
-    }
-
-    .card:target::before {
-      content: '';
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-      background-color: var(--color-card-background-selected);
-      border-radius: 48px;
-      z-index: -1;
-    }
-
-    .card img {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 32px;
-      object-fit: cover;
-      display: block;
-      margin: 0 auto 0;
-    }
-
-    .card h2 {
-      margin-top: 8px;
-      margin-bottom: 8px;
-      font-size: 1.2em;
-      /* Some titles are very wide. */
-    }
-
-    .card p {
-      margin-top: 0;
-      margin-bottom: 12px;
-    }
-
-    .project-link {
-      margin-top: auto;
-      display: inline-block;
-      padding: 16px;
-      text-decoration: none;
-      border: 1px solid var(--color-link);
-      border-radius: 32px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
-    .tags {
-      font-size: 0.5em;
-      color: var(--color-link);
-      margin-top: 8px;
-      padding-left: 18px;
-      padding-right: 18px;
-    }
-
-    .spacer {
-      height: 16px;
-      width: 32px;
-    }
-
-    /* Focus Styles */
-    a:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
-    }
-
-    .menu-icon:focus-visible {
-      outline: 2px solid var(--color-link);
-      outline-offset: 2px;
-    }
-
-    footer {
-      width: 100%;
-    }
-
-    footer p {
-      text-align: center;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      .nav-links {
-        display: none;
+      /* Root  Variables */
+      :root {
+        --color: #ffffff;
+        --color-link: #c1c1c1;
+        --background-color: #130830;
+        --background-color-overlay: rgba(0, 0, 0, 0.5);
+        --color-overlay: #000000;
+        --color-card-background-selected: rgba(255, 255, 255, 0.2);
       }
 
-      .menu-icon {
-        display: block;
-      }
-
-      .project-container {
-        grid-template-columns: 1fr;
-      }
-
-      .project-container .section-header {
-        display: block;
-      }
-
-      .project-container .section-header .half {
-        width: 100%;
-      }
-    }
-
-    /* Print Styles */
-    @media print {
-      /* Basic print optimization */
-      body {
+      /* Skip Link */
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        z-index: 999;
+        padding: 1em;
         background-color: white;
-        color: black;
-      }
-
-      /* Ensure cards don't break across pages */
-      .card {
-        page-break-inside: avoid;
-        break-inside: avoid;
-        /* For better print layout */
-        width: 100%;
-        margin-bottom: 20px;
-        padding: 10px;
-      }
-
-      /* Hide navigation elements */
-      .menu-icon,
-      .skip-link,
-      .overlay {
-        display: none;
-      }
-
-      /* Optimize links for print */
-      a {
         color: black;
         text-decoration: none;
       }
 
-      /* Add URL after links */
-      .project-link::after {
-        content: "\A(" attr(href) ")";
+      .skip-link:focus {
+        left: 50%;
+        transform: translateX(-50%);
       }
 
-      /* Adjust colors for better print contrast */
-      :root {
-        --color: black;
-        --color-link: #333333;
-        --background-color: white;
-      }
-
-      /* Ensure images print well */
-      img {
-        max-width: 100%;
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-      }
-
-      /* Adjust container padding for print margins */
-      .container {
-        padding-inline: 20px;
-      }
-
-      /* Adjust margins to account for scaling */
-      @page {
-        margin: 0.5cm;
-      }
-
-      /* Adjust grid to fit more cards per page */
-      .project-container {
-        grid-template-columns: repeat(3, 1fr);  /* Show 3 columns when printing */
-        gap: 10px;  /* Reduce gap between items */
-      }
-
-      /* Remove the transform scaling */
-      .container {
-        padding-inline: 20px;
-      }
-
-      /* Instead, adjust the base font size and card sizes directly */
+      /* Base Styles */
       body {
-        font-size: 8pt; /* Adjust this value as needed */
+        background-color: var(--background-color);
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.9em;
+        color: var(--color);
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 800px;
+        margin: 0 auto;
+        justify-content: center;
+        padding-inline: 32px;
+      }
+
+      #main-content {
+        width: 100%;
+      }
+
+      /* Typography */
+      h1 {
+        font-weight: normal;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 3em;
+      }
+
+      a {
+        color: var(--color-link);
+      }
+
+      header {
+        width: 100%;
+      }
+
+      .image-gradient-container {
+        position: relative;
+        border-radius: 32px;
+        overflow: hidden;
+      }
+
+      .image-gradient-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.5)
+        );
+        z-index: 1;
+      }
+
+      .image-gradient-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        position: relative;
+      }
+
+      .header-container {
+        width: 100%;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .header-container h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .header-container h1 a {
+        text-decoration: none;
+        color: inherit;
+        padding-right: 16px;
+      }
+
+      .header-content {
+        width: 100%;
+        height: 36px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: color 0.3s ease;
+        color: var(--color);
+        z-index: inherit;
+      }
+
+      .logo-container {
+        height: 48px;
+        position: relative;
+      }
+
+      .logo-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .logo-container .primary {
+        opacity: 1;
+      }
+
+      .logo-container .primary.menu-active-mode {
+        opacity: 0;
+      }
+
+      .logo-container .secondary {
+        opacity: 0;
+      }
+
+      .logo-container .secondary.menu-active-mode {
+        opacity: 1;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 24px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .nav-links a.active {
+        text-decoration: underline;
+      }
+
+      .nav-links h2 {
+        margin: 0;
+      }
+
+      /* Menu and Overlay */
+      .menu-icon {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .menu-button-container {
+        --menu-icon-size: 36px;
+        width: var(--menu-icon-size);
+        height: var(--menu-icon-size);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .line {
+        background-color: var(--color);
+        height: calc(var(--menu-icon-size) * 3 / 40);
+        width: 100%;
+        position: absolute;
+        left: 0;
+        transition:
+          transform 0.3s ease,
+          top 0.3s ease;
+      }
+
+      .hamburger-top {
+        top: calc(50% - (var(--menu-icon-size) * 4 / 40));
+      }
+
+      .hamburger-bottom {
+        top: calc(50% + (var(--menu-icon-size) * 4 / 40));
+      }
+
+      .menu-button-container.menu-active-mode .hamburger-top {
+        transform: rotate(135deg);
+        top: 50%;
+      }
+
+      .menu-button-container.menu-active-mode .hamburger-bottom {
+        transform: rotate(-135deg);
+        top: 50%;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--background-color-overlay);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .overlay.menu-active-mode {
+        display: block;
+        opacity: 1;
+        transition:
+          opacity 0.3s ease,
+          display 0.3s ease;
+      }
+
+      .overlay-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-color: white;
+        padding-top: 100px;
+        /* 32px + 36px + 32px */
+        z-index: 1;
+      }
+
+      .overlay .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+      }
+
+      .overlay .nav-links a {
+        color: var(--color-overlay);
+        padding: 16px;
+      }
+
+      /* Menu State */
+      .header-content.menu-active-mode {
+        color: var(--color-overlay);
+      }
+
+      .header-content.menu-active-mode .line {
+        background-color: var(--color-overlay);
+      }
+
+      .section-header {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Project Cards */
+      .project-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+        gap: 0px;
+      }
+
+      .toc {
+        padding-left: 16px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        break-inside: avoid;
+        text-decoration: none;
+      }
+
+      .toc:hover {
+        text-decoration: underline;
+      }
+
+      .project-container .section-header {
+        grid-column: 1 / -1;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .project-container h1 {
+        grid-column: 1 / -1;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      .project-container .section-header .half {
+        width: 50%;
       }
 
       .card {
-        /* Adjust card size directly instead of using transform */
-        padding: 8px;
-        margin-bottom: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        flex-direction: column;
+        margin-bottom: 32px;
+        transition: background-color 0.3s ease;
+        padding: 16px;
+      }
+
+      .card:target {
+        position: relative;
+      }
+
+      .card:target::before {
+        content: '';
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        background-color: var(--color-card-background-selected);
+        border-radius: 48px;
+        z-index: -1;
       }
 
       .card img {
-        max-height: 120px; /* Control image height to fit more content per page */
-        width: auto;
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 32px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 0;
       }
 
       .card h2 {
-        font-size: 10pt;
-        margin: 4px 0;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-size: 1.2em;
+        /* Some titles are very wide. */
       }
 
       .card p {
-        font-size: 8pt;
-        margin: 4px 0;
+        margin-top: 0;
+        margin-bottom: 12px;
       }
 
       .project-link {
-        padding: 4px 8px;
-        font-size: 7pt;
+        margin-top: auto;
+        display: inline-block;
+        padding: 16px;
+        text-decoration: none;
+        border: 1px solid var(--color-link);
+        border-radius: 32px;
+        text-align: center;
+        text-transform: uppercase;
       }
 
       .tags {
-        font-size: 6pt;
+        font-size: 0.5em;
+        color: var(--color-link);
+        margin-top: 8px;
+        padding-left: 18px;
+        padding-right: 18px;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="container">
-    <header>
-      <div id="header-container" class="header-container">
-        <div class="header-content menu-aware">
-          <a href="/" aria-label="Home - Christopher Cartland">
-            <div class="logo-container">
-              <div class="primary menu-aware">
-                <img src="i/ChristopherCartlandLogo.jpg" alt="Christopher Cartland Logo">
+      .spacer {
+        height: 16px;
+        width: 32px;
+      }
+
+      /* Focus Styles */
+      a:focus-visible {
+        outline: 2px solid var(--color-link);
+        outline-offset: 2px;
+      }
+
+      .menu-icon:focus-visible {
+        outline: 2px solid var(--color-link);
+        outline-offset: 2px;
+      }
+
+      footer {
+        width: 100%;
+      }
+
+      footer p {
+        text-align: center;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .nav-links {
+          display: none;
+        }
+
+        .menu-icon {
+          display: block;
+        }
+
+        .project-container {
+          grid-template-columns: 1fr;
+        }
+
+        .project-container .section-header {
+          display: block;
+        }
+
+        .project-container .section-header .half {
+          width: 100%;
+        }
+      }
+
+      /* Print Styles */
+      @media print {
+        /* Basic print optimization */
+        body {
+          background-color: white;
+          color: black;
+        }
+
+        /* Ensure cards don't break across pages */
+        .card {
+          page-break-inside: avoid;
+          break-inside: avoid;
+          /* For better print layout */
+          width: 100%;
+          margin-bottom: 20px;
+          padding: 10px;
+        }
+
+        /* Hide navigation elements */
+        .menu-icon,
+        .skip-link,
+        .overlay {
+          display: none;
+        }
+
+        /* Optimize links for print */
+        a {
+          color: black;
+          text-decoration: none;
+        }
+
+        /* Add URL after links */
+        .project-link::after {
+          content: '\A(' attr(href) ')';
+        }
+
+        /* Adjust colors for better print contrast */
+        :root {
+          --color: black;
+          --color-link: #333333;
+          --background-color: white;
+        }
+
+        /* Ensure images print well */
+        img {
+          max-width: 100%;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        /* Adjust container padding for print margins */
+        .container {
+          padding-inline: 20px;
+        }
+
+        /* Adjust margins to account for scaling */
+        @page {
+          margin: 0.5cm;
+        }
+
+        /* Adjust grid to fit more cards per page */
+        .project-container {
+          grid-template-columns: repeat(
+            3,
+            1fr
+          ); /* Show 3 columns when printing */
+          gap: 10px; /* Reduce gap between items */
+        }
+
+        /* Remove the transform scaling */
+        .container {
+          padding-inline: 20px;
+        }
+
+        /* Instead, adjust the base font size and card sizes directly */
+        body {
+          font-size: 8pt; /* Adjust this value as needed */
+        }
+
+        .card {
+          /* Adjust card size directly instead of using transform */
+          padding: 8px;
+          margin-bottom: 12px;
+        }
+
+        .card img {
+          max-height: 120px; /* Control image height to fit more content per page */
+          width: auto;
+        }
+
+        .card h2 {
+          font-size: 10pt;
+          margin: 4px 0;
+        }
+
+        .card p {
+          font-size: 8pt;
+          margin: 4px 0;
+        }
+
+        .project-link {
+          padding: 4px 8px;
+          font-size: 7pt;
+        }
+
+        .tags {
+          font-size: 6pt;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="container">
+      <header>
+        <div id="header-container" class="header-container">
+          <div class="header-content menu-aware">
+            <a href="/" aria-label="Home - Christopher Cartland">
+              <div class="logo-container">
+                <div class="primary menu-aware">
+                  <img
+                    src="i/ChristopherCartlandLogo.jpg"
+                    alt="Christopher Cartland Logo"
+                  />
+                </div>
+                <div class="secondary menu-aware">
+                  <img
+                    src="i/ChristopherCartlandLogoLight.jpg"
+                    alt="Christopher Cartland Logo"
+                  />
+                </div>
               </div>
-              <div class="secondary menu-aware">
-                <img src="i/ChristopherCartlandLogoLight.jpg" alt="Christopher Cartland Logo">
+            </a>
+            <nav class="nav-links" aria-label="Main navigation">
+              <a
+                href="/"
+                aria-label="About - Learn more about Christopher Cartland"
+              >
+                <h2>About</h2>
+              </a>
+              <a
+                href="projects"
+                aria-label="Projects - View Christopher Cartland's work"
+              >
+                <h2>Projects</h2>
+              </a>
+            </nav>
+            <div
+              class="menu-icon"
+              onclick="toggleMenu()"
+              role="button"
+              tabindex="0"
+              aria-label="Toggle navigation menu"
+              aria-expanded="false"
+            >
+              <div class="menu-button-container menu-aware">
+                <div class="line hamburger-top"></div>
+                <div class="line hamburger-bottom"></div>
               </div>
             </div>
-          </a>
-          <nav class="nav-links" aria-label="Main navigation">
-            <a href="/" aria-label="About - Learn more about Christopher Cartland">
-              <h2>About</h2>
-            </a>
-            <a href="projects" aria-label="Projects - View Christopher Cartland's work">
-              <h2>Projects</h2>
-            </a>
+          </div>
+        </div>
+        <div id="overlay" class="overlay menu-aware" onclick="toggleMenu()">
+          <nav class="overlay-content" aria-label="Mobile navigation">
+            <div class="nav-links">
+              <a
+                href="/"
+                onclick="toggleMenu()"
+                aria-label="About - Learn more about Christopher Cartland"
+              >
+                <h2>About</h2>
+              </a>
+              <a
+                href="projects"
+                onclick="toggleMenu()"
+                aria-label="Projects - View Christopher Cartland's work"
+              >
+                <h2>Projects</h2>
+              </a>
+            </div>
           </nav>
-          <div class="menu-icon" onclick="toggleMenu()" role="button" tabindex="0" aria-label="Toggle navigation menu"
-            aria-expanded="false">
-            <div class="menu-button-container menu-aware">
-              <div class="line hamburger-top"></div>
-              <div class="line hamburger-bottom"></div>
+        </div>
+      </header>
+
+      <main id="main-content">
+        <div class="project-container">
+          <h1>Projects</h1>
+          <div class="section-header">
+            <p>
+              Here are some of my key projects, spanning from large-scale Google
+              initiatives like Google TV and COVID-19 Exposure Notifications to
+              innovative personal projects in sustainable technology and
+              interactive art. These projects showcase my expertise in developer
+              platforms, embedded systems, and creative technology solutions.
+            </p>
+          </div>
+          <a class="toc" href="#android-build-time">Android Build Time</a>
+          <a class="toc" href="#google-tv">Google TV App Ecosystem</a>
+          <a class="toc" href="#android-auto">Android Auto Apps</a>
+          <a class="toc" href="#play-billing">Google Play Billing</a>
+          <a class="toc" href="#music-alarms">Music Alarms on Android</a>
+          <a class="toc" href="#exposure-notifications"
+            >COVID-19 Exposure Notifications</a
+          >
+          <a class="toc" href="#google-sign-in">Google Sign-In</a>
+          <a class="toc" href="#android-deep-links">Android Deep Links</a>
+          <a class="toc" href="#world-solar-challenge">World Solar Challenge</a>
+          <a class="toc" href="#smart-garage">Smart Garage Door</a>
+          <a class="toc" href="#marauders-map">Marauder's Map</a>
+          <a class="toc" href="#instant-runoff">Instant Runoff Voting</a>
+          <a class="toc" href="#autostereogram">Autostereogram Generator</a>
+          <a class="toc" href="#computer-history-museum"
+            >Computer History Museum</a
+          >
+          <a class="toc" href="#berkeley-alumni">Berkeley Alumni Spotlight</a>
+          <a class="toc" href="#templeton-alumni">Templeton Alumni Profile</a>
+          <a class="toc" href="#global-temperature-visualization"
+            >Global Temperature Visualization</a
+          >
+          <a class="toc" href="#utility-vs-solar-battery"
+            >Utility vs. Solar + Battery</a
+          >
+          <a class="toc" href="#portfolio">Portfolio Website</a>
+          <div class="section-header"></div>
+          <div class="card" id="android-build-time">
+            <div class="image-gradient-container">
+              <img
+                src="/i/AndroidBuildTime.jpg"
+                alt="Android Build Time Logo"
+                loading="lazy"
+              />
+            </div>
+            <h2>Android Build Time</h2>
+            <p>
+              I host "Android Build Time," a video podcast series produced by
+              the Android team at Google. Through in-depth technical
+              conversations with Android developers, I interview developers
+              about apps and technologies relevant to professional Android
+              developers.
+            </p>
+            <a
+              href="https://goo.gle/AndroidBuildTime"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch Android Build Time podcast"
+              class="project-link"
+              >Podcast</a
+            >
+            <div class="tags">
+              Android, Developer Relations, Technical Communication, Public
+              Speaking
+            </div>
+          </div>
+          <div class="card" id="google-tv">
+            <div class="image-gradient-container">
+              <img
+                src="/i/GoogleTVWirecutter.jpg"
+                alt="Google TV Interface"
+                loading="lazy"
+              />
+            </div>
+            <h2>Google TV App Ecosystem</h2>
+            <p>
+              I bootstrapped the Google TV app ecosystem by working with top
+              streaming services to build and launch their apps. The platform's
+              success led Wirecutter to choose Google TV devices as both their
+              top and budget picks for streaming devices multiple years in a
+              row, citing the seamless app integration with the system.
+            </p>
+            <a
+              href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read Wirecutter's review of Google TV"
+              class="project-link"
+              >Wirecutter</a
+            >
+            <div class="tags">
+              Android TV, Google TV, Developer Relations, Streaming Media, App
+              Ecosystem
+            </div>
+          </div>
+          <div class="card" id="android-auto">
+            <div class="image-gradient-container">
+              <img
+                src="/i/AndroidAutoApps.jpg"
+                alt="Android Auto Interface"
+                loading="lazy"
+              />
+            </div>
+            <h2>Android Auto Apps</h2>
+            <p>
+              I led Developer Relations for Android Auto from its announcement
+              in 2014, making music and audio app integrations safer and more
+              delightful with Android Auto and Android Automotive OS. Through
+              partnerships with automotive and app developers, we've grown the
+              platform to be compatible with over 200 million cars on the road
+              as of 2024.
+            </p>
+            <a
+              href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read blog post about Android Auto launch"
+              class="project-link"
+              >Blog Post</a
+            >
+            <div class="tags">
+              Android Auto, Automotive, Cars, Developer Relations, Audio
+              Streaming Apps
+            </div>
+          </div>
+          <div class="card" id="play-billing">
+            <div class="image-gradient-container">
+              <img
+                src="/i/GooglePlayBilling.jpg"
+                alt="Google Play Billing Interface"
+                loading="lazy"
+              />
+            </div>
+            <h2>Google Play Billing</h2>
+            <p>
+              I wrote example code for managing in-app purchases and
+              subscriptions on Android. I worked with Android developers during
+              the digital boom of music, movies, and TV services as they
+              launched apps and focused on subscription business models. The
+              samples demonstrate best practices for implementing Google Play
+              Billing in Java and Kotlin, including server-side subscription
+              management and real-time developer notifications.
+            </p>
+            <a
+              href="https://github.com/cartland/play-billing-samples"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Google Play Billing samples on GitHub"
+              class="project-link"
+              >GitHub</a
+            >
+            <div class="tags">
+              Android, Google Play, In-App Purchases, Subscriptions, Java,
+              Kotlin, Developer Relations
+            </div>
+          </div>
+          <div class="card" id="music-alarms">
+            <div class="image-gradient-container">
+              <img
+                src="/i/PandoraMusicAlarms.jpg"
+                alt="Music Alarms on Android"
+                loading="lazy"
+              />
+            </div>
+            <h2>Music Alarms on Android</h2>
+            <p>
+              I designed the API integration for music alarms on Android, a
+              feature that allows users to set alarms that play music from their
+              music app. The feature was launched in 2019 and enabled Pandora to
+              integrate into the Clock app on Android. Pandora wrote an
+              engineering blog post about the integration.
+            </p>
+            <a
+              href="https://engineering.pandora.com/wake-up-to-pandora-with-the-clock-app-from-google-7859fe7743aa"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read blog post about Music Alarms on Android"
+              class="project-link"
+              >Blog Post</a
+            >
+            <div class="tags">
+              Android, Music, Developer APIs, Developer Relations
+            </div>
+          </div>
+          <div class="card" id="exposure-notifications">
+            <div class="image-gradient-container">
+              <img
+                src="/i/ExposureNotifications.jpg"
+                alt="COVID-19 Exposure Notifications Interface"
+                loading="lazy"
+              />
+            </div>
+            <h2>COVID-19 Exposure Notifications</h2>
+            <p>
+              I led Developer Relations for the Exposure Notifications System, a
+              collaboration between Google and Apple that helped governments
+              alert people who were exposed to COVID-19. The privacy-preserving
+              technology was adopted by over 50 countries and regions worldwide.
+              Research showed it could detect almost twice as many potential
+              infections as manual contact tracing, and Popular Science
+              recognized it as "Innovation of the Year" in 2020.
+            </p>
+            <a
+              href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read about COVID-19 Exposure Notifications"
+              class="project-link"
+              >Blog Post</a
+            >
+            <div class="tags">
+              COVID-19, Privacy, Public Health, Government Partnerships
+            </div>
+          </div>
+          <div class="card" id="google-sign-in">
+            <div class="image-gradient-container">
+              <img
+                src="/i/GoogleSignIn.jpg"
+                alt="Google Sign-In Image"
+                loading="lazy"
+              />
+            </div>
+            <h2>Google Sign-In</h2>
+            <p>
+              I wrote sample code that demonstrated how to authenticate users
+              with Google+ Sign-In (now "Sign in with Google") across multiple
+              platforms. When we started, few apps supported federated identity.
+              Today, most apps and websites let users sign in with their Google
+              account. I created client examples in JavaScript, Java, and
+              Objective-C, along with server implementations in Python, Java,
+              Go, and PHP. I presented this work at Google I/O 2013, helping
+              developers understand and implement Google authentication in their
+              apps.
+            </p>
+            <a
+              href="https://www.youtube.com/watch?v=UUk1bjN7WR8"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch Google I/O 2013 talk about Google Sign-In"
+              class="project-link"
+              >Google I/O Talk</a
+            >
+            <div class="tags">
+              Authentication, OAuth, Android, iOS, Web, Java, Objective-C,
+              JavaScript, Python, Go, PHP, Cross-Platform Development, Public
+              Speaking
+            </div>
+          </div>
+          <div class="card" id="android-deep-links">
+            <div class="image-gradient-container">
+              <img
+                src="/i/AndroidDeepLinks.jpg"
+                alt="Android Deep Links Diagram"
+                loading="lazy"
+              />
+            </div>
+            <h2>Android Deep Links</h2>
+            <p>
+              I led a team that defined best practices for designing and
+              handling deep links on Android. We created comprehensive
+              documentation and educational content, including the Deep Links
+              Crash Course, to help developers understand how to properly
+              integrate their websites with Android apps. This work established
+              standards for seamless navigation between web and Android
+              platforms, improving user experience across the Android ecosystem.
+            </p>
+            <a
+              href="https://youtu.be/sSF_3CIXdbE"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch Android Deep Links Crash Course"
+              class="project-link"
+              >YouTube</a
+            >
+            <div class="tags">
+              Android, Deep Links, App Links, Developer Education, Technical
+              Leadership, Web Integration
+            </div>
+          </div>
+          <div class="card" id="world-solar-challenge">
+            <div class="image-gradient-container">
+              <img
+                src="/i/WorldSolarChallenge.jpg"
+                alt="World Solar Challenge Sunset"
+                loading="lazy"
+              />
+            </div>
+            <h2>World Solar Challenge</h2>
+            <p>
+              As team lead for CalSol, the UC Berkeley Solar Vehicle Team, I led
+              the development of a solar-powered car for the 2011 Veolia World
+              Solar Challenge. This involved managing mechanical, electrical,
+              and business teams to secure funding and build a street-legal
+              vehicle from scratch, which we then raced across the continent of
+              Australia.
+            </p>
+            <a
+              href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read blog post about World Solar Challenge"
+              class="project-link"
+              >Blog Post</a
+            >
+            <div class="tags">
+              Solar Power, Renewable Energy, Electrical Engineering, Embedded
+              Software, Engineering Leadership
+            </div>
+          </div>
+          <div class="card" id="smart-garage">
+            <div class="image-gradient-container">
+              <img
+                src="/i/SmartGarageDoor.jpg"
+                alt="Smart Garage Door Screenshot"
+                loading="lazy"
+              />
+            </div>
+            <h2>Smart Garage Door</h2>
+            <p>
+              This project involved designing and building a smart garage door
+              system with internet-connected microcontrollers and a companion
+              Android app. The embedded software manages sensors and actuators
+              to control the garage door, while the Android app provides push
+              notifications and remote control - saving us from accidentally
+              leaving the door open and giving us peace of mind when we're away
+              from home.
+            </p>
+            <a
+              href="https://github.com/cartland/SmartGarageDoor"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Smart Garage Door project on GitHub"
+              class="project-link"
+              >GitHub</a
+            >
+            <div class="tags">
+              Kotlin, Compose, Macrobenchmark, CI/CD, TypeScript, IoT, Embedded
+              Systems, Android Development, Home Automation, Microcontrollers,
+              Serverless
+            </div>
+          </div>
+          <div class="card" id="marauders-map">
+            <div class="image-gradient-container">
+              <img
+                src="/i/MaraudersMap.gif"
+                alt="Marauder's Map Screenshot"
+                loading="lazy"
+              />
+            </div>
+            <h2>Marauder's Map</h2>
+            <p>
+              I built an interactive Marauder's Map for a Halloween party. The
+              animations are drawn with an HTML5 Canvas runs in a WebView in an
+              Android app. The app was deployed on phones, tablets, and Android
+              TV. We added a bit of magic with NFC magic wands that allowed the
+              wizard to wave their wand and see their footsteps appear on the
+              map in their real location.
+            </p>
+            <a
+              href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read blog post about Marauder's Map project"
+              class="project-link"
+              >Blog Post</a
+            >
+            <div class="tags">
+              Interactive Art, Android Development, HTML5 Canvas, React, NFC,
+              Animation, WebView
+            </div>
+          </div>
+          <div class="card" id="instant-runoff">
+            <div class="image-gradient-container">
+              <img
+                src="/i/InstantRunoffVoting.jpg"
+                alt="Instant Runoff Voting Interface"
+                loading="lazy"
+              />
+            </div>
+            <h2>Instant Runoff Voting</h2>
+            <p>
+              I developed a voting system using Google Apps Script and Google
+              Forms that implements Instant Runoff Voting. The system includes
+              features like unique voting keys, vote modification capabilities,
+              and unauthorized vote prevention. I shared this solution through a
+              technical blog post on the Google Developers Blog, making it
+              accessible for other developers to implement similar voting
+              systems.
+            </p>
+            <a
+              href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read blog post about Instant Runoff Voting"
+              class="project-link"
+              >Blog Post</a
+            >
+            <div class="tags">Google Apps Script, JavaScript</div>
+          </div>
+          <div class="card" id="autostereogram">
+            <div class="image-gradient-container">
+              <img
+                src="/i/Autostereogram.jpg"
+                alt="Autostereogram Example"
+                loading="lazy"
+              />
+            </div>
+            <h2>Autostereogram Generator</h2>
+            <p>
+              I wrote software in Go to generate autostereograms (also known as
+              "Magic Eye" images). Starting from first principles and my
+              experience viewing these 3D illusions, I developed a library that
+              creates autostereograms from depth maps and pattern images. The
+              project includes both a command-line tool and a web service hosted
+              on Google App Engine, making it easy for others to create their
+              own 3D illusions.
+            </p>
+            <a
+              href="https://github.com/cartland/imagic"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Autostereogram Generator on GitHub"
+              class="project-link"
+              >GitHub</a
+            >
+            <div class="tags">Go Programming, Image Processing, Algorithms</div>
+          </div>
+          <div class="card" id="computer-history-museum">
+            <div class="image-gradient-container">
+              <img
+                src="/i/ComputerHistoryMuseum.jpg"
+                alt="Computer History Museum Screenshot"
+                loading="lazy"
+              />
+            </div>
+            <h2>Computer History Museum</h2>
+            <p>
+              I shared my computer science journey at the Computer History
+              Museum's Design Code Build series in 2019. The talk focused on
+              inspiring the next generation of technologists by discussing my
+              path from early programming experiences to working on large-scale
+              technology projects that impact millions of users.
+            </p>
+            <a
+              href="https://youtube.com/watch?v=uS26m1QaEH4"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch Computer History Museum talk on YouTube"
+              class="project-link"
+              >YouTube</a
+            >
+            <div class="tags">
+              Public Speaking, Computer Science Education, Technical
+              Communication
+            </div>
+          </div>
+          <div class="card" id="berkeley-alumni">
+            <div class="image-gradient-container">
+              <img
+                src="/i/BerkeleyAlumni.jpg"
+                alt="Berkeley Engineering Alumni Spotlight"
+                loading="lazy"
+              />
+            </div>
+            <h2>Berkeley Alumni Spotlight</h2>
+            <p>
+              UC Berkeley Engineering featured me in their alumni spotlight,
+              where I shared my journey from studying AI with Professor Dan
+              Klein to leading developer outreach at Google. I discussed how my
+              experiences at Cal, including racing a solar-powered car across
+              Australia with CalSol, shaped my approach to solving complex
+              technical challenges and working with ambiguous problems.
+            </p>
+            <a
+              href="https://engineering.berkeley.edu/christopher-cartland/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read Berkeley Engineering Alumni Spotlight"
+              class="project-link"
+              >Berkeley Spotlight</a
+            >
+            <div class="tags">Public Speaking, Engineering Leadership</div>
+          </div>
+          <div class="card" id="templeton-alumni">
+            <div class="image-gradient-container">
+              <img
+                src="/i/TempletonAlumni.jpg"
+                alt="Templeton Alumni Profile"
+                loading="lazy"
+              />
+            </div>
+            <h2>Templeton Alumni Profile</h2>
+            <p>
+              My high school invited me to share how my experiences shaped my
+              future career in technology. In this alumni profile, I discuss my
+              introduction to computer science and the environment at Templeton
+              that helped lay the foundation for my journey into software
+              development and my work at Google.
+            </p>
+            <a
+              href="https://www.youtube.com/watch?v=_U_oxDDa3x8"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch Templeton Alumni Profile video"
+              class="project-link"
+              >YouTube</a
+            >
+            <div class="tags">Public Speaking</div>
+          </div>
+          <div class="card" id="global-temperature-visualization">
+            <div class="image-gradient-container">
+              <img
+                src="/i/Temperature.png"
+                alt="Global Temperature Visualization"
+                loading="lazy"
+              />
+            </div>
+            <h2>Global Temperature Visualization</h2>
+            <p>
+              I created an interactive data visualization of global surface
+              temperatures from 1850 to the present. This project uses a large
+              dataset to show monthly temperature anomalies compared to a
+              baseline period, highlighting the long-term warming trend. The
+              visualization is built with modern web technologies to provide an
+              engaging and informative experience about climate change.
+            </p>
+            <a href="temperature-visualization" class="project-link"
+              >Visualization</a
+            >
+            <div class="tags">
+              Data Visualization, Climate Change, Web Development, D3.js, HTML,
+              CSS, JavaScript
+            </div>
+          </div>
+          <div class="card" id="utility-vs-solar-battery">
+            <div class="image-gradient-container">
+              <img
+                src="/i/solar-battery-cost.png"
+                alt="Utility vs. Solar + Battery Cost Analysis"
+                loading="lazy"
+              />
+            </div>
+            <h2>Utility vs. Solar + Battery</h2>
+            <p>
+              An interactive calculator to compare the long-term costs of
+              utility power vs. a solar and battery system. This tool helps you
+              make an informed decision by modeling the costs over a 30-year
+              period, including opportunity costs and other financial
+              assumptions.
+            </p>
+            <a href="/utility-vs-solar-battery.html" class="project-link"
+              >Calculator</a
+            >
+            <div class="tags">
+              Financial Modeling, Cost Analysis, Sustainable Technology, Web
+              Development
+            </div>
+          </div>
+          <div class="card" id="portfolio">
+            <div class="image-gradient-container">
+              <img
+                src="/i/ChrisCartlandWebsite.jpg"
+                alt="Portfolio Website Screenshot"
+                loading="lazy"
+              />
+            </div>
+            <h2>Portfolio Website</h2>
+            <p>
+              I built this portfolio website using minimal CSS and JavaScript to
+              create a responsive and accessible experience. The site features a
+              clean, modern design that works seamlessly across all devices
+              while maintaining strong accessibility standards. The website is
+              deployed using GitHub Actions and hosted with Firebase Hosting on
+              a custom domain.
+            </p>
+            <a
+              href="https://github.com/cartland/cartland-dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Portfolio Website"
+              class="project-link"
+              >GitHub</a
+            >
+            <div class="tags">
+              Web Development, HTML, CSS, JavaScript, CI/CD, Accessibility,
+              Responsive Design
             </div>
           </div>
         </div>
-      </div>
-      <div id="overlay" class="overlay menu-aware" onclick="toggleMenu()">
-        <nav class="overlay-content" aria-label="Mobile navigation">
-          <div class="nav-links">
-            <a href="/" onclick="toggleMenu()" aria-label="About - Learn more about Christopher Cartland">
-              <h2>About</h2>
-            </a>
-            <a href="projects" onclick="toggleMenu()" aria-label="Projects - View Christopher Cartland's work">
-              <h2>Projects</h2>
-            </a>
-          </div>
-        </nav>
-      </div>
-    </header>
+      </main>
 
-    <main id="main-content">
-      <div class="project-container">
-        <h1>Projects</h1>
-        <div class="section-header">
-          <p>Here are some of my key projects, spanning from large-scale Google initiatives like Google TV and
-            COVID-19 Exposure Notifications to innovative personal projects in sustainable technology and interactive
-            art.
-            These projects showcase my expertise in developer platforms, embedded systems, and creative technology
-            solutions.</p>
-        </div>
-        <a class="toc" href="#android-build-time">Android Build Time</a>
-        <a class="toc" href="#google-tv">Google TV App Ecosystem</a>
-        <a class="toc" href="#android-auto">Android Auto Apps</a>
-        <a class="toc" href="#play-billing">Google Play Billing</a>
-        <a class="toc" href="#music-alarms">Music Alarms on Android</a>
-        <a class="toc" href="#exposure-notifications">COVID-19 Exposure Notifications</a>
-        <a class="toc" href="#google-sign-in">Google Sign-In</a>
-        <a class="toc" href="#android-deep-links">Android Deep Links</a>
-        <a class="toc" href="#world-solar-challenge">World Solar Challenge</a>
-        <a class="toc" href="#smart-garage">Smart Garage Door</a>
-        <a class="toc" href="#marauders-map">Marauder's Map</a>
-        <a class="toc" href="#instant-runoff">Instant Runoff Voting</a>
-        <a class="toc" href="#autostereogram">Autostereogram Generator</a>
-        <a class="toc" href="#computer-history-museum">Computer History Museum</a>
-        <a class="toc" href="#berkeley-alumni">Berkeley Alumni Spotlight</a>
-        <a class="toc" href="#templeton-alumni">Templeton Alumni Profile</a>
-        <a class="toc" href="#global-temperature-visualization">Global Temperature Visualization</a>
-        <a class="toc" href="#utility-vs-solar-battery">Utility vs. Solar + Battery</a>
-        <a class="toc" href="#portfolio">Portfolio Website</a>
-        <div class="section-header">
-        </div>
-        <div class="card" id="android-build-time">
-          <div class="image-gradient-container">
-            <img src="/i/AndroidBuildTime.jpg" alt="Android Build Time Logo" loading="lazy">
-          </div>
-          <h2>Android Build Time</h2>
-          <p>I host "Android Build Time," a video podcast series produced by the Android team at Google. Through
-            in-depth technical conversations with Android developers, I interview developers about apps and technologies
-            relevant to professional Android developers.
-          </p>
-          <a href="https://goo.gle/AndroidBuildTime" target="_blank" rel="noopener noreferrer"
-            aria-label="Watch Android Build Time podcast" class="project-link">Podcast</a>
-          <div class="tags">Android, Developer Relations, Technical Communication, Public Speaking
-          </div>
-        </div>
-        <div class="card" id="google-tv">
-          <div class="image-gradient-container">
-            <img src="/i/GoogleTVWirecutter.jpg" alt="Google TV Interface" loading="lazy">
-          </div>
-          <h2>Google TV App Ecosystem</h2>
-          <p>I bootstrapped the Google TV app ecosystem by working with top streaming services to build and launch their
-            apps.
-            The platform's success led Wirecutter to choose Google TV devices as both their top and budget picks for
-            streaming
-            devices multiple years in a row, citing the seamless app integration with the system.</p>
-          <a href="https://www.nytimes.com/wirecutter/reviews/best-media-streamers/" target="_blank"
-            rel="noopener noreferrer" aria-label="Read Wirecutter's review of Google TV"
-            class="project-link">Wirecutter</a>
-          <div class="tags">Android TV, Google TV, Developer Relations, Streaming Media, App Ecosystem</div>
-        </div>
-        <div class="card" id="android-auto">
-          <div class="image-gradient-container">
-            <img src="/i/AndroidAutoApps.jpg" alt="Android Auto Interface" loading="lazy">
-          </div>
-          <h2>Android Auto Apps</h2>
-          <p>I led Developer Relations for Android Auto from its announcement in 2014, making music and audio app
-            integrations
-            safer and more delightful with Android Auto and Android Automotive OS. Through partnerships with automotive
-            and app
-            developers, we've grown the platform to be compatible with over 200 million cars on the road as of 2024.</p>
-          <a href="https://android-developers.googleblog.com/2014/11/begin-developing-with-android-auto.html"
-            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about Android Auto launch"
-            class="project-link">Blog Post</a>
-          <div class="tags">Android Auto, Automotive, Cars, Developer Relations, Audio Streaming Apps
-          </div>
-        </div>
-        <div class="card" id="play-billing">
-          <div class="image-gradient-container">
-            <img src="/i/GooglePlayBilling.jpg" alt="Google Play Billing Interface" loading="lazy">
-          </div>
-          <h2>Google Play Billing</h2>
-          <p>I wrote example code for managing in-app purchases and subscriptions on Android. I worked with Android
-            developers
-            during the digital boom of music, movies, and TV services as they launched apps and focused on subscription
-            business models.
-            The samples demonstrate best practices for implementing Google Play Billing in Java and Kotlin, including
-            server-side
-            subscription management and real-time developer notifications.</p>
-          <a href="https://github.com/cartland/play-billing-samples" target="_blank" rel="noopener noreferrer"
-            aria-label="View Google Play Billing samples on GitHub" class="project-link">GitHub</a>
-          <div class="tags">Android, Google Play, In-App Purchases, Subscriptions, Java, Kotlin, Developer Relations
-          </div>
-        </div>
-        <div class="card" id="music-alarms">
-          <div class="image-gradient-container">
-            <img src="/i/PandoraMusicAlarms.jpg" alt="Music Alarms on Android" loading="lazy">
-          </div>
-          <h2>Music Alarms on Android</h2>
-          <p>I designed the API integration for music alarms on Android, a feature that allows users to set alarms that
-            play music
-            from their music app. The feature was launched in 2019 and enabled Pandora to integrate into the Clock app
-            on Android.
-            Pandora wrote an engineering blog post about the integration.</p>
-          <a href="https://engineering.pandora.com/wake-up-to-pandora-with-the-clock-app-from-google-7859fe7743aa"
-            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about Music Alarms on Android"
-            class="project-link">Blog Post</a>
-          <div class="tags">Android, Music, Developer APIs, Developer Relations</div>
-        </div>
-        <div class="card" id="exposure-notifications">
-          <div class="image-gradient-container">
-            <img src="/i/ExposureNotifications.jpg" alt="COVID-19 Exposure Notifications Interface" loading="lazy">
-          </div>
-          <h2>COVID-19 Exposure Notifications</h2>
-          <p>I led Developer Relations for the Exposure Notifications System, a collaboration between Google and Apple
-            that
-            helped governments alert people who were exposed to COVID-19. The privacy-preserving technology was adopted
-            by
-            over 50 countries and regions worldwide. Research showed it could detect almost twice as many potential
-            infections
-            as manual contact tracing, and Popular Science recognized it as "Innovation of the Year" in 2020.</p>
-          <a href="https://blog.google/inside-google/covid-19/exposure-notifications-end-year-update/" target="_blank"
-            rel="noopener noreferrer" aria-label="Read about COVID-19 Exposure Notifications" class="project-link">Blog
-            Post</a>
-          <div class="tags">COVID-19, Privacy, Public Health, Government Partnerships</div>
-        </div>
-        <div class="card" id="google-sign-in">
-          <div class="image-gradient-container">
-            <img src="/i/GoogleSignIn.jpg" alt="Google Sign-In Image" loading="lazy">
-          </div>
-          <h2>Google Sign-In</h2>
-          <p>I wrote sample code that demonstrated how to authenticate users with Google+ Sign-In (now "Sign in with
-            Google")
-            across multiple platforms. When we started, few apps supported federated identity. Today, most apps and
-            websites
-            let users sign in with their Google account. I created client examples in JavaScript, Java, and Objective-C,
-            along
-            with server implementations in Python, Java, Go, and PHP. I presented this work at Google I/O 2013, helping
-            developers understand and implement Google authentication in their apps.</p>
-          <a href="https://www.youtube.com/watch?v=UUk1bjN7WR8" target="_blank" rel="noopener noreferrer"
-            aria-label="Watch Google I/O 2013 talk about Google Sign-In" class="project-link">Google I/O Talk</a>
-          <div class="tags">Authentication, OAuth, Android, iOS, Web, Java, Objective-C, JavaScript, Python, Go, PHP,
-            Cross-Platform Development, Public Speaking</div>
-        </div>
-        <div class="card" id="android-deep-links">
-          <div class="image-gradient-container">
-            <img src="/i/AndroidDeepLinks.jpg" alt="Android Deep Links Diagram" loading="lazy">
-          </div>
-          <h2>Android Deep Links</h2>
-          <p>I led a team that defined best practices for designing and handling deep links on Android. We created
-            comprehensive
-            documentation and educational content, including the Deep Links Crash Course, to help developers understand
-            how to
-            properly integrate their websites with Android apps. This work established standards for seamless navigation
-            between
-            web and Android platforms, improving user experience across the Android ecosystem.</p>
-          <a href="https://youtu.be/sSF_3CIXdbE" target="_blank" rel="noopener noreferrer"
-            aria-label="Watch Android Deep Links Crash Course" class="project-link">YouTube</a>
-          <div class="tags">Android, Deep Links, App Links, Developer Education, Technical Leadership, Web Integration
-          </div>
-        </div>
-        <div class="card" id="world-solar-challenge">
-          <div class="image-gradient-container">
-            <img src="/i/WorldSolarChallenge.jpg" alt="World Solar Challenge Sunset" loading="lazy">
-          </div>
-          <h2>World Solar Challenge</h2>
-          <p>As team lead for CalSol, the UC Berkeley Solar Vehicle Team, I led the development of a solar-powered car
-            for
-            the 2011 Veolia World Solar Challenge. This involved managing mechanical, electrical, and business teams to
-            secure funding and build a street-legal vehicle from scratch, which we then raced across the continent of
-            Australia.</p>
-          <a href="https://calsol.berkeley.edu/2011/11/02/wsc-reflections-by-chris-cartland/" target="_blank"
-            rel="noopener noreferrer" aria-label="Read blog post about World Solar Challenge" class="project-link">Blog
-            Post</a>
-          <div class="tags">Solar Power, Renewable Energy, Electrical Engineering, Embedded Software, Engineering
-            Leadership</div>
-        </div>
-        <div class="card" id="smart-garage">
-          <div class="image-gradient-container">
-            <img src="/i/SmartGarageDoor.jpg" alt="Smart Garage Door Screenshot" loading="lazy">
-          </div>
-          <h2>Smart Garage Door</h2>
-          <p>This project involved designing and building a smart garage door system with internet-connected
-            microcontrollers and a companion Android app. The embedded software manages sensors and actuators to control
-            the garage door, while the Android app provides push notifications and remote control - saving us from
-            accidentally leaving the door open and giving us peace of mind when we're away from home.</p>
-          <a href="https://github.com/cartland/SmartGarageDoor" target="_blank" rel="noopener noreferrer"
-            aria-label="View Smart Garage Door project on GitHub" class="project-link">GitHub</a>
-          <div class="tags">Kotlin, Compose, Macrobenchmark, CI/CD, TypeScript, IoT, Embedded Systems, Android
-            Development, Home Automation, Microcontrollers, Serverless</div>
-        </div>
-        <div class="card" id="marauders-map">
-          <div class="image-gradient-container">
-            <img src="/i/MaraudersMap.gif" alt="Marauder's Map Screenshot" loading="lazy">
-          </div>
-          <h2>Marauder's Map</h2>
-          <p>I built an interactive Marauder's Map for a Halloween party. The animations are drawn with an HTML5 Canvas
-            runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit
-            of magic with NFC magic wands that allowed the wizard to wave their wand and see their footsteps appear on
-            the map in their real location.</p>
-          <a href="https://cartland.medium.com/building-a-marauders-map-6552fa378cda" target="_blank"
-            rel="noopener noreferrer" aria-label="Read blog post about Marauder's Map project" class="project-link">Blog
-            Post</a>
-          <div class="tags">Interactive Art, Android Development, HTML5 Canvas, React, NFC, Animation, WebView</div>
-        </div>
-        <div class="card" id="instant-runoff">
-          <div class="image-gradient-container">
-            <img src="/i/InstantRunoffVoting.jpg" alt="Instant Runoff Voting Interface" loading="lazy">
-          </div>
-          <h2>Instant Runoff Voting</h2>
-          <p>I developed a voting system using Google Apps Script and Google Forms that implements Instant Runoff
-            Voting. The system includes features like unique voting keys, vote modification capabilities, and
-            unauthorized vote prevention. I shared this solution through a technical blog post on the Google Developers
-            Blog,
-            making it accessible for other developers to implement similar voting systems.</p>
-          <a href="https://gsuite-developers.googleblog.com/2012/11/instant-voting-with-apps-script.html"
-            target="_blank" rel="noopener noreferrer" aria-label="Read blog post about Instant Runoff Voting"
-            class="project-link">Blog Post</a>
-          <div class="tags">Google Apps Script, JavaScript</div>
-        </div>
-        <div class="card" id="autostereogram">
-          <div class="image-gradient-container">
-            <img src="/i/Autostereogram.jpg" alt="Autostereogram Example" loading="lazy">
-          </div>
-          <h2>Autostereogram Generator</h2>
-          <p>I wrote software in Go to generate autostereograms (also known as "Magic Eye" images). Starting from first
-            principles and my experience viewing these 3D illusions, I developed a library that creates autostereograms
-            from
-            depth maps and pattern images. The project includes both a command-line tool and a web service hosted on
-            Google
-            App Engine, making it easy for others to create their own 3D illusions.</p>
-          <a href="https://github.com/cartland/imagic" target="_blank" rel="noopener noreferrer"
-            aria-label="View Autostereogram Generator on GitHub" class="project-link">GitHub</a>
-          <div class="tags">Go Programming, Image Processing, Algorithms</div>
-        </div>
-        <div class="card" id="computer-history-museum">
-          <div class="image-gradient-container">
-            <img src="/i/ComputerHistoryMuseum.jpg" alt="Computer History Museum Screenshot" loading="lazy">
-          </div>
-          <h2>Computer History Museum</h2>
-          <p>I shared my computer science journey at the Computer History Museum's Design Code Build series in 2019. The
-            talk focused on inspiring the next generation of technologists by discussing my path from early programming
-            experiences to working on large-scale technology projects that impact millions of users.</p>
-          <a href="https://youtube.com/watch?v=uS26m1QaEH4" target="_blank" rel="noopener noreferrer"
-            aria-label="Watch Computer History Museum talk on YouTube" class="project-link">YouTube</a>
-          <div class="tags">Public Speaking, Computer Science Education, Technical Communication</div>
-        </div>
-        <div class="card" id="berkeley-alumni">
-          <div class="image-gradient-container">
-            <img src="/i/BerkeleyAlumni.jpg" alt="Berkeley Engineering Alumni Spotlight" loading="lazy">
-          </div>
-          <h2>Berkeley Alumni Spotlight</h2>
-          <p>UC Berkeley Engineering featured me in their alumni spotlight, where I shared my journey from studying AI
-            with
-            Professor Dan Klein to leading developer outreach at Google. I discussed how my experiences at Cal,
-            including racing a solar-powered car across Australia with CalSol, shaped my approach to solving complex
-            technical challenges and working with ambiguous problems.</p>
-          <a href="https://engineering.berkeley.edu/christopher-cartland/" target="_blank" rel="noopener noreferrer"
-            aria-label="Read Berkeley Engineering Alumni Spotlight" class="project-link">Berkeley Spotlight</a>
-          <div class="tags">Public Speaking, Engineering Leadership</div>
-        </div>
-        <div class="card" id="templeton-alumni">
-          <div class="image-gradient-container">
-            <img src="/i/TempletonAlumni.jpg" alt="Templeton Alumni Profile" loading="lazy">
-          </div>
-          <h2>Templeton Alumni Profile</h2>
-          <p>My high school invited me to share how my experiences shaped my future career in technology.
-            In this alumni profile, I discuss my introduction to computer science and the environment at Templeton that
-            helped lay the foundation for my journey into software development and my work at Google.</p>
-          <a href="https://www.youtube.com/watch?v=_U_oxDDa3x8" target="_blank" rel="noopener noreferrer"
-            aria-label="Watch Templeton Alumni Profile video" class="project-link">YouTube</a>
-          <div class="tags">Public Speaking</div>
-        </div>
-        <div class="card" id="global-temperature-visualization">
-          <div class="image-gradient-container">
-            <img src="/i/Temperature.png" alt="Global Temperature Visualization" loading="lazy">
-          </div>
-          <h2>Global Temperature Visualization</h2>
-          <p>I created an interactive data visualization of global surface temperatures from 1850 to the present. This project uses a large dataset to show monthly temperature anomalies compared to a baseline period, highlighting the long-term warming trend. The visualization is built with modern web technologies to provide an engaging and informative experience about climate change.</p>
-          <a href="temperature-visualization" class="project-link">Visualization</a>
-          <div class="tags">Data Visualization, Climate Change, Web Development, D3.js, HTML, CSS, JavaScript</div>
-        </div>
-        <div class="card" id="utility-vs-solar-battery">
-          <div class="image-gradient-container">
-            <img src="/i/solar-battery-cost.png" alt="Utility vs. Solar + Battery Cost Analysis" loading="lazy">
-          </div>
-          <h2>Utility vs. Solar + Battery</h2>
-          <p>An interactive calculator to compare the long-term costs of utility power vs. a solar and battery system. This tool helps you make an informed decision by modeling the costs over a 30-year period, including opportunity costs and other financial assumptions.</p>
-          <a href="/utility-vs-solar-battery.html" class="project-link">Calculator</a>
-          <div class="tags">Financial Modeling, Cost Analysis, Sustainable Technology, Web Development</div>
-        </div>
-        <div class="card" id="portfolio">
-          <div class="image-gradient-container">
-            <img src="/i/ChrisCartlandWebsite.jpg" alt="Portfolio Website Screenshot" loading="lazy">
-          </div>
-          <h2>Portfolio Website</h2>
-          <p>I built this portfolio website using minimal CSS and JavaScript to create a responsive and accessible
-            experience. The site features a clean, modern design that works seamlessly across all devices while
-            maintaining strong accessibility standards. The website is deployed using GitHub Actions and
-            hosted with Firebase Hosting on a custom domain.</p>
-          <a href="https://github.com/cartland/cartland-dev" target="_blank" rel="noopener noreferrer"
-            aria-label="View Portfolio Website" class="project-link">GitHub</a>
-          <div class="tags">Web Development, HTML, CSS, JavaScript, CI/CD, Accessibility, Responsive Design</div>
-        </div>
-      </div>
-    </main>
+      <footer>
+        <p>
+          © 2024 Christopher Cartland |
+          <a href="https://chriscart.land">chriscart.land</a>
+        </p>
+      </footer>
+    </div>
 
-    <footer>
-      <p>© 2024 Christopher Cartland | <a href="https://chriscart.land">chriscart.land</a></p>
-    </footer>
-  </div>
-
-  <script>
-    function toggleMenu() {
-      const menuAwareElements = document.querySelectorAll(".menu-aware");
-      const menuIcon = document.querySelector('.menu-icon');
-      const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true';
-      menuAwareElements.forEach(element => element.classList.toggle("menu-active-mode"));
-      menuIcon.setAttribute('aria-expanded', !isExpanded);
-      document.body.style.overflow = isExpanded ? '' : 'hidden';
-      overlay.style.pointerEvents = isExpanded ? 'none' : 'all';
-      if (!isExpanded) {
-        document.addEventListener('keydown', trapFocus);
-      } else {
-        document.removeEventListener('keydown', trapFocus);
-      }
-    }
-
-    // Close the menu when clicking on the overlay
-    window.addEventListener('click', function (event) {
-      if (event.target.matches('#overlay')) {
-        toggleMenu();
-      }
-    });
-
-    function trapFocus(e) {
-      const overlay = document.getElementById("overlay");
-      const overlayElements = overlay.querySelectorAll(
-        'a[href], button, [tabindex]:not([tabindex="-1"])'
-      );
-      const menuIcon = document.querySelector('.menu-icon');
-      const focusableElements = [menuIcon, ...overlayElements];
-      const firstFocusable = focusableElements[0];
-      const lastFocusable = focusableElements[focusableElements.length - 1];
-
-      if (e.key === 'Tab' && e.shiftKey) {
-        if (document.activeElement === firstFocusable) {
-          e.preventDefault();
-          lastFocusable.focus();
-        }
-      } else if (e.key === 'Tab') {
-        if (document.activeElement === lastFocusable) {
-          e.preventDefault();
-          firstFocusable.focus();
-        }
-      } else if (e.key === 'Escape') {
-        toggleMenu();
-      }
-    }
-
-    function markCurrentNavLinkAsActive() {
-      const pathname = window.location.pathname.split('/');
-      const windowPathAfterSlash = pathname[pathname.length - 1];
-      const navLinks = document.querySelectorAll('.nav-links a');
-      navLinks.forEach(link => {
-        const linkHref = `${link.getAttribute('href')}`;
-        const matchPath = (windowPathAfterSlash === linkHref);
-        const matchRoot = (windowPathAfterSlash === '' && linkHref === '/');
-        if (matchPath || matchRoot) {
-          link.classList.add('active');
-          link.setAttribute('aria-current', 'page');
+    <script>
+      function toggleMenu() {
+        const menuAwareElements = document.querySelectorAll('.menu-aware')
+        const menuIcon = document.querySelector('.menu-icon')
+        const isExpanded = menuIcon.getAttribute('aria-expanded') === 'true'
+        menuAwareElements.forEach((element) =>
+          element.classList.toggle('menu-active-mode')
+        )
+        menuIcon.setAttribute('aria-expanded', !isExpanded)
+        document.body.style.overflow = isExpanded ? '' : 'hidden'
+        overlay.style.pointerEvents = isExpanded ? 'none' : 'all'
+        if (!isExpanded) {
+          document.addEventListener('keydown', trapFocus)
         } else {
-          link.classList.remove('active');
-          link.removeAttribute('aria-current');
+          document.removeEventListener('keydown', trapFocus)
         }
-      });
-    }
-    window.addEventListener('load', markCurrentNavLinkAsActive);
-
-    // Add keyboard support for menu
-    document.querySelector('.menu-icon').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        toggleMenu();
       }
-    });
 
-    function setupCardFocus() {
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        const img = card.querySelector('.image-gradient-container');
-        if (img) {
-          img.addEventListener('click', function (event) {
-            event.preventDefault();
-            const cardId = event.target.closest('.card').id;
-            if (window.location.hash !== ("#" + cardId)) {
-              window.location.hash = cardId;
-            } else {
-              window.location.hash = '###';
-            }
-          });
+      // Close the menu when clicking on the overlay
+      window.addEventListener('click', function (event) {
+        if (event.target.matches('#overlay')) {
+          toggleMenu()
         }
-      });
-    }
-    window.addEventListener('load', setupCardFocus);
-  </script>
-</body>
+      })
 
+      function trapFocus(e) {
+        const overlay = document.getElementById('overlay')
+        const overlayElements = overlay.querySelectorAll(
+          'a[href], button, [tabindex]:not([tabindex="-1"])'
+        )
+        const menuIcon = document.querySelector('.menu-icon')
+        const focusableElements = [menuIcon, ...overlayElements]
+        const firstFocusable = focusableElements[0]
+        const lastFocusable = focusableElements[focusableElements.length - 1]
+
+        if (e.key === 'Tab' && e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault()
+            lastFocusable.focus()
+          }
+        } else if (e.key === 'Tab') {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault()
+            firstFocusable.focus()
+          }
+        } else if (e.key === 'Escape') {
+          toggleMenu()
+        }
+      }
+
+      function markCurrentNavLinkAsActive() {
+        const pathname = window.location.pathname.split('/')
+        const windowPathAfterSlash = pathname[pathname.length - 1]
+        const navLinks = document.querySelectorAll('.nav-links a')
+        navLinks.forEach((link) => {
+          const linkHref = `${link.getAttribute('href')}`
+          const matchPath = windowPathAfterSlash === linkHref
+          const matchRoot = windowPathAfterSlash === '' && linkHref === '/'
+          if (matchPath || matchRoot) {
+            link.classList.add('active')
+            link.setAttribute('aria-current', 'page')
+          } else {
+            link.classList.remove('active')
+            link.removeAttribute('aria-current')
+          }
+        })
+      }
+      window.addEventListener('load', markCurrentNavLinkAsActive)
+
+      // Add keyboard support for menu
+      document
+        .querySelector('.menu-icon')
+        .addEventListener('keypress', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            toggleMenu()
+          }
+        })
+
+      function setupCardFocus() {
+        const cards = document.querySelectorAll('.card')
+        cards.forEach((card) => {
+          const img = card.querySelector('.image-gradient-container')
+          if (img) {
+            img.addEventListener('click', function (event) {
+              event.preventDefault()
+              const cardId = event.target.closest('.card').id
+              if (window.location.hash !== '#' + cardId) {
+                window.location.hash = cardId
+              } else {
+                window.location.hash = '###'
+              }
+            })
+          }
+        })
+      }
+      window.addEventListener('load', setupCardFocus)
+    </script>
+  </body>
 </html>
