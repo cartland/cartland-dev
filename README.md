@@ -1,95 +1,91 @@
-# Personal Website
+# Personal Website: cartland.dev
 
-A minimalist, responsive personal website built with HTML, CSS, and vanilla JavaScript, deployed on Firebase Hosting.
+This repository contains the source code for my personal website, [chriscart.land](https://chriscart.land). It's a minimalist, responsive site built with vanilla HTML, CSS, and JavaScript, and deployed on Firebase Hosting.
 
-**Live site:** [chriscart.land](https://chriscart.land)
+## Overview
 
-## Features
+The primary goal of this project is to serve as a clean, accessible, and fast-loading portfolio. It showcases various professional and personal projects, ranging from large-scale Google initiatives to personal explorations in sustainable technology and interactive art.
 
-- Responsive design that works on all devices
-- Accessible navigation with keyboard support
-- Progressive Web App (PWA) support
-- Fast loading with optimized images
-- Clean URLs using Firebase Hosting rewrites
+## Key Features
 
-## Project Structure
+-   **Modern Tooling**: Uses ESLint for code quality and Prettier for consistent formatting.
+-   **Responsive Design**: Adapts to all screen sizes, from mobile to desktop.
+-   **Accessible**: Designed with keyboard navigation and screen reader support in mind.
+-   **Performant**: Optimized for fast loading with minimal dependencies.
+-   **Automated**: CI/CD is handled by GitHub Actions for automated testing and deployment.
 
-    .
-    ├── public/                # Static files served by Firebase
-    │   ├── index.html        # Home page
-    │   ├── projects.html     # Projects page
-    │   ├── 404.html          # Custom 404 page
-    │   ├── manifest.json     # PWA manifest
-    │   ├── i/                # Image assets
-    │   └── favicon.ico       # Site favicon
-    ├── .github/               # GitHub Actions workflows
-    │   └── workflows/        # Deployment configurations
-    ├── firebase.json          # Firebase configuration
-    └── .firebaserc            # Firebase project settings
+## Code Structure
 
-## Development
+The project is organized into a few key directories:
 
-1. Install dependencies:
-
-```bash
-npm install
+```
+.
+├── public/                # All static files served by Firebase
+│   ├── js/                # JavaScript modules
+│   │   └── temperature-visualization/ # Refactored JS for the temp viz
+│   ├── index.html        # Home page
+│   ├── projects.html     # Projects page
+│   └── ...               # Other HTML, images, and assets
+├── .github/               # GitHub Actions workflows
+│   └── workflows/
+│       └── ci.yml        # Continuous Integration checks
+│       └── firebase-hosting-merge.yml # Production deployment
+├── eslint.config.js       # ESLint v9 flat configuration
+├── .prettierrc.json       # Prettier formatting rules
+└── firebase.json          # Firebase Hosting configuration
 ```
 
-2. Start local development server:
+A significant part of this project was refactoring the `temperature-visualization.html` page from inline scripts into modern, modular JavaScript files located in `public/js/temperature-visualization/`. This makes the code more maintainable, testable, and easier for static analysis tools to understand.
 
-```bash
-firebase serve
-```
+## Development Setup
 
-The site will be available at `http://localhost:5000`
+To get started with local development, follow these steps:
 
-## Testing
+1.  **Install Dependencies:**
+    This project uses Node.js for its development tooling.
 
-This project uses linting to enforce code quality and catch errors. The following checks are run:
+    ```bash
+    npm install
+    ```
 
-- `npm run test:html`: Validates HTML files using `html-validate`.
-- `npm run test:css`: Lints CSS files using `stylelint`.
-- `npm run test:js`: Lints JavaScript files using `eslint`.
+2.  **Start the Local Server:**
+    The site can be served locally using the Firebase emulator.
 
-To run all tests, use:
+    ```bash
+    firebase serve
+    ```
+
+    The site will be available at `http://localhost:5000`.
+
+## Testing and Quality
+
+This project uses several tools to maintain code quality and correctness.
+
+-   **`npm run check:format`**: Checks for code formatting issues using Prettier.
+-   **`npm run test:html`**: Validates HTML files using `html-validate`.
+-   **`npm run test:css`**: Lints CSS using `stylelint`.
+-   **`npm run test:js`**: Lints JavaScript using ESLint.
+-   **`npm run test:links`**: Checks for broken links on the site.
+
+To run all checks at once, use the primary test command:
 
 ```bash
 npm test
 ```
 
-The tests are automatically run on every pull request and before deployment.
+These checks are automatically run by the CI workflow on every pull request.
 
 ## Deployment
 
-The site automatically deploys to Firebase Hosting through GitHub Actions:
+The site is automatically deployed to Firebase Hosting via GitHub Actions.
 
-- Pull requests trigger preview deployments
-- Merges to main branch trigger production deployments
+-   **Pull Requests**: Trigger a preview deployment to a temporary URL.
+-   **Merges to `main`**: Trigger a production deployment to the live site.
 
-Manual deployment can be done with:
-
+Manual deployments can be performed with the Firebase CLI:
 ```bash
 firebase deploy
 ```
-
-## GitHub Actions
-
-A workflow is configured for automated deployments:
-
-**Merge Workflow** (.github/workflows/firebase-hosting-merge.yml)
-
-- Triggers on merges to main branch
-- Deploys to production
-- Updates the live site at chriscart.land
-
-Workflows require the following GitHub Actions secrets:
-
-- `FIREBASE_SERVICE_ACCOUNT_CARTLAND_DEV`
-- `GITHUB_TOKEN`
-
-## Firebase Configuration
-
-The site uses Firebase Hosting with clean URLs and custom rewrites for a better user experience. Configuration can be found in `firebase.json`.
 
 ## License
 
