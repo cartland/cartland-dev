@@ -8,11 +8,11 @@ The primary goal of this project is to serve as a clean, accessible, and fast-lo
 
 ## Key Features
 
--   **Modern Tooling**: Uses ESLint for code quality and Prettier for consistent formatting.
--   **Responsive Design**: Adapts to all screen sizes, from mobile to desktop.
--   **Accessible**: Designed with keyboard navigation and screen reader support in mind.
--   **Performant**: Optimized for fast loading with minimal dependencies.
--   **Automated**: CI/CD is handled by GitHub Actions for automated testing and deployment.
+- **Modern Tooling**: Uses ESLint for code quality and Prettier for consistent formatting.
+- **Responsive Design**: Adapts to all screen sizes, from mobile to desktop.
+- **Accessible**: Designed with keyboard navigation and screen reader support in mind.
+- **Performant**: Optimized for fast loading with minimal dependencies.
+- **Automated**: CI/CD is handled by GitHub Actions for automated testing and deployment.
 
 ## Code Structure
 
@@ -61,11 +61,11 @@ To get started with local development, follow these steps:
 
 This project uses several tools to maintain code quality and correctness.
 
--   **`npm run check:format`**: Checks for code formatting issues using Prettier.
--   **`npm run test:html`**: Validates HTML files using `html-validate`.
--   **`npm run test:css`**: Lints CSS using `stylelint`.
--   **`npm run test:js`**: Lints JavaScript using ESLint.
--   **`npm run test:links`**: Checks for broken links on the site.
+- **`npm run check:format`**: Checks for code formatting issues using Prettier.
+- **`npm run test:html`**: Validates HTML files using `html-validate`.
+- **`npm run test:css`**: Lints CSS using `stylelint`.
+- **`npm run test:js`**: Lints JavaScript using ESLint.
+- **`npm run test:links`**: Checks for broken links on the site.
 
 To run all checks at once, use the primary test command:
 
@@ -79,10 +79,11 @@ These checks are automatically run by the CI workflow on every pull request.
 
 The site is automatically deployed to Firebase Hosting via GitHub Actions.
 
--   **Pull Requests**: Trigger a preview deployment to a temporary URL.
--   **Merges to `main`**: Trigger a production deployment to the live site.
+- **Pull Requests**: Trigger a preview deployment to a temporary URL.
+- **Merges to `main`**: Trigger a production deployment to the live site.
 
 Manual deployments can be performed with the Firebase CLI:
+
 ```bash
 firebase deploy
 ```

@@ -43,7 +43,9 @@ export async function loadTemperatureData(filterMonths = 0) {
       // Month index is 0-based in array, but 1-based for actual month number
       state.monthlyBaselineTemps.set(index + 1, avg.landAndOceanC)
     })
-    state.setAnnualOverallBaselineTempC(baselineData.annualAverage.landAndOceanC)
+    state.setAnnualOverallBaselineTempC(
+      baselineData.annualAverage.landAndOceanC
+    )
 
     return parseCSV(csvText)
   } catch (error) {

@@ -128,7 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .addEventListener('click', () => dom.renderVisualization('filtered'))
   document
     .getElementById('filtered-5-month-mode-btn')
-    .addEventListener('click', () => dom.renderVisualization('filtered-5-month'))
+    .addEventListener('click', () =>
+      dom.renderVisualization('filtered-5-month')
+    )
 
   document
     .getElementById('default-colors-btn')
