@@ -71,7 +71,8 @@ export async function renderVisualization(mode) {
         let value
         let titleText
         if (state.currentMode === 'temperature') {
-          value = monthData.anomaly + state.monthlyBaselineTemps.get(monthData.month)
+          value =
+            monthData.anomaly + state.monthlyBaselineTemps.get(monthData.month)
           titleText = `Absolute: ${value.toFixed(2)}°C`
         } else {
           // anomaly mode
@@ -119,10 +120,10 @@ export async function renderVisualization(mode) {
                     This visualization shows estimated global monthly average temperatures from January ${startYear} to December ${endYear}. Annual average temperatures range from <strong>${minAnnualAvgC.toFixed(
                       1
                     )}°C (${minAnnualAvgF.toFixed(
-      1
-    )}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(
-      1
-    )}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
+                      1
+                    )}°F)</strong> to <strong>${maxAnnualAvgC.toFixed(
+                      1
+                    )}°C (${maxAnnualAvgF.toFixed(1)}°F)</strong>.
                     <br><span class="data-source-link">Data source: <a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/0,0/tavg/land_ocean/1/0/1850-2024" target="_blank">NOAA National Centers for Environmental Information (NCEI)</a></span>
                 `
   } else {

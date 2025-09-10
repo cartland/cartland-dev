@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
+      - run: npm run check:format
       - run: npm test
       - name: Comment on PR with broken links
         if: hashFiles('broken-links.md') != ''

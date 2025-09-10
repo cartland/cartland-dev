@@ -89,8 +89,7 @@ export function hsvToHsl(h, s, v) {
   s /= 100
   v /= 100
   const l = ((2 - s) * v) / 2
-  const newS =
-    l === 0 || l === 1 ? 0 : (s * v) / (l < 0.5 ? l * 2 : 2 - l * 2)
+  const newS = l === 0 || l === 1 ? 0 : (s * v) / (l < 0.5 ? l * 2 : 2 - l * 2)
   return { h: h, s: newS * 100, l: l * 100 }
 }
 
