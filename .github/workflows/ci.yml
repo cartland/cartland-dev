@@ -3,6 +3,10 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
@@ -12,7 +16,7 @@ jobs:
       - run: npm run check:format
       - run: npm test
       - name: Comment on PR with broken links
-        if: hashFiles('broken-links.md') != ''
+        if: github.event_name == 'pull_request' && hashFiles('broken-links.md') != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
