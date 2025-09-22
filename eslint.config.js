@@ -15,10 +15,20 @@ export default [
 
   // 3. Configuration for Node.js files
   {
-    files: ['check-links.js'],
+    files: ['check-links.js', 'babel.config.js', 'jest.config.js'],
     languageOptions: {
       globals: {
         ...globals.node,
+      },
+    },
+  },
+
+  // 3b. Configuration for test files
+  {
+    files: ['tests/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
       },
     },
   },
