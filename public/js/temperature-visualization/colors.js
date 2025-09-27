@@ -2,7 +2,31 @@
 import * as state from './state.js'
 
 export function hexToRgb(hex) {
-  const bigint = parseInt(hex.slice(1), 16)
+  if (!hex || !/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    return null
+  }
+
+  let hexValue = hex.substring(1)
+
+  if (hexValue.length === 3) {
+    hexValue =
+      hexValue[0] +
+      hexValue[0] +
+      hexValue[1] +
+      hexValue[1] +
+      hexValue[2] +
+      hexValue[2]
+  }
+
+  if (hexValue.length !== 6) {
+    return null
+  }
+
+  const bigint = parseInt(hexValue, 16)
+  if (isNaN(bigint)) {
+    return null
+  }
+
   const r = (bigint >> 16) & 255
   const g = (bigint >> 8) & 255
   const b = bigint & 255
@@ -79,6 +103,11 @@ export function hslToRgb(h, s, l) {
 }
 
 export function rgbToHex(r, g, b) {
+  const clamp = (num) => Math.min(Math.max(num, 0), 255)
+  r = clamp(r)
+  g = clamp(g)
+  b = clamp(b)
+
   return (
     '#' +
     ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
