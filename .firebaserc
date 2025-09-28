@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "cartland-dev"
-  }
+    "default": "cartland-dev",
+    "staging": "cartland-dev-staging",
+    "production": "cartland-dev"
+  },
+  "targets": {},
+  "etags": {}
 }
