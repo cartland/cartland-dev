@@ -4,7 +4,7 @@ on:
 
 jobs:
   build_and_test:
-    name: Build and Test
+    name: Run CI Checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

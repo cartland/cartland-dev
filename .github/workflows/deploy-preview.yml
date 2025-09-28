@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/build-and-test.yml
 
   deploy_preview:
-    name: Deploy Preview
+    name: Deploy to Preview Channel
     needs: ci
     runs-on: ubuntu-latest
     steps:
