@@ -1,0 +1,18 @@
+name: Build and Test
+on:
+  workflow_call:
+
+jobs:
+  build_and_test:
+    name: Run CI Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run check:format
+      - run: npm run build
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-dist
+          path: public

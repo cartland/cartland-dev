@@ -1,0 +1,8 @@
+name: Manual CI
+on:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    name: Build and Test
+    uses: ./.github/workflows/build-and-test.yml
