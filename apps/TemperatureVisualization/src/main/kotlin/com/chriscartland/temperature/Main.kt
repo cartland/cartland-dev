@@ -27,6 +27,7 @@ fun main(args: Array<String>) {
     )
 
     val outputFile = File(cliArgs.outputPath)
+    outputFile.parentFile?.mkdirs()
     ImageIO.write(image, "PNG", outputFile)
     println("Image saved to: ${outputFile.absolutePath} (${image.width}x${image.height})")
 }
