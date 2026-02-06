@@ -62,9 +62,9 @@ def calculate_monthly_averages(csv_file_path, reference_baseline_path, start_yea
     }
 
 if __name__ == "__main__":
-    csv_path = "public/global-temperatures/1850-2024-Months-Anomaly-from-1901-2020.csv"
-    reference_baseline_path = "public/global-temperatures/baseline-1901-2020.json" # New reference
-    output_json_path = "public/global-temperatures/baseline-1850-1900.json"
+    csv_path = "public/global-temperatures/hadcrut-1901-2020.csv"
+    reference_baseline_path = "public/global-temperatures/base-1901-2020.json" # New reference
+    output_json_path = "public/global-temperatures/base-1850-1900.json"
     
     baseline_data = calculate_monthly_averages(csv_path, reference_baseline_path, 1850, 1900)
     
