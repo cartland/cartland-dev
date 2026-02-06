@@ -81,7 +81,7 @@ function updateSlidersFromHex(colorType) {
 }
 
 async function loadColorPreset(presetName) {
-  const filePath = `../../global-temperatures/temperature-${presetName}.json`
+  const filePath = `../../global-temperatures/colors-${presetName}.json`
   try {
     const response = await fetch(filePath)
     if (!response.ok) {
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .addEventListener('click', () => loadColorPreset('default'))
   document
     .getElementById('greyscale-colors-btn')
-    .addEventListener('click', () => loadColorPreset('greyscale'))
+    .addEventListener('click', () => loadColorPreset('grey'))
 
   document.getElementById('save-image-btn').addEventListener('click', () => {
     const visualizationContainer = document.getElementById('temp-visualization')

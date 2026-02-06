@@ -32,6 +32,6 @@ if __name__ == "__main__":
         sys.exit(1)
     
     n_months = int(sys.argv[1])
-    input_csv = 'public/global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv'
-    output_csv = f'public/global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-{n_months}-months.csv'
+    input_csv = 'public/global-temperatures/hadcrut-1850-1900.csv'
+    output_csv = f'public/global-temperatures/hadcrut-1850-1900-f{n_months}m.csv'
     calculate_n_month_average(input_csv, output_csv, n_months)

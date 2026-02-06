@@ -24,39 +24,39 @@ run() {
 }
 
 # --- Unfiltered: 1850-1900 baseline ---
-DATASET="1850-2024-Months-Anomaly-from-1850-1900"
-BASELINE="baseline-1850-1900"
-for COLORS in temperature-default temperature-greyscale; do
+DATASET="hadcrut-1850-1900"
+BASELINE="base-1850-1900"
+for COLORS in colors-default colors-grey; do
   run "$DATASET" "$BASELINE" "$COLORS" temperature  temperature
   run "$DATASET" "$BASELINE" "$COLORS" anomaly      anomaly
 done
 
 # --- Unfiltered: 1901-2020 baseline ---
-DATASET="1850-2024-Months-Anomaly-from-1901-2020"
-BASELINE="baseline-1901-2020"
-for COLORS in temperature-default temperature-greyscale; do
+DATASET="hadcrut-1901-2020"
+BASELINE="base-1901-2020"
+for COLORS in colors-default colors-grey; do
   run "$DATASET" "$BASELINE" "$COLORS" temperature  temperature
   run "$DATASET" "$BASELINE" "$COLORS" anomaly      anomaly
 done
 
 # --- Filtered: 3-month ---
-DATASET="1850-2024-Months-Anomaly-from-1850-1900-filter-3-months"
-BASELINE="baseline-1850-1900"
-for COLORS in temperature-default temperature-greyscale; do
+DATASET="hadcrut-1850-1900-f3m"
+BASELINE="base-1850-1900"
+for COLORS in colors-default colors-grey; do
   run "$DATASET" "$BASELINE" "$COLORS" filtered     filtered
 done
 
 # --- Filtered: 5-month ---
-DATASET="1850-2024-Months-Anomaly-from-1850-1900-filter-5-months"
-BASELINE="baseline-1850-1900"
-for COLORS in temperature-default temperature-greyscale; do
+DATASET="hadcrut-1850-1900-f5m"
+BASELINE="base-1850-1900"
+for COLORS in colors-default colors-grey; do
   run "$DATASET" "$BASELINE" "$COLORS" filtered-5-month filtered-5-month
 done
 
 # --- GISTEMP: 1951-1980 baseline ---
-DATASET="GISTEMP-1880-2025-Months-Anomaly-from-1951-1980"
-BASELINE="baseline-1951-1980"
-for COLORS in temperature-default temperature-greyscale; do
+DATASET="gistemp-1951-1980"
+BASELINE="base-1951-1980"
+for COLORS in colors-default colors-grey; do
   run "$DATASET" "$BASELINE" "$COLORS" temperature  temperature
   run "$DATASET" "$BASELINE" "$COLORS" anomaly      anomaly
 done

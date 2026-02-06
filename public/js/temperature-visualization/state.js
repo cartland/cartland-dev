@@ -2,13 +2,13 @@
 
 // Constants
 export const ORIGINAL_DATA_FILE_PATH =
-  '../../global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv'
+  '../../global-temperatures/hadcrut-1850-1900.csv'
 export const FILTERED_3_MONTH_DATA_FILE_PATH =
-  '../../global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-3-months.csv'
+  '../../global-temperatures/hadcrut-1850-1900-f3m.csv'
 export const FILTERED_5_MONTH_DATA_FILE_PATH =
-  '../../global-temperatures/1850-2024-Months-Anomaly-from-1850-1900-filter-5-months.csv'
+  '../../global-temperatures/hadcrut-1850-1900-f5m.csv'
 export const BASELINE_FILE_PATH =
-  '../../global-temperatures/baseline-1850-1900.json'
+  '../../global-temperatures/base-1850-1900.json'
 export const DEFAULT_LOW_COLOR_HEX = '#3300FF'
 export const DEFAULT_LOW_MID_COLOR_HEX = '#50A0C0'
 export const DEFAULT_MID_COLOR_HEX = '#FFFFFF'

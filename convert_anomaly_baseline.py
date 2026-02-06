@@ -55,9 +55,9 @@ def convert_anomalies(input_csv_path, baseline_1901_2020_path, baseline_1850_190
     print(f"Converted anomalies written to {output_csv_path}")
 
 if __name__ == "__main__":
-    input_csv = "public/global-temperatures/1850-2024-Months-Anomaly-from-1901-2020.csv"
-    baseline_1901_2020 = "public/global-temperatures/baseline-1901-2020.json"
-    baseline_1850_1900 = "public/global-temperatures/baseline-1850-1900.json"
-    output_csv = "public/global-temperatures/1850-2024-Months-Anomaly-from-1850-1900.csv"
+    input_csv = "public/global-temperatures/hadcrut-1901-2020.csv"
+    baseline_1901_2020 = "public/global-temperatures/base-1901-2020.json"
+    baseline_1850_1900 = "public/global-temperatures/base-1850-1900.json"
+    output_csv = "public/global-temperatures/hadcrut-1850-1900.csv"
     
     convert_anomalies(input_csv, baseline_1901_2020, baseline_1850_1900, output_csv)

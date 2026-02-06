@@ -3,7 +3,7 @@
 # Download NASA GISTEMP v4 global temperature data and convert it to the
 # Date,Anomaly CSV format used by TemperatureVisualization.
 #
-# Also computes baseline-1951-1980.json from HadCRUT data.
+# Also computes base-1951-1980.json from HadCRUT data.
 
 set -euo pipefail
 
@@ -13,8 +13,8 @@ DATA_DIR="$REPO_ROOT/public/global-temperatures"
 
 GISTEMP_URL="https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv"
 RAW_FILE="$DATA_DIR/gistemp-raw.csv"
-OUTPUT_CSV="$DATA_DIR/GISTEMP-1880-2025-Months-Anomaly-from-1951-1980.csv"
-BASELINE_JSON="$DATA_DIR/baseline-1951-1980.json"
+OUTPUT_CSV="$DATA_DIR/gistemp-1951-1980.csv"
+BASELINE_JSON="$DATA_DIR/base-1951-1980.json"
 
 # --- 1. Download raw GISTEMP CSV ---
 echo "Downloading GISTEMP v4 from $GISTEMP_URL ..."
@@ -44,11 +44,11 @@ BEGIN { print "Date,Anomaly" }
 rows=$(wc -l < "$OUTPUT_CSV" | tr -d ' ')
 echo "Wrote $OUTPUT_CSV ($rows lines including header)"
 
-# --- 3. Compute baseline-1951-1980.json from HadCRUT data ---
-echo "Computing baseline-1951-1980.json ..."
+# --- 3. Compute base-1951-1980.json from HadCRUT data ---
+echo "Computing base-1951-1980.json ..."
 
-HADCRUT_CSV="$DATA_DIR/1850-2024-Months-Anomaly-from-1850-1900.csv"
-BASELINE_1850="$DATA_DIR/baseline-1850-1900.json"
+HADCRUT_CSV="$DATA_DIR/hadcrut-1850-1900.csv"
+BASELINE_1850="$DATA_DIR/base-1850-1900.json"
 
 if [[ ! -f "$HADCRUT_CSV" ]]; then
   echo "ERROR: HadCRUT CSV not found at $HADCRUT_CSV" >&2
