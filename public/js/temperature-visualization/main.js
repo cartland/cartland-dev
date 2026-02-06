@@ -138,6 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document
     .getElementById('greyscale-colors-btn')
     .addEventListener('click', () => loadColorPreset('grey'))
+  document
+    .getElementById('inferno-colors-btn')
+    .addEventListener('click', () => loadColorPreset('inferno'))
 
   document.getElementById('save-image-btn').addEventListener('click', () => {
     const visualizationContainer = document.getElementById('temp-visualization')
