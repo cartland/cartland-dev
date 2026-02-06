@@ -1,0 +1,56 @@
+{
+  "basePeriod": "1951-1980",
+  "monthlyAverages": [
+    {
+      "month": "January",
+      "landAndOceanC": 11.35
+    },
+    {
+      "month": "February",
+      "landAndOceanC": 11.51
+    },
+    {
+      "month": "March",
+      "landAndOceanC": 12.05
+    },
+    {
+      "month": "April",
+      "landAndOceanC": 13.27
+    },
+    {
+      "month": "May",
+      "landAndOceanC": 14.23
+    },
+    {
+      "month": "June",
+      "landAndOceanC": 14.94
+    },
+    {
+      "month": "July",
+      "landAndOceanC": 15.14
+    },
+    {
+      "month": "August",
+      "landAndOceanC": 14.89
+    },
+    {
+      "month": "September",
+      "landAndOceanC": 14.32
+    },
+    {
+      "month": "October",
+      "landAndOceanC": 13.30
+    },
+    {
+      "month": "November",
+      "landAndOceanC": 12.27
+    },
+    {
+      "month": "December",
+      "landAndOceanC": 11.54
+    }
+  ],
+  "annualAverage": {
+    "landAndOceanC": 13.2
+  }
+}

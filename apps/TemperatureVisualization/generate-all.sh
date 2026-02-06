@@ -53,5 +53,13 @@ for COLORS in temperature-default temperature-greyscale; do
   run "$DATASET" "$BASELINE" "$COLORS" filtered-5-month filtered-5-month
 done
 
+# --- GISTEMP: 1951-1980 baseline ---
+DATASET="GISTEMP-1880-2025-Months-Anomaly-from-1951-1980"
+BASELINE="baseline-1951-1980"
+for COLORS in temperature-default temperature-greyscale; do
+  run "$DATASET" "$BASELINE" "$COLORS" temperature  temperature
+  run "$DATASET" "$BASELINE" "$COLORS" anomaly      anomaly
+done
+
 echo ""
 echo "Done. Generated $(find "$OUTPUT_DIR" -name '*.png' | wc -l | tr -d ' ') PNGs in $OUTPUT_DIR"
