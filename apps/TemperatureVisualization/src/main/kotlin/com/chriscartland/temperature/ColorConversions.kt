@@ -106,10 +106,7 @@ fun rgbToHex(r: Int, g: Int, b: Int): String {
     val gc = g.coerceIn(0, 255)
     val bc = b.coerceIn(0, 255)
 
-    return "#" + ((1 shl 24) + (rc shl 16) + (gc shl 8) + bc)
-        .toString(16)
-        .substring(1)
-        .uppercase()
+    return String.format("#%02X%02X%02X", rc, gc, bc)
 }
 
 fun hsvToHsl(h: Double, s: Double, v: Double): HslColorFloat {

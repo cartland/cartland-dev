@@ -14,19 +14,17 @@ fun parseCsv(filePath: String): List<TemperatureRecord> {
         !line.startsWith("#") && line.contains(",")
     }
 
-    val records = mutableListOf<TemperatureRecord>()
-    for (line in dataLines) {
+    return dataLines.mapNotNull { line ->
         val parts = line.split(",")
-        if (parts.size < 2) continue
+        if (parts.size < 2) return@mapNotNull null
         val dateStr = parts[0].trim()
         val anomalyStr = parts[1].trim()
 
-        if (dateStr.length < 6) continue
-        val year = dateStr.substring(0, 4).toIntOrNull() ?: continue
-        val month = dateStr.substring(4, 6).toIntOrNull() ?: continue
-        val anomaly = anomalyStr.toDoubleOrNull() ?: continue
+        if (dateStr.length < 6) return@mapNotNull null
+        val year = dateStr.substring(0, 4).toIntOrNull() ?: return@mapNotNull null
+        val month = dateStr.substring(4, 6).toIntOrNull() ?: return@mapNotNull null
+        val anomaly = anomalyStr.toDoubleOrNull() ?: return@mapNotNull null
 
-        records.add(TemperatureRecord(year, month, anomaly))
+        TemperatureRecord(year, month, anomaly)
     }
-    return records
 }

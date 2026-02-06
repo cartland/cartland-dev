@@ -18,6 +18,8 @@ fun renderGrid(
     baseWidth: Int,
     scale: Int,
 ): BufferedImage {
+    require(data.isNotEmpty()) { "Input data cannot be empty for rendering." }
+
     val dataToVisualize = if (mode == "temperature") {
         data.map { it.anomaly + (baseline.monthlyTemps[it.month] ?: 0.0) }
     } else {

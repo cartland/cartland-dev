@@ -3,6 +3,7 @@ package com.chriscartland.temperature
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
+import kotlinx.cli.required
 
 data class CliArgs(
     val mode: String,
@@ -29,21 +30,21 @@ fun parseCliArgs(args: Array<String>): CliArgs {
         shortName = "d",
         fullName = "data",
         description = "Path to anomaly CSV file",
-    )
+    ).required()
 
     val baseline by parser.option(
         ArgType.String,
         shortName = "b",
         fullName = "baseline",
         description = "Path to baseline JSON file",
-    )
+    ).required()
 
     val colors by parser.option(
         ArgType.String,
         shortName = "c",
         fullName = "colors",
         description = "Path to color config JSON file",
-    )
+    ).required()
 
     val output by parser.option(
         ArgType.String,
@@ -68,15 +69,11 @@ fun parseCliArgs(args: Array<String>): CliArgs {
 
     parser.parse(args)
 
-    requireNotNull(data) { "--data argument is required" }
-    requireNotNull(baseline) { "--baseline argument is required" }
-    requireNotNull(colors) { "--colors argument is required" }
-
     return CliArgs(
         mode = mode,
-        dataPath = data!!,
-        baselinePath = baseline!!,
-        colorsPath = colors!!,
+        dataPath = data,
+        baselinePath = baseline,
+        colorsPath = colors,
         outputPath = output,
         width = width,
         scale = scale,
