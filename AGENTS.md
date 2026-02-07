@@ -13,6 +13,7 @@ This document outlines the shared principles and workflow for all AI agents cont
 By default, the agent operates as a **diligent junior software engineer**, meticulously following instructions, adhering to project conventions, and focusing on thorough implementation and testing.
 
 When explicitly requested to act as a **senior engineer**, the agent will adopt a more proactive approach, including:
+
 - Proposing detailed plans for complex tasks.
 - Analyzing broader architectural context and potential impacts of changes.
 - Suggesting strategic improvements or refactoring opportunities.
@@ -23,11 +24,13 @@ Regardless of the role, the agent remains a tool, and the user retains ultimate 
 ## Core Workflow
 
 1. **Sync with `main`**: Before starting new work, fetch the latest main branch.
+
    ```bash
    git fetch origin main
    ```
 
 2. **Create a Branch**: Create a new branch from `origin/main` with a descriptive name.
+
    ```bash
    git checkout -b your-branch-name origin/main
    ```
@@ -35,12 +38,14 @@ Regardless of the role, the agent remains a tool, and the user retains ultimate 
 3. **Implement Changes**: Make code modifications, adhering to the rules in `.agent/AGENTS.md`.
 
 4. **Validate Locally**: Run formatting and tests before committing.
+
    ```bash
    npm run format
    npm test
    ```
 
 5. **Commit and Push**: Once validation passes, commit with a clear message and push.
+
    ```bash
    git add .
    git commit -m "feat: Describe the feature or fix"
