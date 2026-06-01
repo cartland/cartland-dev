@@ -6,16 +6,16 @@
 
 ## 1. Pages & Routes
 
-| Route                          | Source File                                  | Purpose                                                    |
-| ------------------------------ | -------------------------------------------- | ---------------------------------------------------------- |
-| `/`                            | `public/index.html`                          | Home/about page — bio, hero image, social links            |
-| `/projects`                    | `public/projects.html`                       | Portfolio — 19 project cards in 3-col grid, table of contents |
-| `/temperature-visualization`   | `public/temperature-visualization.html`      | Interactive temperature grid visualization                 |
-| `/utility-vs-solar-battery`    | `public/utility-vs-solar-battery.html`       | Solar vs utility cost calculator                           |
-| `/battery-butler-privacy-policy` | `public/battery-butler-privacy-policy.html` | Battery Butler app privacy policy                          |
-| `/garage-privacy-policy`       | `public/garage-privacy-policy.html`          | Garage app privacy policy                                  |
-| `/404`                         | `public/404.html`                            | Custom error page with home link                           |
-| `/playground/*`                | `public/playground/*.html`                   | 3 layout test pages (hero, card-layout, paragraph-image)   |
+| Route                            | Source File                                 | Purpose                                                       |
+| -------------------------------- | ------------------------------------------- | ------------------------------------------------------------- |
+| `/`                              | `public/index.html`                         | Home/about page — bio, hero image, social links               |
+| `/projects`                      | `public/projects.html`                      | Portfolio — 19 project cards in 3-col grid, table of contents |
+| `/temperature-visualization`     | `public/temperature-visualization.html`     | Interactive temperature grid visualization                    |
+| `/utility-vs-solar-battery`      | `public/utility-vs-solar-battery.html`      | Solar vs utility cost calculator                              |
+| `/battery-butler-privacy-policy` | `public/battery-butler-privacy-policy.html` | Battery Butler app privacy policy                             |
+| `/garage-privacy-policy`         | `public/garage-privacy-policy.html`         | Garage app privacy policy                                     |
+| `/404`                           | `public/404.html`                           | Custom error page with home link                              |
+| `/playground/*`                  | `public/playground/*.html`                  | 3 layout test pages (hero, card-layout, paragraph-image)      |
 
 Firebase config: `cleanUrls: true`, rewrites for `/` and `/projects`.
 
