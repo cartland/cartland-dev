@@ -1,7 +1,15 @@
 #!/bin/bash
 
-# Run the link checker and capture the output
-output=$(blc http://localhost:8080 -ro --filter-level 2 --rate-limit 1000 --exclude "https://github.com/cartland/cartland-dev/pull/new/feature/add-linting-and-ci-checks" --exclude "https://www.threads.net/@cartland" --exclude "https://fonts.googleapis.com/" --exclude "https://fonts.gstatic.com/" --exclude "https://x.com/LandOfCart" --exclude "https://cartland.medium.com/" --exclude "https://engineering.pandora.com/" --exclude "https://www.linkedin.com/")
+# Run the link checker and capture the output.
+#
+# --exclude-external: only internal links/assets gate the build. External
+# link liveness is intentionally NOT a merge gate: sites like LinkedIn
+# (HTTP 999), NYTimes/Wirecutter (503), Medium, X and Threads return
+# anti-bot responses to the checker from GitHub Actions datacenter IPs even
+# though the links resolve fine in browsers, which made the deploy flaky.
+# Internal checking still catches the regressions a refactor can introduce
+# (broken page links, missing images/assets, bad rewrites).
+output=$(blc http://localhost:8080 -ro --exclude-external --filter-level 2 --rate-limit 1000)
 
 # Grep for broken links and deduplicate
 broken_links=$(echo "$output" | grep "BROKEN" | sort | uniq)
