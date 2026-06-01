@@ -8,7 +8,10 @@ export default defineConfig({
   base: '/v2/',
   cleanUrls: true,
   deadLinks: 'fail',
-  appearance: 'dark',
+  // Lock dark mode and hide the light/dark toggle: the site has no light
+  // theme (the :root and .dark color sets are identical), so the toggle is a
+  // no-op. 'force-dark' keeps dark mode and removes the switch from the nav.
+  appearance: 'force-dark',
 
   head: [
     ['link', { rel: 'icon', href: '/v2/favicon.ico', type: 'image/x-icon' }],
