@@ -15,16 +15,6 @@ import { projects } from '../data/projects'
       </p>
     </div>
 
-    <nav class="toc-container" aria-label="Table of contents">
-      <a
-        v-for="project in projects"
-        :key="project.id"
-        :href="`#${project.id}`"
-        class="toc"
-        >{{ project.title }}</a
-      >
-    </nav>
-
     <div class="project-grid">
       <ProjectCard
         v-for="project in projects"
@@ -48,31 +38,17 @@ import { projects } from '../data/projects'
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
-  gap: 0;
+  gap: 24px;
 }
 
 .section-header {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
-.toc-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.toc {
-  padding-left: 16px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  break-inside: avoid;
-  text-decoration: none;
-  color: var(--vp-c-text-2);
-}
-
-.toc:hover {
-  text-decoration: underline;
+@media (max-width: 900px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {

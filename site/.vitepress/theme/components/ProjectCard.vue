@@ -37,10 +37,15 @@ const props = defineProps<{
 .card {
   width: 100%;
   box-sizing: border-box;
+  display: flex;
   flex-direction: column;
-  margin-bottom: 32px;
   transition: background-color 0.3s ease;
   padding: 16px;
+  border-radius: 24px;
+}
+
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .card:target {
