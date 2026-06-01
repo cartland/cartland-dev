@@ -33,8 +33,13 @@ export default defineConfig({
   ],
 
   themeConfig: {
-    logo: '/i/ChristopherCartlandLogo.jpg',
-    siteTitle: 'Christopher Cartland',
+    // Logo carries the name via alt text for screen readers; the visible
+    // text label is redundant for sighted users who can see the logo.
+    logo: {
+      src: '/i/ChristopherCartlandLogo.jpg',
+      alt: 'Christopher Cartland',
+    },
+    siteTitle: false,
 
     nav: [
       { text: 'About', link: '/' },

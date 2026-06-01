@@ -22,6 +22,11 @@
   --vp-c-default-2: rgba(255, 255, 255, 0.2);
   --vp-c-default-3: rgba(255, 255, 255, 0.1);
   --vp-c-default-soft: rgba(255, 255, 255, 0.05);
+
+  /* Shared content column. The nav bar's inner container is
+     calc(--vp-layout-max-width - 64px); constraining the page content to the
+     same box (below) keeps the header, content, and footer aligned. */
+  --vp-layout-max-width: 1024px;
 }
 
 .dark {
@@ -42,6 +47,24 @@
 
 .VPDoc {
   padding: 0 !important;
+}
+
+/* Constrain page content to the same centered column as the nav bar so the
+   header, content, and footer share consistent margins and alignment. */
+.VPPage {
+  max-width: var(--vp-layout-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .VPPage {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 /* Nav logo styling */
