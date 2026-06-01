@@ -144,6 +144,7 @@ import { withBase } from 'vitepress'
   margin-top: 8px;
   margin-bottom: 8px;
   font-size: 3em;
+  line-height: 1.2;
   border: none;
 }
 
@@ -267,6 +268,11 @@ import { withBase } from 'vitepress'
 
   .hero-text {
     width: 100%;
+    min-height: 0;
+  }
+
+  .hero-text h1 {
+    font-size: 2.2em;
   }
 
   .hero-img {
