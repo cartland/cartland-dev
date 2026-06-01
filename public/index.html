@@ -23,11 +23,11 @@
 
       /* Root Variables */
       :root {
-        --color: #ffffff;
-        --color-link: #cccccc;
+        --color: #fff;
+        --color-link: #ccc;
         --background-color: #130830;
-        --background-color-overlay: rgba(0, 0, 0, 0.5);
-        --color-overlay: #000000;
+        --background-color-overlay: rgb(0 0 0 / 50%);
+        --color-overlay: #000;
       }
 
       /* Skip Link */
@@ -49,7 +49,7 @@
       /* Base Styles */
       body {
         background-color: var(--background-color);
-        font-family: 'Roboto', sans-serif;
+        font-family: Roboto, sans-serif;
         font-size: 0.9em;
         color: var(--color);
         margin: 0;
@@ -100,8 +100,8 @@
         height: 100%;
         background: linear-gradient(
           to bottom,
-          rgba(0, 0, 0, 0),
-          rgba(0, 0, 0, 0.5)
+          rgb(0 0 0 / 0%),
+          rgb(0 0 0 / 50%)
         );
         z-index: 1;
       }
@@ -202,6 +202,7 @@
 
       .menu-button-container {
         --menu-icon-size: 36px;
+
         width: var(--menu-icon-size);
         height: var(--menu-icon-size);
         cursor: pointer;
@@ -272,7 +273,7 @@
       .overlay .nav-links {
         display: flex;
         flex-direction: column;
-        gap: 0px;
+        gap: 0;
       }
 
       .overlay .nav-links a {
@@ -355,10 +356,9 @@
       .social-items-row {
         width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-flow: row wrap;
         justify-content: center;
         gap: 16px;
-        flex-wrap: wrap;
       }
 
       .social-item {
@@ -377,7 +377,7 @@
       }
 
       .social-item p {
-        margin: 2px 0 0 0;
+        margin: 2px 0 0;
       }
 
       .spacer {
@@ -405,7 +405,7 @@
       }
 
       /* Responsive Design */
-      @media (max-width: 600px) {
+      @media (width <= 600px) {
         .nav-links {
           display: none;
         }

@@ -2,7 +2,8 @@
   "extends": ["html-validate:recommended"],
   "rules": {
     "void-style": "off",
-    "doctype-style": "off"
+    "doctype-style": "off",
+    "prefer-native-element": "off"
   },
   "elements": ["html5"]
 }

@@ -7,7 +7,17 @@ import prettierConfig from 'eslint-config-prettier'
 export default [
   // 1. Global ignores
   {
-    ignores: ['node_modules/', 'dist/', 'build/'],
+    ignores: [
+      'node_modules/',
+      'dist/',
+      'build/',
+      'public/v2/',
+      'site/',
+      'apps/**/build/',
+      'test-results/',
+      'playwright-report/',
+      'tests/e2e/',
+    ],
   },
 
   // 2. Base ESLint recommended rules

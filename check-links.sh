@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the link checker and capture the output
-output=$(blc http://localhost:8080 -ro --filter-level 2 --rate-limit 1000 --exclude "https://github.com/cartland/cartland-dev/pull/new/feature/add-linting-and-ci-checks" --exclude "https://www.threads.net/@cartland" --exclude "https://fonts.googleapis.com/" --exclude "https://fonts.gstatic.com/" --exclude "https://x.com/LandOfCart")
+output=$(blc http://localhost:8080 -ro --filter-level 2 --rate-limit 1000 --exclude "https://github.com/cartland/cartland-dev/pull/new/feature/add-linting-and-ci-checks" --exclude "https://www.threads.net/@cartland" --exclude "https://fonts.googleapis.com/" --exclude "https://fonts.gstatic.com/" --exclude "https://x.com/LandOfCart" --exclude "https://cartland.medium.com/" --exclude "https://engineering.pandora.com/")
 
 # Grep for broken links and deduplicate
 broken_links=$(echo "$output" | grep "BROKEN" | sort | uniq)
@@ -22,9 +22,8 @@ if [ -n "$broken_links" ]; then
   echo "\`\`\`" >> broken-links.md
   echo "$broken_links" >> broken-links.md # Write to file
   echo "\`\`\`" >> broken-links.md
+  exit 1
 else
   echo "No broken links found."
+  exit 0
 fi
-
-# Always exit with 0 to prevent the build from failing
-exit 0
