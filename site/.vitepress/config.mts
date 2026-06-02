@@ -1,11 +1,17 @@
 import { defineConfig } from 'vitepress'
 
+// Single source of truth for the deploy base. Used for `base` and to build
+// canonical URLs; changing it here (e.g. to '/' at cutover) keeps canonicals
+// correct automatically.
+const BASE = '/v2/'
+const SITE_ORIGIN = 'https://chriscart.land'
+
 export default defineConfig({
   title: 'Christopher Cartland',
   description:
     'Software Engineer specializing in Android, Mobile, Embedded, and Serverless technologies',
   outDir: '../public/v2',
-  base: '/v2/',
+  base: BASE,
   cleanUrls: true,
   deadLinks: 'fail',
   // Lock dark mode and hide the light/dark toggle: the site has no light
@@ -13,10 +19,25 @@ export default defineConfig({
   // no-op. 'force-dark' keeps dark mode and removes the switch from the nav.
   appearance: 'force-dark',
 
+  // Emit a self-referential canonical URL for every page (parity with the
+  // legacy site, which set canonicals). Derived from BASE so it stays correct
+  // through the eventual cutover to '/'.
+  transformPageData(pageData) {
+    const path = (BASE + pageData.relativePath)
+      .replace(/index\.md$/, '')
+      .replace(/\.md$/, '')
+      .replace(/\/{2,}/g, '/')
+    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head.push([
+      'link',
+      { rel: 'canonical', href: SITE_ORIGIN + path },
+    ])
+  },
+
   head: [
     ['link', { rel: 'icon', href: '/v2/favicon.ico', type: 'image/x-icon' }],
     ['link', { rel: 'manifest', href: '/v2/manifest.json' }],
-    ['meta', { name: 'theme-color', content: '#130830' }],
+    ['meta', { name: 'theme-color', content: '#263551' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     [
       'link',

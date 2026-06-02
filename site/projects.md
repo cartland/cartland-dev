@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Projects - Christopher Cartland
+title: Projects
 description: Projects by Christopher Cartland - Android development, sustainable technology, and interactive art
 ---
 
