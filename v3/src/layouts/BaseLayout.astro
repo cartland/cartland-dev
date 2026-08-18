@@ -1,0 +1,71 @@
+---
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import { SITE_ORIGIN, SITE_TITLE, canonicalFor } from '../lib/site.js'
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+  /** Root-level slug for the canonical URL, e.g. '' or 'projects'. */
+  slug?: string
+  /** Nav item to mark as the current page. */
+  activeNav?: 'about' | 'projects'
+  /** Root-absolute path of the social-share image. */
+  ogImage?: string
+}
+
+const {
+  title,
+  description,
+  slug = '',
+  activeNav,
+  ogImage = '/i/ChrisCartlandWebsite.jpg',
+} = Astro.props
+
+const canonical = canonicalFor(slug)
+const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#263551" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={SITE_ORIGIN + ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <SiteHeader activeNav={activeNav} />
+    <main id="main-content" class="container">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  main {
+    padding-block: 40px 72px;
+    min-height: 60vh;
+  }
+</style>

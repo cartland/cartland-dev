@@ -1,0 +1,266 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_ORIGIN,
+  withBase,
+} from '../lib/site.js'
+
+const personJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Christopher Cartland',
+  url: SITE_ORIGIN,
+  jobTitle: 'Software Engineer',
+  sameAs: [
+    'https://www.linkedin.com/in/cartland',
+    'https://github.com/cartland',
+    'https://x.com/LandOfCart',
+    'https://www.threads.net/@LandOfCart',
+  ],
+})
+
+const socialItems = [
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/cartland',
+    image: '/i/LinkedIn.jpg',
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/cartland',
+    image: '/i/GitHub.jpg',
+  },
+  { label: 'X', href: 'https://x.com/LandOfCart', image: '/i/X.jpg' },
+  {
+    label: 'Threads',
+    href: 'https://www.threads.net/@LandOfCart',
+    image: '/i/Threads.jpg',
+  },
+]
+---
+
+<BaseLayout
+  title={SITE_TITLE}
+  description={SITE_DESCRIPTION}
+  slug=""
+  activeNav="about"
+>
+  <script type="application/ld+json" set:html={personJsonLd} slot="head" />
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Software Engineer and Tech&nbsp;Maker</h1>
+      <p class="subtitle">Mobile · Android · Embedded · Serverless</p>
+      <div class="hero-actions">
+        <a class="button primary" href={withBase('projects')}>View Projects</a>
+        <a
+          class="button"
+          href="https://www.linkedin.com/in/cartland"
+          target="_blank"
+          rel="noopener noreferrer">LinkedIn</a
+        >
+      </div>
+    </div>
+    <img
+      class="hero-image"
+      src="/i/GoldenGateBridge.jpg"
+      alt="Golden Gate Bridge"
+      width="1024"
+      height="683"
+      fetchpriority="high"
+    />
+  </section>
+
+  <section class="intro">
+    <p>
+      As an engineer with 12 years of experience with Developer Relations at
+      Google, I've built software for Android mobile devices, serverless
+      applications, and internet-connected cars and TVs. My focus has been on
+      developer APIs that enable professionals to create innovative Android
+      experiences.
+    </p>
+    <p>
+      Beyond my work at Google, I'm driven by a passion for sustainable
+      technology. In college, I led a team that built a solar-powered car for
+      the World Solar Challenge, where we raced a street-legal vehicle across
+      Australia.
+    </p>
+    <p>
+      I continue to explore my passion for software by building projects in my
+      free time, such as interactive art, and a smart garage door with
+      Internet-connected microcontrollers and a companion Android app.
+    </p>
+    <p>
+      Learn more about some of my <a href={withBase('projects')}>Projects</a>.
+    </p>
+  </section>
+
+  <figure class="feature">
+    <img
+      src="/i/CalSolFirstPlaceFormulaSun2017.jpg"
+      alt="CalSol solar car crossing the finish line"
+      width="1400"
+      height="933"
+      loading="lazy"
+    />
+    <figcaption>
+      CalSol crossing the finish line for first place at Formula Sun Grand Prix
+      2017
+    </figcaption>
+  </figure>
+
+  <section class="social">
+    <h2>Find me on the Internet</h2>
+    <ul class="social-row">
+      {
+        socialItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visit Christopher Cartland's ${item.label} profile`}
+            >
+              <span class="social-tile">
+                <img
+                  src={item.image}
+                  alt=""
+                  width="240"
+                  height="240"
+                  loading="lazy"
+                />
+              </span>
+              <span class="social-label">{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 40px;
+    padding-block: 24px 48px;
+  }
+
+  .hero-text h1 {
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    color: var(--color-text-2);
+    font-size: var(--text-lg);
+    margin-bottom: 28px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-l);
+  }
+
+  .intro {
+    max-width: 72ch;
+  }
+
+  .feature {
+    margin: var(--section-gap) 0;
+  }
+
+  .feature img {
+    width: 100%;
+    border-radius: var(--radius-l);
+  }
+
+  .feature figcaption {
+    margin-top: 10px;
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-3);
+  }
+
+  .social {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .social h2 {
+    margin-bottom: 24px;
+  }
+
+  .social-row {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .social-row a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-2);
+    text-decoration: none;
+  }
+
+  .social-row a:hover {
+    color: var(--color-text-1);
+  }
+
+  .social-tile {
+    display: block;
+    position: relative;
+    width: 64px;
+    border-radius: var(--radius-m);
+    overflow: hidden;
+  }
+
+  .social-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0%), rgb(0 0 0 / 35%));
+  }
+
+  .social-tile img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .social-label {
+    font-size: var(--text-sm);
+  }
+
+  @media (width <= 720px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding-block: 8px 40px;
+    }
+
+    .hero-image {
+      order: -1;
+      aspect-ratio: 3 / 2;
+    }
+  }
+</style>

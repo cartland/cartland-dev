@@ -3,5 +3,7 @@ build
 dist
 node_modules
 public/v2
+public/v3
+v3/.astro
 test-results
 playwright-report

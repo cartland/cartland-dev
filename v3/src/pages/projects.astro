@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import { projects } from '../data/projects'
+---
+
+<BaseLayout
+  title="Projects"
+  description="Projects by Christopher Cartland - Android development, sustainable technology, and interactive art"
+  slug="projects"
+  activeNav="projects"
+>
+  <header class="page-header">
+    <h1>Projects</h1>
+    <p>
+      A selection of work from Developer Relations at Google, sustainable
+      technology, and interactive art — from platform launches reaching millions
+      of devices to weekend builds with microcontrollers.
+    </p>
+  </header>
+
+  <div class="project-grid">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    max-width: 72ch;
+    margin-bottom: 40px;
+  }
+
+  .page-header p {
+    color: var(--color-text-2);
+    font-size: var(--text-lg);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+</style>

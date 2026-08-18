@@ -1,0 +1,387 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const generalInputs = [
+  {
+    id: 'duration',
+    label: 'Analysis Duration (Years)',
+    help: 'Length of the cost comparison.',
+    value: 30,
+  },
+  {
+    id: 'opportunityCostRate',
+    label: 'Investment Opportunity Cost (%)',
+    help: 'Expected return if you invested the money instead.',
+    value: 4,
+  },
+]
+
+const utilityInputs = [
+  {
+    id: 'initialUtilityCost',
+    label: 'Current Annual Utility Bill ($)',
+    help: 'Your total electricity cost for the last 12 months.',
+    value: 2400,
+  },
+  {
+    id: 'utilityCostIncrease',
+    label: 'Annual Cost Increase (%)',
+    help: 'The average yearly rate increase from your utility.',
+    value: 2,
+  },
+]
+
+const solarInputs = [
+  {
+    id: 'solarCostBase',
+    label: 'Upfront Solar System Cost ($)',
+    help: 'Initial cost to purchase and install solar panels.',
+    note: 'Cost is estimated based on your annual utility bill.',
+    value: 10200,
+  },
+  {
+    id: 'solarLife',
+    label: 'Solar System Lifespan (Years)',
+    help: 'How long the solar panels are expected to last.',
+    value: 30,
+  },
+  {
+    id: 'batteryCostBase',
+    label: 'Battery Cost ($)',
+    help: 'Initial cost to purchase and install a home battery.',
+    note: 'Cost is estimated based on your annual utility bill.',
+    value: 14500,
+  },
+  {
+    id: 'batteryLife',
+    label: 'Battery Lifespan (Years)',
+    help: 'How long the battery is expected to last before replacement.',
+    value: 10,
+  },
+  {
+    id: 'batteryCostDecrease',
+    label: 'Battery Cost Decrease per 10 years (%)',
+    labelId: 'battery-decrease-label',
+    help: 'Projected price drop for batteries at each replacement.',
+    value: 30,
+  },
+  {
+    id: 'unavoidableUtilityPercent',
+    label: 'Ongoing Grid Connection Fee (%)',
+    help: 'Percentage of utility bill for grid access, even with solar.',
+    value: 20,
+  },
+]
+
+const inputGroups = [
+  { key: 'general', title: 'General', inputs: generalInputs },
+  { key: 'utility', title: 'Utility Settings', inputs: utilityInputs },
+  { key: 'solar', title: 'Solar + Battery Settings', inputs: solarInputs },
+]
+---
+
+<BaseLayout
+  title="Utility vs. Solar + Battery"
+  description="Interactive calculator to compare long-term costs of utility power vs solar and battery system"
+  slug="utility-vs-solar-battery"
+  ogImage="/i/solar-battery-cost.png"
+>
+  <header class="page-header">
+    <h1 class="gradient-title">Utility vs. Solar + Battery: A Cost Analysis</h1>
+    <p>An interactive calculator to compare the long-term costs</p>
+  </header>
+
+  <div class="calc-main">
+    <section class="panel chart-panel" aria-label="Annual cost comparison">
+      <h2>Annual Cost Comparison</h2>
+      <div class="chart-wrapper">
+        <canvas
+          id="solar-chart"
+          role="img"
+          aria-label="Annual cost comparison chart"></canvas>
+      </div>
+    </section>
+
+    <section class="panel summary-panel" aria-label="Cost summary">
+      <h2>Cost Summary &amp; Assumptions</h2>
+      <div class="summary-item">
+        <p class="label utility-color">Total Utility Cost</p>
+        <p class="value utility-color" id="total-utility"></p>
+        <p class="breakdown" id="total-utility-breakdown"></p>
+      </div>
+      <div class="summary-item">
+        <p class="label solar-color">Total Solar + Battery Cost</p>
+        <p class="value solar-color" id="total-solar"></p>
+        <p class="breakdown" id="total-solar-breakdown"></p>
+      </div>
+      <div class="savings-section">
+        <p class="assumptions" id="assumptions-text"></p>
+        <p class="savings-label" id="savings-label"></p>
+        <p class="savings-value" id="savings-value"></p>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel inputs-section" aria-label="Financial assumptions">
+    <h2>Financial Assumptions</h2>
+    <div class="inputs-grid">
+      {
+        inputGroups.map((group) => (
+          <div class:list={['input-group', group.key]}>
+            <h3>{group.title}</h3>
+            {group.inputs.map((field) => (
+              <div class="input-field">
+                <label for={field.id} id={field.labelId}>
+                  {field.label}
+                </label>
+                <small>{field.help}</small>
+                <input type="number" id={field.id} value={field.value} />
+                {field.note && <small class="note">{field.note}</small>}
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="action-buttons">
+      <button type="button" id="share-btn" class="button primary">Share</button>
+      <button type="button" id="restore-defaults-btn" class="button">
+        Restore Defaults
+      </button>
+    </div>
+
+    <div id="shareable-link-container" class="shareable-link-container" hidden>
+      <label for="shareable-link">Shareable Link:</label>
+      <input type="text" id="shareable-link" readonly />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initSolarCalculator } from '../scripts/solar/calculator.js'
+  initSolarCalculator()
+</script>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .gradient-title {
+    background: linear-gradient(to right, #34d399, #3b82f6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .page-header p {
+    color: var(--color-text-3);
+    font-size: var(--text-lg);
+  }
+
+  .panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-m);
+    padding: 24px;
+  }
+
+  .panel h2 {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .calc-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .chart-wrapper {
+    width: 100%;
+    height: 400px;
+  }
+
+  .summary-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .summary-item {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .label {
+    font-size: var(--text-lg);
+    margin-bottom: 4px;
+  }
+
+  .value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 4px 0;
+  }
+
+  .utility-color {
+    color: #a5b4fc;
+  }
+
+  .solar-color {
+    color: #34d399;
+  }
+
+  .breakdown {
+    font-size: var(--text-sm);
+    color: var(--color-text-3);
+  }
+
+  .savings-section {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border-soft);
+    text-align: center;
+  }
+
+  .assumptions {
+    font-size: 0.8rem;
+    color: var(--color-text-3);
+    margin-bottom: 16px;
+  }
+
+  .savings-label {
+    font-size: var(--text-lg);
+    margin-bottom: 0;
+  }
+
+  .savings-value {
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin: 4px 0;
+  }
+
+  .savings-label:global(.positive),
+  .savings-value:global(.positive) {
+    color: #22d3ee;
+  }
+
+  .savings-label:global(.negative),
+  .savings-value:global(.negative) {
+    color: #f87171;
+  }
+
+  .inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .input-group {
+    padding: 16px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-s);
+  }
+
+  .input-group h3 {
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--color-border-soft);
+    text-align: left;
+  }
+
+  .input-group.general h3 {
+    color: #22d3ee;
+  }
+
+  .input-group.utility h3 {
+    color: #a5b4fc;
+  }
+
+  .input-group.solar h3 {
+    color: #34d399;
+  }
+
+  .input-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .input-field label {
+    color: var(--color-text-2);
+    margin-bottom: 2px;
+  }
+
+  .input-field small {
+    color: var(--color-text-3);
+    margin-bottom: 8px;
+  }
+
+  .input-field small.note {
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+
+  .input-field input {
+    background-color: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-s);
+    padding: 8px 10px;
+    color: var(--color-text-1);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+  }
+
+  .input-field input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  .action-buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .shareable-link-container {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .shareable-link-container label {
+    display: block;
+    color: var(--color-text-3);
+    font-size: var(--text-sm);
+    margin-bottom: 4px;
+  }
+
+  .shareable-link-container input {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-s);
+    padding: 8px;
+    text-align: center;
+    color: var(--color-text-2);
+  }
+
+  @media (width <= 900px) {
+    .calc-main {
+      grid-template-columns: 1fr;
+    }
+
+    .inputs-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .chart-wrapper {
+      height: 320px;
+    }
+  }
+</style>

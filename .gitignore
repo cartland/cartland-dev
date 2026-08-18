@@ -75,6 +75,10 @@ node_modules/
 site/.vitepress/cache/
 site/.vitepress/dist/
 
+# Astro (v3)
+/public/v3/
+v3/.astro/
+
 # Playwright
 /test-results/
 /playwright-report/

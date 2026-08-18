@@ -21,19 +21,33 @@ The project is organized into a few key directories:
 ```
 .
 ├── public/                # All static files served by Firebase
-│   ├── js/                # JavaScript modules
-│   │   └── temperature-visualization/ # Refactored JS for the temp viz
-│   ├── index.html        # Home page
-│   ├── projects.html     # Projects page
-│   └── ...               # Other HTML, images, and assets
-├── .github/               # GitHub Actions workflows
-│   └── workflows/
-│       └── ci.yml        # Continuous Integration checks
-│       └── firebase-hosting-merge.yml # Production deployment
+│   ├── i/                 # Shared images (used by every site version)
+│   ├── global-temperatures/ # Shared datasets for the temperature viz
+│   ├── index.html         # v1 home page (live root site)
+│   ├── projects.html      # v1 projects page
+│   ├── v2/                # BUILD OUTPUT of site/ (gitignored)
+│   └── v3/                # BUILD OUTPUT of v3/ (gitignored)
+├── site/                  # v2 source: VitePress site, builds to public/v2
+├── v3/                    # v3 source: Astro site, builds to public/v3
+│   ├── astro.config.mjs
+│   └── src/               # layouts, components, pages, styles, scripts
+├── tests/                 # Jest unit tests (tests/) and Playwright e2e (tests/e2e/)
+├── .github/workflows/     # CI + Firebase Hosting deployment
 ├── eslint.config.js       # ESLint v9 flat configuration
 ├── .prettierrc.json       # Prettier formatting rules
 └── firebase.json          # Firebase Hosting configuration
 ```
+
+### Site versions
+
+- **v1 (root)**: the live site — hand-written HTML in `public/`.
+- **v2 (`/v2/`)**: VitePress migration experiment, source in `site/`.
+- **v3 (`/v3/`)**: Astro rebuild — shared layout/components, design tokens,
+  zero client JS except the interactive pages, canonical URLs pointing at the
+  root paths. Built with `npm run build:v3`; developed with `npm run dev:v3`.
+  v3 references shared assets (`/i/`, `/global-temperatures/`) at the hosting
+  root instead of duplicating them. At cutover, change `base` in
+  `v3/astro.config.mjs` to `/`.
 
 A significant part of this project was refactoring the `temperature-visualization.html` page from inline scripts into modern, modular JavaScript files located in `public/js/temperature-visualization/`. This makes the code more maintainable, testable, and easier for static analysis tools to understand.
 

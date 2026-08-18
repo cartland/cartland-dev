@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const modes = [
+  { key: 'temperature', label: 'Temperature' },
+  { key: 'anomaly', label: 'Anomaly' },
+  { key: 'filtered', label: 'Anomaly (3-Month Average)' },
+  { key: 'filtered-5-month', label: 'Anomaly (5-Month Average)' },
+]
+
+const presets = [
+  { key: 'default', label: 'Default Colors' },
+  { key: 'grey', label: 'Greyscale Colors' },
+  { key: 'inferno', label: 'Inferno Colors' },
+]
+
+const colorTypes = [
+  { key: 'low', label: 'Low' },
+  { key: 'lowMid', label: 'Low-Mid' },
+  { key: 'mid', label: 'Mid' },
+  { key: 'highMid', label: 'High-Mid' },
+  { key: 'high', label: 'High' },
+]
+
+const sliders = [
+  { key: 'hue', label: 'Hue', max: 360 },
+  { key: 'saturation', label: 'Saturation', max: 100 },
+  { key: 'value', label: 'Value', max: 100 },
+]
+---
+
+<BaseLayout
+  title="Global Temperature Visualization"
+  description="Interactive visualization of global surface temperatures from 1850 to present"
+  slug="temperature-visualization"
+  ogImage="/i/Temperature.png"
+>
+  <header class="page-header">
+    <h1>Global Temperature Visualization</h1>
+    <p>
+      Monthly global surface temperatures from 1850 to the present. Each column
+      is a year and each row is a month; switch modes to compare absolute
+      temperatures with anomalies relative to the 1850–1900 baseline.
+    </p>
+  </header>
+
+  <div class="mode-bar" role="group" aria-label="Display mode">
+    {
+      modes.map((mode, index) => (
+        <button
+          type="button"
+          data-mode={mode.key}
+          class:list={['toggle', { active: index === 0 }]}
+        >
+          {mode.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div
+    id="temp-visualization"
+    class="viz-grid"
+    role="img"
+    aria-label="Grid of monthly global temperatures by year, colored from cold to hot"
+  >
+  </div>
+  <p id="description-text" class="viz-description" aria-live="polite"></p>
+
+  <div class="action-bar">
+    <button type="button" id="save-image-btn" class="button">
+      Download Image
+    </button>
+    <button type="button" id="download-colors-btn" class="button">
+      Download Colors
+    </button>
+    <button type="button" id="upload-colors-btn" class="button">
+      Upload Colors
+    </button>
+    <input
+      type="file"
+      id="upload-colors-input"
+      class="hidden-input"
+      accept=".json"
+    />
+  </div>
+
+  <details class="color-tools">
+    <summary>Customize colors</summary>
+    <div class="mode-bar preset-bar" role="group" aria-label="Color presets">
+      {
+        presets.map((preset) => (
+          <button type="button" data-preset={preset.key} class="toggle">
+            {preset.label}
+          </button>
+        ))
+      }
+    </div>
+    <div class="picker-row">
+      {
+        colorTypes.map((type) => (
+          <div class="picker">
+            <p class="picker-title">{type.label}</p>
+            {sliders.map((slider) => (
+              <div class="slider-group">
+                <label for={`${type.key}-${slider.key}`}>{slider.label}</label>
+                <input
+                  type="range"
+                  id={`${type.key}-${slider.key}`}
+                  min="0"
+                  max={slider.max}
+                />
+              </div>
+            ))}
+            <label class="hex-label">
+              Hex
+              <input
+                type="text"
+                id={`${type.key}-hex-input`}
+                class="hex-display"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+        ))
+      }
+    </div>
+  </details>
+</BaseLayout>
+
+<script>
+  import { initTemperatureViz } from '../scripts/temperature/viz.js'
+  initTemperatureViz()
+</script>
+
+<style>
+  .page-header {
+    max-width: 72ch;
+    margin-bottom: 32px;
+  }
+
+  .mode-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .toggle {
+    padding: 8px 16px;
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--color-text-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .toggle:hover {
+    color: var(--color-text-1);
+    border-color: var(--color-accent);
+  }
+
+  .toggle.active {
+    background-color: var(--color-accent-soft);
+    border-color: var(--color-accent);
+    color: var(--color-text-1);
+  }
+
+  .viz-grid {
+    display: grid;
+    grid-template-rows: repeat(12, 1fr);
+    width: 100%;
+    aspect-ratio: 14.01 / 9.77;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-s);
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: var(--color-surface);
+  }
+
+  .viz-grid :global(.temp-bar) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .viz-description {
+    max-width: 72ch;
+    color: var(--color-text-2);
+  }
+
+  .viz-description :global(strong) {
+    color: var(--color-text-1);
+  }
+
+  .viz-description :global(.data-source-link) {
+    font-size: var(--text-sm);
+    color: var(--color-text-3);
+  }
+
+  .action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-block: 24px;
+  }
+
+  .hidden-input {
+    display: none;
+  }
+
+  .color-tools {
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-m);
+    padding: 16px 20px;
+    background-color: var(--color-surface);
+  }
+
+  .color-tools summary {
+    cursor: pointer;
+    color: var(--color-text-1);
+    font-weight: 500;
+  }
+
+  .color-tools[open] summary {
+    margin-bottom: 16px;
+  }
+
+  .preset-bar {
+    margin-bottom: 20px;
+  }
+
+  .picker-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  .picker {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .picker-title {
+    font-weight: 500;
+    color: var(--color-text-1);
+    margin: 0;
+  }
+
+  .slider-group {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+  }
+
+  .slider-group label {
+    font-size: var(--text-sm);
+    color: var(--color-text-3);
+  }
+
+  .slider-group input[type='range'] {
+    width: 100%;
+    accent-color: var(--color-accent);
+  }
+
+  .hex-label {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--text-sm);
+    color: var(--color-text-3);
+  }
+
+  .hex-display {
+    margin-top: 2px;
+    padding: 6px 8px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    color: var(--color-text-2);
+    border-radius: var(--radius-s);
+    font-family: 'Courier New', Courier, monospace;
+    width: 110px;
+  }
+
+  @media (width <= 600px) {
+    .mode-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .toggle {
+      text-align: center;
+    }
+  }
+</style>
