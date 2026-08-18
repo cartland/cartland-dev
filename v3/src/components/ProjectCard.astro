@@ -63,6 +63,12 @@ const href = project.isExternal ? project.linkUrl : withBase(project.linkUrl)
     transform: translateY(-2px);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover {
+      transform: none;
+    }
+  }
+
   .card:target {
     border-color: var(--color-accent);
     box-shadow: 0 0 0 2px var(--color-accent-soft);

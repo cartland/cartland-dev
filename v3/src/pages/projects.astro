@@ -37,7 +37,9 @@ import { projects } from '../data/projects'
 
   .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* min(300px, 100%) lets tracks shrink below 300px on viewports narrower
+       than a full card, instead of overflowing. */
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: 24px;
   }
 </style>
