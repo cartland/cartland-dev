@@ -1,0 +1,211 @@
+/* Design tokens and base styles for chriscart.land v3.
+   Palette carried over from v1/v2: deep-violet background, white/grey text,
+   Roboto. A soft violet accent (drawn from the background hue) is added for
+   interactive elements. */
+
+:root {
+  /* Color */
+  --color-bg: #130830;
+  --color-surface: #1a0f3d;
+  --color-surface-2: #221450;
+  --color-border: rgb(255 255 255 / 14%);
+  --color-border-soft: rgb(255 255 255 / 8%);
+  --color-text-1: #fff;
+  --color-text-2: #ccc;
+  --color-text-3: #999;
+  --color-accent: #a99df1;
+  --color-accent-strong: #c3baf7;
+  --color-accent-soft: rgb(169 157 241 / 14%);
+
+  /* Type */
+  --font-body: Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+
+  /* Shape */
+  --radius-s: 8px;
+  --radius-m: 16px;
+  --radius-l: 24px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --container-max: 1080px;
+  --container-pad: 24px;
+  --section-gap: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-2);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-text-1);
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.15rem;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-accent-strong);
+  text-decoration: underline;
+}
+
+/* Links inside running text stay underlined so they are distinguishable
+   without relying on color alone. */
+p a,
+li a,
+figcaption a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-text-1);
+}
+
+/* Layout helpers */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+  padding: 0.75em 1.25em;
+  background-color: var(--color-text-1);
+  color: var(--color-bg);
+  border-radius: var(--radius-s);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 0.7em 1.6em;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-1);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
+  text-decoration: none;
+}
+
+.button.primary {
+  background-color: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+
+.button.primary:hover {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Prose (long-form pages such as privacy policies) */
+.prose {
+  max-width: 72ch;
+  margin-inline: auto;
+}
+
+.prose h1 {
+  margin-bottom: 0.25em;
+}
+
+.prose h2 {
+  margin-top: 2em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.prose h3 {
+  margin-top: 1.5em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+  margin: 0 0 1em;
+}
+
+.prose li {
+  margin-bottom: 0.35em;
+}
+
+.prose strong {
+  color: var(--color-text-1);
+}

@@ -28,6 +28,24 @@ npm test
 
 The `npm test` command runs: unit tests (Jest), HTML validation, CSS linting (Stylelint), JS linting (ESLint), and link checking.
 
+HTML validation and link checking run against build output, so build first:
+
+```bash
+npm run build     # builds v2 (VitePress → public/v2) and v3 (Astro → public/v3)
+npm test
+npx playwright test   # e2e for v2 (VitePress preview) and v3 (http-server)
+```
+
+## Site Versions
+
+- `public/` root: v1, the live hand-written site. Do not restyle v1 pages.
+- `site/`: v2 source (VitePress), builds to `public/v2/` (gitignored).
+- `v3/`: v3 source (Astro), builds to `public/v3/` (gitignored). Shared
+  assets (`/i/`, `/global-temperatures/`, favicon, manifest) live once at the
+  hosting root and are referenced with root-absolute paths — do not copy them
+  into `v3/`. Canonical URLs for v3 pages intentionally point at the root
+  paths until cutover (see `v3/src/lib/site.js`).
+
 ## CI / CD
 
 - **Pull Requests**: Firebase Hosting generates a preview deploy.

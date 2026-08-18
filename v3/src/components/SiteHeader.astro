@@ -1,0 +1,109 @@
+---
+import { withBase } from '../lib/site.js'
+
+interface Props {
+  activeNav?: 'about' | 'projects'
+}
+
+const { activeNav } = Astro.props
+
+const navItems = [
+  { key: 'about', label: 'About', href: withBase('') },
+  { key: 'projects', label: 'Projects', href: withBase('projects') },
+]
+---
+
+<header class="site-header">
+  <div class="container inner">
+    <a
+      class="brand"
+      href={withBase('')}
+      aria-label="Christopher Cartland — Home"
+    >
+      <img
+        src="/i/ChristopherCartlandLogo.jpg"
+        alt="Christopher Cartland"
+        width="163"
+        height="40"
+      />
+    </a>
+    <nav aria-label="Main navigation">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={{ active: item.key === activeNav }}
+            aria-current={item.key === activeNav ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgb(19 8 48 / 88%);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 64px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-s);
+  }
+
+  .brand img {
+    height: 40px;
+    width: auto;
+    border-radius: var(--radius-s);
+  }
+
+  nav {
+    display: flex;
+    gap: 8px;
+  }
+
+  nav a {
+    color: var(--color-text-2);
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--color-text-1);
+    background-color: var(--color-border-soft);
+    text-decoration: none;
+  }
+
+  nav a.active {
+    color: var(--color-text-1);
+    background-color: var(--color-accent-soft);
+  }
+
+  @media (width <= 480px) {
+    .brand img {
+      height: 32px;
+    }
+
+    nav a {
+      padding: 8px 10px;
+    }
+  }
+</style>

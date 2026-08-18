@@ -1,0 +1,129 @@
+---
+import type { Project } from '../data/projects'
+import { withBase } from '../lib/site.js'
+
+interface Props {
+  project: Project
+}
+
+const { project } = Astro.props
+const href = project.isExternal ? project.linkUrl : withBase(project.linkUrl)
+---
+
+<article class="card" id={project.id}>
+  <a
+    class="card-image"
+    href={href}
+    target={project.isExternal ? '_blank' : undefined}
+    rel={project.isExternal ? 'noopener noreferrer' : undefined}
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    <img
+      src={project.imagePath}
+      alt={project.imageAlt}
+      width={project.imageWidth}
+      height={project.imageHeight}
+      loading="lazy"
+    />
+  </a>
+  <div class="card-body">
+    <h2>{project.title}</h2>
+    <p>{project.description}</p>
+    <ul class="tags">
+      {project.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+    <a
+      class="button card-link"
+      href={href}
+      target={project.isExternal ? '_blank' : undefined}
+      rel={project.isExternal ? 'noopener noreferrer' : undefined}
+      aria-label={`${project.linkText} — ${project.title}`}
+    >
+      {project.linkText}
+    </a>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--color-border);
+    transform: translateY(-2px);
+  }
+
+  .card:target {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent-soft);
+  }
+
+  .card-image {
+    display: block;
+    position: relative;
+  }
+
+  .card-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0%), rgb(0 0 0 / 35%));
+  }
+
+  .card-image img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: var(--text-sm);
+    color: var(--color-text-2);
+    margin-bottom: 16px;
+  }
+
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: auto 0 16px;
+    padding: 0;
+  }
+
+  .tags li {
+    font-size: 0.72rem;
+    color: var(--color-text-2);
+    background-color: var(--color-border-soft);
+    border-radius: var(--radius-pill);
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+
+  .card-link {
+    align-self: flex-start;
+  }
+</style>

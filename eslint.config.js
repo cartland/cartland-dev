@@ -12,6 +12,8 @@ export default [
       'dist/',
       'build/',
       'public/v2/',
+      'public/v3/',
+      'v3/.astro/',
       'site/',
       'apps/**/build/',
       'test-results/',
@@ -50,6 +52,26 @@ export default [
       globals: {
         ...globals.browser,
         html2canvas: 'readonly', // From external script
+      },
+    },
+  },
+
+  // 4b. Configuration for v3 (Astro) browser modules
+  {
+    files: ['v3/src/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+
+  // 4c. Configuration for the v3 Astro config (Node)
+  {
+    files: ['v3/astro.config.mjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
       },
     },
   },

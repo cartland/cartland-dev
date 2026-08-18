@@ -9,7 +9,13 @@
 # though the links resolve fine in browsers, which made the deploy flaky.
 # Internal checking still catches the regressions a refactor can introduce
 # (broken page links, missing images/assets, bad rewrites).
-output=$(blc http://localhost:8080 -ro --exclude-external --filter-level 2 --rate-limit 1000)
+#
+# The crawl starts at the legacy root site and, separately, at the v3 site
+# (v3 is not linked from the legacy pages, so it needs its own entry point).
+BLC_ARGS=(-ro --exclude-external --filter-level 2 --rate-limit 1000)
+output_root=$(blc http://localhost:8080 "${BLC_ARGS[@]}")
+output_v3=$(blc http://localhost:8080/v3/ "${BLC_ARGS[@]}")
+output="$output_root"$'\n'"$output_v3"
 
 # Grep for broken links and deduplicate
 broken_links=$(echo "$output" | grep "BROKEN" | sort | uniq)
@@ -21,7 +27,7 @@ if [ -n "$broken_links" ]; then
   echo "---------------------------------"
   echo "$broken_links" # Print to console
   echo "---------------------------------"
-  
+
   # Create the report file for the CI
   echo "⚠️ **Broken Link Report**" > broken-links.md
   echo "" >> broken-links.md

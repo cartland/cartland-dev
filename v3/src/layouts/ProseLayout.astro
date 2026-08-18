@@ -1,0 +1,25 @@
+---
+// Layout for Markdown pages (privacy policies). Wraps the page content in
+// the shared chrome and the .prose long-form styles.
+import BaseLayout from './BaseLayout.astro'
+
+interface Props {
+  frontmatter: {
+    title: string
+    description: string
+    slug: string
+  }
+}
+
+const { frontmatter } = Astro.props
+---
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  slug={frontmatter.slug}
+>
+  <article class="prose">
+    <slot />
+  </article>
+</BaseLayout>
