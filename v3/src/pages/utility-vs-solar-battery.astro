@@ -200,7 +200,14 @@ const inputGroups = [
     margin-bottom: 24px;
   }
 
+  /* Grid items default to min-width: auto, so the canvas's intrinsic width
+     would otherwise stop the panels shrinking on narrow screens. */
+  .calc-main > .panel {
+    min-width: 0;
+  }
+
   .chart-wrapper {
+    position: relative;
     width: 100%;
     height: 400px;
   }
