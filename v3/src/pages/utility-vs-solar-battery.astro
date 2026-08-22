@@ -176,6 +176,14 @@ const inputGroups = [
     -webkit-text-fill-color: transparent;
   }
 
+  /* The gradient fill doesn't print; fall back to solid text. */
+  @media print {
+    .gradient-title {
+      background: none;
+      -webkit-text-fill-color: currentcolor;
+    }
+  }
+
   .page-header p {
     color: var(--color-text-3);
     font-size: var(--text-lg);

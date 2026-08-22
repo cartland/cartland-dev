@@ -189,6 +189,30 @@ figcaption a {
   color: var(--color-bg);
 }
 
+/* Print: flip the design tokens to dark-on-white (the dark palette would
+   print as white text on unprinted white paper) and drop the site chrome. */
+@media print {
+  :root {
+    --color-bg: #fff;
+    --color-surface: #fff;
+    --color-surface-2: #fff;
+    --color-border: #999;
+    --color-border-soft: #ccc;
+    --color-text-1: #000;
+    --color-text-2: #222;
+    --color-text-3: #555;
+    --color-accent: #000;
+    --color-accent-strong: #000;
+    --color-accent-soft: #eee;
+  }
+
+  .site-header,
+  .site-footer,
+  .skip-link {
+    display: none;
+  }
+}
+
 /* Prose (long-form pages such as privacy policies) */
 .prose {
   max-width: 72ch;

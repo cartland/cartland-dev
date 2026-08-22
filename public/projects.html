@@ -107,7 +107,8 @@
         z-index: 1;
       }
 
-      .image-gradient-container img {
+      .image-gradient-container img,
+      .image-gradient-container video {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -363,7 +364,8 @@
         z-index: -1;
       }
 
-      .card img {
+      .card img,
+      .card video {
         width: 100%;
         aspect-ratio: 1;
         border-radius: 32px;
@@ -968,11 +970,15 @@
           </div>
           <div class="card" id="marauders-map">
             <div class="image-gradient-container">
-              <img
-                src="/i/MaraudersMap.gif"
-                alt="Marauder's Map Screenshot"
-                loading="lazy"
-              />
+              <video
+                autoplay
+                loop
+                muted
+                playsinline
+                poster="/i/MaraudersMapPoster.jpg"
+              >
+                <source src="/i/MaraudersMap.mp4" type="video/mp4" />
+              </video>
             </div>
             <h2>Marauder's Map</h2>
             <p>
@@ -1320,6 +1326,15 @@
         })
       }
       window.addEventListener('load', setupCardFocus)
+
+      // Respect prefers-reduced-motion: leave looping videos on their
+      // poster frame instead of autoplaying.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('video[autoplay]').forEach((video) => {
+          video.removeAttribute('autoplay')
+          video.pause()
+        })
+      }
     </script>
   </body>
 </html>

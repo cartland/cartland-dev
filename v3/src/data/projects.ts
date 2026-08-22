@@ -6,6 +6,8 @@ export interface Project {
   imageAlt: string
   imageWidth: number
   imageHeight: number
+  /** Optional looping video shown instead of the image (imagePath becomes its poster). */
+  videoPath?: string
   /** External URL, or an internal slug (no leading slash) when isExternal is false. */
   linkUrl: string
   linkText: string
@@ -217,10 +219,11 @@ export const projects: Project[] = [
     title: "Marauder's Map",
     description:
       "I built an interactive Marauder's Map for a Halloween party. The animations are drawn with an HTML5 Canvas runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit of magic with NFC magic wands that allowed the wizard to wave their wand and see their footsteps appear on the map in their real location.",
-    imagePath: '/i/MaraudersMap.gif',
-    imageAlt: "Marauder's Map Screenshot",
+    imagePath: '/i/MaraudersMapPoster.jpg',
+    imageAlt: "Marauder's Map animation",
     imageWidth: 720,
     imageHeight: 350,
+    videoPath: '/i/MaraudersMap.mp4',
     linkUrl:
       'https://cartland.medium.com/building-a-marauders-map-6552fa378cda',
     linkText: 'Blog Post',
