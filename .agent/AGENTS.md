@@ -43,7 +43,12 @@ npx playwright test   # e2e for v2 (VitePress preview) and v3 (http-server)
 - `v3/`: v3 source (Astro), builds to `public/v3/` (gitignored). Shared
   assets (`/i/`, `/global-temperatures/`, favicon, manifest) live once at the
   hosting root and are referenced with root-absolute paths — do not copy them
-  into `v3/`. Canonical URLs for v3 pages intentionally point at the root
+  into `v3/`. Content images go through the build-time optimizer: resolve
+  them with `sharedImage()` from `v3/src/lib/images.ts` and render with
+  `astro:assets` (`<Image>`), which emits resized WebP under `/v3/_astro/`.
+  `public/i/MaraudersMap.gif` is kept for reference only — pages serve
+  `MaraudersMap.mp4` / `MaraudersMapPoster.jpg` instead; do not reference
+  the GIF from any page. Canonical URLs for v3 pages intentionally point at the root
   paths until cutover (see `v3/src/lib/site.js`).
 
 ## CI / CD

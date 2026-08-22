@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { sharedImage } from '../lib/images'
 import {
   SITE_TITLE,
   SITE_DESCRIPTION,
@@ -63,12 +65,15 @@ const socialItems = [
         >
       </div>
     </div>
-    <img
+    <Image
       class="hero-image"
-      src="/i/GoldenGateBridge.jpg"
+      src={sharedImage('/i/GoldenGateBridge.jpg')}
+      widths={[640, 1024]}
+      sizes="(max-width: 720px) calc(100vw - 48px), 512px"
+      format="webp"
+      quality={80}
       alt="Golden Gate Bridge"
-      width="1024"
-      height="683"
+      loading="eager"
       fetchpriority="high"
     />
   </section>
@@ -98,11 +103,13 @@ const socialItems = [
   </section>
 
   <figure class="feature">
-    <img
-      src="/i/CalSolFirstPlaceFormulaSun2017.jpg"
+    <Image
+      src={sharedImage('/i/CalSolFirstPlaceFormulaSun2017.jpg')}
+      widths={[700, 1400]}
+      sizes="(max-width: 1128px) calc(100vw - 48px), 1032px"
+      format="webp"
+      quality={80}
       alt="CalSol solar car crossing the finish line"
-      width="1400"
-      height="933"
       loading="lazy"
     />
     <figcaption>

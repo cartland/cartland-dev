@@ -24,6 +24,17 @@ import { projects } from '../data/projects'
   </div>
 </BaseLayout>
 
+<script>
+  // Respect prefers-reduced-motion: leave looping videos on their poster
+  // frame instead of autoplaying.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video[autoplay]').forEach((video) => {
+      video.removeAttribute('autoplay')
+      ;(video as HTMLVideoElement).pause()
+    })
+  }
+</script>
+
 <style>
   .page-header {
     max-width: 72ch;

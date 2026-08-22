@@ -140,7 +140,7 @@ export const projects: Project[] = [
     title: "Marauder's Map",
     description:
       "I built an interactive Marauder's Map for a Halloween party. The animations are drawn with an HTML5 Canvas runs in a WebView in an Android app. The app was deployed on phones, tablets, and Android TV. We added a bit of magic with NFC magic wands that allowed the wizard to wave their wand and see their footsteps appear on the map in their real location.",
-    imagePath: '/i/MaraudersMap.gif',
+    imagePath: '/i/MaraudersMapPoster.jpg',
     imageAlt: "Marauder's Map Screenshot",
     linkUrl:
       'https://cartland.medium.com/building-a-marauders-map-6552fa378cda',

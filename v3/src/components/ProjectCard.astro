@@ -1,5 +1,7 @@
 ---
+import { Image, getImage } from 'astro:assets'
 import type { Project } from '../data/projects'
+import { sharedImage } from '../lib/images'
 import { withBase } from '../lib/site.js'
 
 interface Props {
@@ -8,6 +10,11 @@ interface Props {
 
 const { project } = Astro.props
 const href = project.isExternal ? project.linkUrl : withBase(project.linkUrl)
+const image = sharedImage(project.imagePath)
+// For video cards the image serves as the poster frame.
+const poster = project.videoPath
+  ? await getImage({ src: image, width: 700, format: 'webp', quality: 80 })
+  : null
 ---
 
 <article class="card" id={project.id}>
@@ -19,13 +26,31 @@ const href = project.isExternal ? project.linkUrl : withBase(project.linkUrl)
     aria-hidden="true"
     tabindex="-1"
   >
-    <img
-      src={project.imagePath}
-      alt={project.imageAlt}
-      width={project.imageWidth}
-      height={project.imageHeight}
-      loading="lazy"
-    />
+    {
+      project.videoPath && poster ? (
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          poster={poster.src}
+          width={project.imageWidth}
+          height={project.imageHeight}
+        >
+          <source src={project.videoPath} type="video/mp4" />
+        </video>
+      ) : (
+        <Image
+          src={image}
+          widths={[400, 700]}
+          sizes="(max-width: 720px) calc(100vw - 48px), 340px"
+          format="webp"
+          quality={80}
+          alt={project.imageAlt}
+          loading="lazy"
+        />
+      )
+    }
   </a>
   <div class="card-body">
     <h2>{project.title}</h2>
@@ -69,6 +94,19 @@ const href = project.isExternal ? project.linkUrl : withBase(project.linkUrl)
     }
   }
 
+  @media print {
+    .card {
+      break-inside: avoid;
+    }
+
+    /* Show each card's destination URL, since links aren't clickable on paper. */
+    .card-link::after {
+      content: ' (' attr(href) ')';
+      text-transform: none;
+      letter-spacing: normal;
+    }
+  }
+
   .card:target {
     border-color: var(--color-accent);
     box-shadow: 0 0 0 2px var(--color-accent-soft);
@@ -86,9 +124,11 @@ const href = project.isExternal ? project.linkUrl : withBase(project.linkUrl)
     background: linear-gradient(to bottom, rgb(0 0 0 / 0%), rgb(0 0 0 / 35%));
   }
 
-  .card-image img {
+  .card-image img,
+  .card-image video {
     display: block;
     width: 100%;
+    height: auto;
     aspect-ratio: 3 / 2;
     object-fit: cover;
   }
