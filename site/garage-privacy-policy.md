@@ -48,4 +48,4 @@ We may update this policy from time to time. We will notify you of any changes b
 
 ## Contact Us
 
-If you have any questions, please contact us at [chris@chriscart.land](mailto:chris@chriscart.land).
+If you have any questions, please contact us at [chris@cart.land](mailto:chris@cart.land).

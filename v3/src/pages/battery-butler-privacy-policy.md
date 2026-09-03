@@ -33,7 +33,7 @@ We do not share your information with any third parties.
 
 If you would like to request deletion of your Battery Butler account and associated data, follow these steps:
 
-1. Send an email to [chris@chriscart.land](mailto:chris@chriscart.land) with the subject line "Battery Butler Account Deletion Request".
+1. Send an email to [chris@cart.land](mailto:chris@cart.land) with the subject line "Battery Butler Account Deletion Request".
 2. Include the email address associated with your Battery Butler account.
 3. You will receive a confirmation email once your request has been processed.
 
@@ -62,4 +62,4 @@ We may update this policy from time to time. We will notify you of any changes b
 
 ## Contact Us
 
-If you have any questions, please contact us at [chris@chriscart.land](mailto:chris@chriscart.land).
+If you have any questions, please contact us at [chris@cart.land](mailto:chris@cart.land).
