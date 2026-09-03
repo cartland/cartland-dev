@@ -33,7 +33,7 @@ We do not share your information with any third parties.
 You have the following choices regarding your data:
 
 - Delete your app: This will remove all stored data from your device.
-- Request deletion: Contact us at [chris@chriscart.land](mailto:chris@chriscart.land) to request deletion of data you have submitted.
+- Request deletion: Contact us at [chris@cart.land](mailto:chris@cart.land) to request deletion of data you have submitted.
 
 ## Security
 
@@ -49,4 +49,4 @@ We may update this policy from time to time. We will notify you of any changes b
 
 ## Contact Us
 
-If you have any questions, please contact us at [chris@chriscart.land](mailto:chris@chriscart.land).
+If you have any questions, please contact us at [chris@cart.land](mailto:chris@cart.land).

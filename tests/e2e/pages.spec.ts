@@ -58,7 +58,7 @@ test.describe('Page load verification', () => {
     await expect(
       page.getByRole('heading', { name: 'Battery Butler Privacy Policy' })
     ).toBeVisible()
-    await expect(page.getByText('chris@chriscart.land').first()).toBeVisible()
+    await expect(page.getByText('chris@cart.land').first()).toBeVisible()
   })
 
   test('garage privacy policy loads', async ({ page }) => {
@@ -66,7 +66,15 @@ test.describe('Page load verification', () => {
     await expect(
       page.getByRole('heading', { name: 'Garage Privacy Policy' })
     ).toBeVisible()
-    await expect(page.getByText('chris@chriscart.land').first()).toBeVisible()
+    await expect(page.getByText('chris@cart.land').first()).toBeVisible()
+  })
+
+  test('delete my data page loads', async ({ page }) => {
+    await page.goto('./delete-my-data')
+    await expect(
+      page.getByRole('heading', { name: 'Delete My Data' })
+    ).toBeVisible()
+    await expect(page.getByText('chris@cart.land').first()).toBeVisible()
   })
 
   test('404 page loads', async ({ page }) => {

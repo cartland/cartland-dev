@@ -248,7 +248,7 @@ bridge.jpg, bridge_tall.jpg, bridge_wide.jpg
 
 - [ ] Social: LinkedIn (/in/cartland), GitHub (/cartland), X (/LandOfCart), Threads (/@LandOfCart)
 - [ ] Play Store: Battery Butler, Garage app
-- [ ] Contact: chris@chriscart.land
+- [ ] Contact: chris@cart.land
 - [ ] Data: NOAA NCEI
 - [ ] Professional: Google blogs, Android blogs, YouTube talks, Wirecutter, Berkeley Engineering
 
